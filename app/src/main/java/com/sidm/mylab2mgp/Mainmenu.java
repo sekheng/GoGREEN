@@ -13,7 +13,8 @@ import android.view.View;
 public class Mainmenu extends Activity implements OnClickListener {
 
     private Button btn_start;
-    private Button btn_help;
+    private Button btn_options;
+    private Button btn_ranking;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +27,11 @@ public class Mainmenu extends Activity implements OnClickListener {
         btn_start = (Button)findViewById(R.id.btn_start);
         btn_start.setOnClickListener(this);
 
-        btn_help = (Button)findViewById(R.id.btn_help);
-        btn_help.setOnClickListener(this);
+        btn_options = (Button)findViewById(R.id.btn_options);
+        btn_options.setOnClickListener(this);
+
+        btn_ranking = (Button)findViewById(R.id.btn_ranking);
+        btn_ranking.setOnClickListener(this);
     }
 
     public void onClick(View v)
@@ -38,9 +42,13 @@ public class Mainmenu extends Activity implements OnClickListener {
             intent.setClass(this, Gamepage.class);
             //intent.setClass(this, Splashpage.class);
         }
-        else if (v == btn_help)
+        else if(v == btn_options)
         {
-            //intent.setClass(this, Helppage.class);
+            //intent.setClass(this, Splashpage.class);
+        }
+        else if(v == btn_ranking)
+        {
+            //intent.setClass(this, Splashpage.class);
         }
         startActivity(intent);
     }
