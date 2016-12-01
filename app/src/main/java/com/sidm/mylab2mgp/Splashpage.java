@@ -7,12 +7,14 @@ package com.sidm.mylab2mgp;
         import android.view.MotionEvent;
         import android.view.Window;
         import android.view.WindowManager;
+        import android.widget.ImageView;
 
 /**
  * Created by lenov on 17/11/2016.
  */
 
 public class Splashpage extends Activity {
+    private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,18 +23,36 @@ public class Splashpage extends Activity {
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);   //hide top bar
         setContentView(R.layout.splashpage);
-
+        imageView = (ImageView)findViewById(R.id.imageView);
+        temp = 1;
         //An error that result in crash is somewhere here.
         //thread for displaying the Splash Screen
         Thread splashTread = new Thread() {
             @Override
             public void run() {
                 try {
-                    int waited = 0;
-                    while(_active && (waited < _splashTime)) {
-                        sleep(200);
+                    float waited = 0;
+                    temp = 1;
+                    last_time = System.nanoTime();//how to hardcode 101
+                    while(_active && (waited < _splashTime && temp > 0)) {
+
+                        /*long time = System.nanoTime();
+                        int delta_time = (int)((time - last_time) / 1000000);
+                        last_time = time;
+                        temp = delta_time;*/
+                        sleep(5);
                         if(_active) {
-                            waited += 200;
+//                            waited += (float)(temp);
+                            waited += 5;
+                            if((waited > _splashTime/1.2f))
+                            {
+//                                temp -= waited/1000000;
+                                temp -= 0.00595f;
+                                if(temp < 0) {
+                                    temp = 0;
+                                }
+                                imageView.setAlpha(temp);
+                            }
                         }
                     }
                 } catch(InterruptedException e) {
@@ -72,4 +92,6 @@ public class Splashpage extends Activity {
     }
     protected boolean _active = true;
     protected int _splashTime = 5000;   //ms
+    protected long last_time = System.nanoTime();
+    protected float temp = 0.f;
 }
