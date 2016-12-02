@@ -1,4 +1,4 @@
-package com.sidm.mylab2mgp;
+package Entity;
 
 /**
  * Created by 150629Z on 12/2/2016.
