@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 
 import java.util.LinkedList;
 
-import ECS.BitComponent;
-import ECS.Entity;
-import ECS.TransformationComponent;
+import ECS.*;
 
 /**
  * Created by lenov on 03/12/2016.
@@ -35,13 +35,9 @@ public class AdventureView extends GamePanelSurfaceView {
         bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
         scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
 
-//        // 4c) Load the images of the spaceships
-//        for (int num = 0; num < 4; ++num)
-//        {
-//            ship_friend[num] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), Screenwidth, Screenheight, true);
-//        }
         bunchOfEntites = new LinkedList<Entity>();
         Entity zeEntity = new Entity(new String("zeShip"));
+        thePlayer = zeEntity;
         TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth,(short)Screenheight);
         zeEntity.setComponent(zeTransfrom);
         BitComponent zeImages = new BitComponent();
@@ -50,6 +46,7 @@ public class AdventureView extends GamePanelSurfaceView {
             zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), Screenwidth, Screenheight, true));
         }
         zeEntity.setComponent(zeImages);
+        zeEntity.setComponent(new PhysicComponent());
         bunchOfEntites.add(zeEntity);
 
         // Create the game loop thread
@@ -57,15 +54,18 @@ public class AdventureView extends GamePanelSurfaceView {
 
         // Make the GamePanel focusable so it can handle events
         setFocusable(true);
+        zeBackgroundPaint = new Paint();
+        zeBackgroundPaint.setARGB(255,255,255,255);
     }
 
     public void RenderGameplay(Canvas canvas) {
         // 2) Re-draw 2nd image after the 1st image ends
         if (canvas == null)
             return;
-        canvas.drawBitmap(scaledbg,bgX,bgY,null);   // 1st background image
-        canvas.drawBitmap(scaledbg, bgX + Screenwidth, bgY, null);  // 2nd image
-
+//        canvas.drawBitmap(scaledbg,bgX,bgY,null);   // 1st background image
+//        canvas.drawBitmap(scaledbg, bgX + Screenwidth, bgY, null);  // 2nd image
+        canvas.drawRoundRect(0,0,Screenwidth,Screenheight,0,0,zeBackgroundPaint);
+        RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         // 4d) Draw the spaceships
         //canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
         BitComponent zeBit;
@@ -85,16 +85,26 @@ public class AdventureView extends GamePanelSurfaceView {
     //Update method to update the game play
     public void update(float dt, float fps){
         FPS = fps;
-        bgX -= 500 * dt;    // Temp value to speed the panning
-        if (bgX < -Screenwidth)
-        {
-            bgX = 0;
-        }
-        for (Entity zeEntity : bunchOfEntites)
+       for (Entity zeEntity : bunchOfEntites)
         {
             zeEntity.Update(dt);
         }
     }
+    public boolean onTouchEvent(MotionEvent event){
+
+        // 5) In event of touch on screen, the spaceship will relocate to the point of touch
+        short x = (short)event.getX();  // temp value of the screen touch
+        short y = (short)event.getY();
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            TransformationComponent zeTransform = (TransformationComponent)(thePlayer.getComponent("Transformation Stuff"));
+            zeTransform.posX = (short)(x - (ship_friend[shipindex].getWidth() / 2));
+            zeTransform.posY = (short)(y - (ship_friend[shipindex].getHeight() / 2));
+        }
+        return super.onTouchEvent(event);
+    }
 
     LinkedList<Entity> bunchOfEntites;
+    Entity thePlayer;
+    Paint zeBackgroundPaint;
 }

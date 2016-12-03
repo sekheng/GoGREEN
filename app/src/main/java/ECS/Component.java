@@ -22,4 +22,5 @@ public class Component implements BaseInterface {
 
     }
     public String name_;
+    public Entity owner_;
 }

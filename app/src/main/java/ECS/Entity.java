@@ -45,6 +45,7 @@ public class Entity implements BaseInterface {
         if (!allTheComponents.containsKey(zeComp.name_))
         {
             allTheComponents.put(zeComp.name_, zeComp);
+            zeComp.owner_ = this;
             return true;
         }
         return false;

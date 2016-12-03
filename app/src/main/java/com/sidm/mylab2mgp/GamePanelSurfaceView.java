@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -150,6 +151,17 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
                 RenderGameplay(canvas);
                 break;
         }
+    }
+
+    //Print text on Screen
+    public void RenderTextOnScreen(Canvas canvas, String text, int posX, int posY
+            , int textsize)
+    {
+        Paint paint = new Paint();
+        paint.setARGB(255, 0, 0, 0);
+        paint.setStrokeWidth(100);
+        paint.setTextSize(textsize);
+        canvas.drawText(text, posX, posY, paint);
     }
 
     @Override
