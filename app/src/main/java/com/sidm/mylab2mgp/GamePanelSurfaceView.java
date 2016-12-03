@@ -12,25 +12,25 @@ import android.view.SurfaceView;
 public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.Callback{
     // Implement this interface to receive information about changes to the surface.
 
-    private GameThread myThread = null; // Thread to control the rendering
+    protected GameThread myThread = null; // Thread to control the rendering
 
     // 1a) Variables used for background rendering
-     private Bitmap bg  //bg = background
+    protected Bitmap bg  //bg = background
             , scaledbg; // scaledbg = scaled version of background
 
     // 1b) Define Screen width and Screen height as integer
     int Screenwidth, Screenheight;
 
     // 1c) Variables for defining background start and end point
-    private short bgX = 0, bgY = 0;
+    protected short bgX = 0, bgY = 0;
 
     // 4a) bitmap array to stores 4 images of the spaceship
-    private  Bitmap[] ship_friend = new Bitmap[4];
+    protected  Bitmap[] ship_friend = new Bitmap[4];
 
     // 4b) Variable as an index to keep track of the spaceship images
-    private short shipindex = 0;
+    protected short shipindex = 0;
 
-    private short mX = 0, mY = 0;
+    protected short mX = 0, mY = 0;
 
     // Variables for FPS
     public float FPS;
