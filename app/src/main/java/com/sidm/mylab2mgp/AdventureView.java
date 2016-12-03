@@ -38,7 +38,7 @@ public class AdventureView extends GamePanelSurfaceView {
         bunchOfEntites = new LinkedList<Entity>();
         Entity zeEntity = new Entity(new String("zeShip"));
         thePlayer = zeEntity;
-        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth,(short)Screenheight);
+        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
         zeEntity.setComponent(zeTransfrom);
         BitComponent zeImages = new BitComponent();
         for (int num = 0; num < 4; ++num)

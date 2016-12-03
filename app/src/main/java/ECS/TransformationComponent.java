@@ -56,26 +56,39 @@ public class TransformationComponent extends Component {
         zeNewTrans.posY -= zeOther.posY;
         return zeNewTrans;
     }
-    public void NegatePos()
+    public TransformationComponent NegatePos()
     {
         posX *= -1;
         posY *= -1;
+        return this;
     }
     public float LengthSquared()
     {
         return (posX * posX) + (posY * posY);
     }
-    public TransformationComponent mulitplyPos(float value)
+    public TransformationComponent multiplyPos(float value)
     {
         TransformationComponent zeNewTrans = new TransformationComponent(this);
         zeNewTrans.posX *= value;
         zeNewTrans.posY *= value;
         return zeNewTrans;
     }
-    public void plusRef(TransformationComponent rhs)
+    public TransformationComponent multiplyPosRef(float value)
+    {
+        posX *= value;
+        posY *= value;
+        return this;
+    }
+    public TransformationComponent plusPosRef(TransformationComponent rhs)
     {
         posX += rhs.posX;
         posY += rhs.posY;
+        return this;
+    }
+    public void SetPosZero()
+    {
+        posX = 0;
+        posY = 0;
     }
 
     static final public float EPSILON = 0.00001f;
