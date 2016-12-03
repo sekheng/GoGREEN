@@ -1,4 +1,4 @@
-package Entity;
+package ECS;
 
 import java.util.HashMap;
 
@@ -7,12 +7,12 @@ import java.util.HashMap;
  */
 
 public class Entity implements BaseInterface {
-    Entity()
+    public Entity()
     {
         name_ = "";
         allTheComponents = new HashMap<String, Component>();
     }
-    Entity(String zeName)
+    public Entity(String zeName)
     {
         name_ = new String(zeName);
         allTheComponents = new HashMap<String, Component>();
@@ -23,6 +23,14 @@ public class Entity implements BaseInterface {
         {
             zeComponent.Update(dt);
         }
+    }
+    public void Update(float dt)
+    {
+        for (Component zeComponent : allTheComponents.values())
+        {
+            zeComponent.Update(dt);
+        }
+
     }
     public void Exit()
     {

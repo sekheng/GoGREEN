@@ -23,8 +23,8 @@ public class Gamepage extends Activity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);  // hide title
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);   //hide top bar
-        setContentView(new GamePanelSurfaceView(this));
-
+        //setContentView(new GamePanelSurfaceView(this));
+        setContentView(new AdventureView(this));
     }
 
     public void onClick(View v)

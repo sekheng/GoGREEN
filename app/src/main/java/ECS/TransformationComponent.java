@@ -1,11 +1,11 @@
-package Entity;
+package ECS;
 
 /**
  * Created by lenov on 02/12/2016.
  */
 
 public class TransformationComponent extends Component {
-    TransformationComponent()
+    public TransformationComponent()
     {
         name_ = "Transformation Stuff";
         posX = 0;
@@ -13,18 +13,18 @@ public class TransformationComponent extends Component {
         scaleX = 1;
         scaleY = 1;
     }
-    TransformationComponent(short zePosX, short zePosY, short zeScaleX, short zeScaleY)
+    public TransformationComponent(short zePosX, short zePosY, short zeScaleX, short zeScaleY)
     {
         name_ = "Transformation Stuff";
         setPosition(zePosX, zePosY);
         setScale(zeScaleX, zeScaleY);
     }
-    void setPosition(short zeX, short zeY)
+    public void setPosition(short zeX, short zeY)
     {
         posX = zeX;
         posY = zeY;
     }
-    void setScale(short zeX, short zeY)
+    public void setScale(short zeX, short zeY)
     {
         scaleX = zeX;
         scaleY = zeY;

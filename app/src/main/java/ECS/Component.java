@@ -1,4 +1,4 @@
-package Entity;
+package ECS;
 
 /**
  * Created by 150629Z on 12/2/2016.
@@ -10,6 +10,10 @@ public class Component implements BaseInterface {
         name_ = "";
     }
     public void Update(long dt)
+    {
+
+    }
+    public void Update(float dt)
     {
 
     }
