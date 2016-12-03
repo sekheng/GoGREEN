@@ -47,7 +47,7 @@ public class AdventureView extends GamePanelSurfaceView {
         }
         zeEntity.setComponent(zeImages);
         PhysicComponent zePhysics = new PhysicComponent();
-        zePhysics.speed = 10;
+        zePhysics.speed = 300;
         zeEntity.setComponent(zePhysics);
         bunchOfEntites.add(zeEntity);
 

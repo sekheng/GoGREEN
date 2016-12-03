@@ -90,6 +90,20 @@ public class TransformationComponent extends Component {
         posX = 0;
         posY = 0;
     }
+    public TransformationComponent normalizeRef()
+    {
+        float d = Length();
+        if (!(d <= EPSILON && d >= -EPSILON))
+        {
+            posX /= d;
+            posY /= d;
+        }
+        return this;
+    }
+    public float Length()
+    {
+        return (float)Math.sqrt(LengthSquared());
+    }
 
     static final public float EPSILON = 0.00001f;
 
