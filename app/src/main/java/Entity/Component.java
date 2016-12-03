@@ -17,5 +17,5 @@ public class Component implements BaseInterface {
     {
 
     }
-    protected String name_;
+    public String name_;
 }
