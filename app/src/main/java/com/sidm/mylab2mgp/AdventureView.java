@@ -58,6 +58,27 @@ public class AdventureView extends GamePanelSurfaceView {
         setFocusable(true);
         zeBackgroundPaint = new Paint();
         zeBackgroundPaint.setARGB(255,255,255,255);
+
+        allTheBoxes = new LinkedList<Entity>();
+        zeOverallBounds = new TransformationComponent(0, Screenheight/10, Screenwidth, Screenheight - (Screenheight/10));
+        long numOfBoxesPerRow = 5, numOfBoxesPerCol = 5;
+        for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
+        {
+            for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
+            {
+                Entity boxEntity = new Entity("Box");
+                TransformationComponent boxTransform = new TransformationComponent(
+                        zeOverallBounds.posX + numCol * (zeOverallBounds.scaleX / numOfBoxesPerCol),
+                        zeOverallBounds.posY + numRow * (zeOverallBounds.scaleY / numOfBoxesPerRow),
+                        zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
+                        zeOverallBounds.posY + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
+                boxEntity.setComponent(boxTransform);
+                BitComponent zeBoxImage = new BitComponent();
+                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)boxTransform.scaleX, (int)boxTransform.scaleY, true));
+                boxEntity.setComponent(zeBoxImage);
+                allTheBoxes.add(boxEntity);
+            }
+        }
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -72,6 +93,12 @@ public class AdventureView extends GamePanelSurfaceView {
         //canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
         BitComponent zeBit;
         TransformationComponent zeTransform;
+        for (Entity zeEntity : allTheBoxes)
+        {
+            zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
+            zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
+            canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+        }
         for (Entity zeEntity : bunchOfEntites)
         {
             zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
@@ -79,7 +106,6 @@ public class AdventureView extends GamePanelSurfaceView {
             canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
         }
 
-        // Bonus) To print FPS on the screen
 
     }
 
@@ -109,6 +135,8 @@ public class AdventureView extends GamePanelSurfaceView {
     }
 
     LinkedList<Entity> bunchOfEntites;
+    LinkedList<Entity> allTheBoxes;
     Entity thePlayer;
     Paint zeBackgroundPaint;
+    TransformationComponent zeOverallBounds;
 }
