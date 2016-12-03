@@ -43,10 +43,12 @@ public class AdventureView extends GamePanelSurfaceView {
         BitComponent zeImages = new BitComponent();
         for (int num = 0; num < 4; ++num)
         {
-            zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), Screenwidth, Screenheight, true));
+            zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true));
         }
         zeEntity.setComponent(zeImages);
-        zeEntity.setComponent(new PhysicComponent());
+        PhysicComponent zePhysics = new PhysicComponent();
+        zePhysics.speed = 10;
+        zeEntity.setComponent(zePhysics);
         bunchOfEntites.add(zeEntity);
 
         // Create the game loop thread
@@ -98,8 +100,10 @@ public class AdventureView extends GamePanelSurfaceView {
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
             TransformationComponent zeTransform = (TransformationComponent)(thePlayer.getComponent("Transformation Stuff"));
-            zeTransform.posX = (short)(x - (ship_friend[shipindex].getWidth() / 2));
-            zeTransform.posY = (short)(y - (ship_friend[shipindex].getHeight() / 2));
+//            zeTransform.posX = (short)(x - (ship_friend[shipindex].getWidth() / 2));
+//            zeTransform.posY = (short)(y - (ship_friend[shipindex].getHeight() / 2));
+            PhysicComponent zePhysics = (PhysicComponent)(thePlayer.getComponent("zePhysic"));
+            zePhysics.setNextPosToGo((x - zeTransform.scaleX/2), (y - zeTransform.scaleY/2));
         }
         return super.onTouchEvent(event);
     }

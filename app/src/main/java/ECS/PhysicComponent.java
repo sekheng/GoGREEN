@@ -16,7 +16,7 @@ public class PhysicComponent extends Component {
         if (!zePosToGo.isPosZero())
         {
             TransformationComponent zePos = (TransformationComponent)(owner_.getComponent("Transformation Stuff"));
-            TransformationComponent zeDirection = zePos.minusPos(zePosToGo);
+            TransformationComponent zeDirection = zePosToGo.minusPos(zePos);
             zePos.plusPosRef(zeDirection.multiplyPosRef(dt * speed));
             if (zePos.minusPos(zePosToGo).LengthSquared() <= 4)
             {
