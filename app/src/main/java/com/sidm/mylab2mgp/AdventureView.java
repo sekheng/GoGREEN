@@ -68,13 +68,13 @@ public class AdventureView extends GamePanelSurfaceView {
             {
                 Entity boxEntity = new Entity("Box");
                 TransformationComponent boxTransform = new TransformationComponent(
-                        zeOverallBounds.posX + numCol * (zeOverallBounds.scaleX / numOfBoxesPerCol),
-                        zeOverallBounds.posY + numRow * (zeOverallBounds.scaleY / numOfBoxesPerRow),
+                        zeOverallBounds.posX + (numCol * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
+                        zeOverallBounds.posY + (numRow * (zeOverallBounds.scaleY / numOfBoxesPerRow)),
                         zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
-                        zeOverallBounds.posY + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
+                        (zeOverallBounds.posY) + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
                 boxEntity.setComponent(boxTransform);
                 BitComponent zeBoxImage = new BitComponent();
-                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)boxTransform.scaleX, (int)boxTransform.scaleY, true));
+                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(boxTransform.scaleX - boxTransform.posX), (int)(boxTransform.scaleY - boxTransform.posY), true));
                 boxEntity.setComponent(zeBoxImage);
                 allTheBoxes.add(boxEntity);
             }
