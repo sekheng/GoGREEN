@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.animation.Transformation;
 
 import java.util.LinkedList;
 
@@ -61,24 +63,27 @@ public class AdventureView extends GamePanelSurfaceView {
 
         allTheBoxes = new LinkedList<Entity>();
         zeOverallBounds = new TransformationComponent(0, Screenheight/10, Screenwidth, Screenheight - (Screenheight/10));
-        long numOfBoxesPerRow = 5, numOfBoxesPerCol = 5;
         for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
         {
             for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
             {
                 Entity boxEntity = new Entity("Box");
                 TransformationComponent boxTransform = new TransformationComponent(
-                        zeOverallBounds.posX + numCol * (zeOverallBounds.scaleX / numOfBoxesPerCol),
-                        zeOverallBounds.posY + numRow * (zeOverallBounds.scaleY / numOfBoxesPerRow),
+                        zeOverallBounds.posX + (numCol * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
+                        zeOverallBounds.posY + (numRow * (zeOverallBounds.scaleY / numOfBoxesPerRow)),
                         zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
-                        zeOverallBounds.posY + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
+                        (zeOverallBounds.posY) + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
                 boxEntity.setComponent(boxTransform);
                 BitComponent zeBoxImage = new BitComponent();
-                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)boxTransform.scaleX, (int)boxTransform.scaleY, true));
+                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(boxTransform.scaleX - boxTransform.posX), (int)(boxTransform.scaleY - boxTransform.posY), true));
                 boxEntity.setComponent(zeBoxImage);
                 allTheBoxes.add(boxEntity);
             }
         }
+        averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
+        averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
+        Log.v(TAG, "BOXx" + Long.toString(averageBoxSizeX));
+        Log.v(TAG, "BOXy" + Long.toString(averageBoxSizeY));
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -125,11 +130,23 @@ public class AdventureView extends GamePanelSurfaceView {
         short y = (short)event.getY();
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            TransformationComponent zeTransform = (TransformationComponent)(thePlayer.getComponent("Transformation Stuff"));
-//            zeTransform.posX = (short)(x - (ship_friend[shipindex].getWidth() / 2));
-//            zeTransform.posY = (short)(y - (ship_friend[shipindex].getHeight() / 2));
-            PhysicComponent zePhysics = (PhysicComponent)(thePlayer.getComponent("zePhysic"));
-            zePhysics.setNextPosToGo((x - zeTransform.scaleX/2), (y - zeTransform.scaleY/2));
+            if (x >= zeOverallBounds.posX && x <= zeOverallBounds.scaleX
+                    && y >= zeOverallBounds.posY && y <= zeOverallBounds.scaleY)
+            {
+                long boxX = 0, boxY = 0;
+                while (x >= (boxX + 1) * averageBoxSizeX)
+                    ++boxX;
+                while (y >= (boxY + 1) * averageBoxSizeY * 1.25f)
+                    ++boxY;
+                long totalNum = boxX + (boxY * numOfBoxesPerCol);
+                if (totalNum < allTheBoxes.size()) {
+                    Entity theExactBox = allTheBoxes.get((int) (boxX + (boxY * numOfBoxesPerCol)));
+                    TransformationComponent zeBoxTransform = (TransformationComponent) (theExactBox.getComponent("Transformation Stuff"));
+                    //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
+                    PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
+                    zePhysics.setNextPosToGo(zeBoxTransform.posX + (averageBoxSizeX * 0.25f), zeBoxTransform.posY + (averageBoxSizeY * 0.25f));
+                }
+            }
         }
         return super.onTouchEvent(event);
     }
@@ -139,4 +156,5 @@ public class AdventureView extends GamePanelSurfaceView {
     Entity thePlayer;
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
+    long numOfBoxesPerRow = 5, numOfBoxesPerCol = 5, averageBoxSizeX, averageBoxSizeY;
 }

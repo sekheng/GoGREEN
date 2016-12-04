@@ -177,4 +177,5 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         }
         return super.onTouchEvent(event);
     }
+    protected static final String TAG = null;
 }
