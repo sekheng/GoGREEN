@@ -16,7 +16,7 @@ public class PhysicComponent extends Component {
         if (!zePosToGo.isPosZero())
         {
             TransformationComponent zePos = (TransformationComponent)(owner_.getComponent("Transformation Stuff"));
-            if (zePos.minusPos(zePosToGo).LengthSquared() <= 4)
+            if (zePos.minusPos(zePosToGo).LengthSquared() <= 9)
             {
                 zePosToGo.SetPosZero();
             }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.Transformation;
 
@@ -81,6 +82,8 @@ public class AdventureView extends GamePanelSurfaceView {
         }
         averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
         averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
+        Log.v(TAG, "BOXx" + Long.toString(averageBoxSizeX));
+        Log.v(TAG, "BOXy" + Long.toString(averageBoxSizeY));
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -131,15 +134,18 @@ public class AdventureView extends GamePanelSurfaceView {
                     && y >= zeOverallBounds.posY && y <= zeOverallBounds.scaleY)
             {
                 long boxX = 0, boxY = 0;
-                while (x >= (boxX+1) * averageBoxSizeX)
+                while (x >= (boxX + 1) * averageBoxSizeX)
                     ++boxX;
-                while (y >= (boxY+1) * averageBoxSizeY)
+                while (y >= (boxY + 1) * averageBoxSizeY * 1.25f)
                     ++boxY;
-                Entity theExactBox = allTheBoxes.get((int)(boxX + (boxY * numOfBoxesPerCol)));
-                TransformationComponent zeBoxTransform = (TransformationComponent)(theExactBox.getComponent("Transformation Stuff"));
-                //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
-                PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
-                zePhysics.setNextPosToGo(zeBoxTransform.posX , zeBoxTransform.posY );
+                long totalNum = boxX + (boxY * numOfBoxesPerCol);
+                if (totalNum < allTheBoxes.size()) {
+                    Entity theExactBox = allTheBoxes.get((int) (boxX + (boxY * numOfBoxesPerCol)));
+                    TransformationComponent zeBoxTransform = (TransformationComponent) (theExactBox.getComponent("Transformation Stuff"));
+                    //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
+                    PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
+                    zePhysics.setNextPosToGo(zeBoxTransform.posX + (averageBoxSizeX * 0.25f), zeBoxTransform.posY + (averageBoxSizeY * 0.25f));
+                }
             }
         }
         return super.onTouchEvent(event);
