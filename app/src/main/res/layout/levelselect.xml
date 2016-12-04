@@ -1,25 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src = "@drawable/levelselect"
-        android:id="@+id/imageView"
-        android:alpha="1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/mainmenu_background"
+    android:screenOrientation="landscape">
 
     <Button
-        android:id="@+id/btn_start"
-        android:layout_width="220dp"
-        android:layout_height="120dp"
+    android:id="@+id/btn_start"
+    android:text="Start!"
+    android:textSize="18dp"
+    android:layout_width="150dp"
+    android:layout_height="50dp"
+    android:background="@drawable/button"
+    android:textColor="#0b932d"
+    android:shadowColor="#7F000000"
+    android:shadowDx="-2"
+    android:shadowDy="-2"
+    android:shadowRadius="1"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src = "@drawable/title_gamemode"
+        android:id="@+id/title_gamemode"
+        android:alpha="1"
+        android:layout_above="@+id/btn_start"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="166dp" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:text="Next!"
+        android:textSize="18dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:background="@drawable/button"
         android:textColor="#0b932d"
         android:shadowColor="#7F000000"
         android:shadowDx="-2"
         android:shadowDy="-2"
         android:shadowRadius="1"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="63dp"
+        android:layout_above="@+id/btn_start"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/btn_previous"
+        android:text="Previous!"
+        android:textSize="18dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/button"
+        android:textColor="#0b932d"
+        android:shadowColor="#7F000000"
+        android:shadowDx="-2"
+        android:shadowDy="-2"
+        android:shadowRadius="1"
+
+        android:layout_alignTop="@+id/btn_next"
+        android:layout_alignParentStart="true" />
+
+    <ImageSwitcher
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_above="@+id/btn_start"
+        android:id = "@+id/imageSwitcher"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="7dp" />
 </RelativeLayout>

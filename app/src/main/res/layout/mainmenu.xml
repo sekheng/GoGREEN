@@ -62,12 +62,13 @@
         android:text="Start!"
         android:textSize="18dp"
         android:textColor="#0b932d"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:shadowColor="#7F000000"
         android:shadowDx="-2"
         android:shadowDy="-2"
-        android:shadowRadius="1"/>
+        android:shadowRadius="1"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
     <ImageView
         android:layout_width="match_parent"
