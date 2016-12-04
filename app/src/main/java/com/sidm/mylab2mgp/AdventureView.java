@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.animation.Transformation;
 
 import java.util.LinkedList;
 
@@ -61,7 +62,6 @@ public class AdventureView extends GamePanelSurfaceView {
 
         allTheBoxes = new LinkedList<Entity>();
         zeOverallBounds = new TransformationComponent(0, Screenheight/10, Screenwidth, Screenheight - (Screenheight/10));
-        long numOfBoxesPerRow = 5, numOfBoxesPerCol = 5;
         for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
         {
             for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
@@ -79,6 +79,8 @@ public class AdventureView extends GamePanelSurfaceView {
                 allTheBoxes.add(boxEntity);
             }
         }
+        averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
+        averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -125,11 +127,20 @@ public class AdventureView extends GamePanelSurfaceView {
         short y = (short)event.getY();
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            TransformationComponent zeTransform = (TransformationComponent)(thePlayer.getComponent("Transformation Stuff"));
-//            zeTransform.posX = (short)(x - (ship_friend[shipindex].getWidth() / 2));
-//            zeTransform.posY = (short)(y - (ship_friend[shipindex].getHeight() / 2));
-            PhysicComponent zePhysics = (PhysicComponent)(thePlayer.getComponent("zePhysic"));
-            zePhysics.setNextPosToGo((x - zeTransform.scaleX/2), (y - zeTransform.scaleY/2));
+            if (x >= zeOverallBounds.posX && x <= zeOverallBounds.scaleX
+                    && y >= zeOverallBounds.posY && y <= zeOverallBounds.scaleY)
+            {
+                long boxX = 0, boxY = 0;
+                while (x >= (boxX+1) * averageBoxSizeX)
+                    ++boxX;
+                while (y >= (boxY+1) * averageBoxSizeY)
+                    ++boxY;
+                Entity theExactBox = allTheBoxes.get((int)(boxX + (boxY * numOfBoxesPerCol)));
+                TransformationComponent zeBoxTransform = (TransformationComponent)(theExactBox.getComponent("Transformation Stuff"));
+                //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
+                PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
+                zePhysics.setNextPosToGo(zeBoxTransform.posX , zeBoxTransform.posY );
+            }
         }
         return super.onTouchEvent(event);
     }
@@ -139,4 +150,5 @@ public class AdventureView extends GamePanelSurfaceView {
     Entity thePlayer;
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
+    long numOfBoxesPerRow = 5, numOfBoxesPerCol = 5, averageBoxSizeX, averageBoxSizeY;
 }
