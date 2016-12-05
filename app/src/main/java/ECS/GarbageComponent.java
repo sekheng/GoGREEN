@@ -17,8 +17,9 @@ public class GarbageComponent extends Component {
     public boolean setSpaces(LinkedList<Short> zeSpace)
     {
         if (spacesToOccupy.isEmpty()) {
-            for (Short zeShort : zeSpace) {
-
+            for (Short zeShort : zeSpace)
+            {
+                spacesToOccupy.add(zeShort);
             }
             return true;
         }
