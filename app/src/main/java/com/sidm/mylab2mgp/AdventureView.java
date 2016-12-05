@@ -63,7 +63,8 @@ public class AdventureView extends GamePanelSurfaceView {
         zeBackgroundPaint.setARGB(255,255,255,255);
 
         allTheBoxes = new LinkedList<Entity>();
-        zeOverallBounds = new TransformationComponent(0, Screenheight/10, Screenwidth, Screenheight - (Screenheight/5));
+        float zeNewTotHeight = Screenheight/10;
+        zeOverallBounds = new TransformationComponent(0, zeNewTotHeight, Screenwidth, Screenheight - (zeNewTotHeight * 2.f));
         for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
         {
             for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
