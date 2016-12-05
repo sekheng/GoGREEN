@@ -74,14 +74,17 @@ public class AdventureView extends GamePanelSurfaceView {
                         zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
                         (zeOverallBounds.posY) + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
                 boxEntity.setComponent(boxTransform);
-                BitComponent zeBoxImage = new BitComponent();
-                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(boxTransform.scaleX - boxTransform.posX), (int)(boxTransform.scaleY - boxTransform.posY), true));
-                boxEntity.setComponent(zeBoxImage);
+//                BitComponent zeBoxImage = new BitComponent();
+//                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(boxTransform.scaleX - boxTransform.posX), (int)(boxTransform.scaleY - boxTransform.posY), true));
+//                boxEntity.setComponent(zeBoxImage);
+                boxEntity.setComponent(new BoxComponent());
                 allTheBoxes.add(boxEntity);
             }
         }
         averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
         averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
+        debuggingGrid = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true);
+
         Log.v(TAG, "BOXx" + Long.toString(averageBoxSizeX));
         Log.v(TAG, "BOXy" + Long.toString(averageBoxSizeY));
     }
@@ -100,9 +103,9 @@ public class AdventureView extends GamePanelSurfaceView {
         TransformationComponent zeTransform;
         for (Entity zeEntity : allTheBoxes)
         {
-            zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
+            //zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
             zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
-            canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+            canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
         }
         for (Entity zeEntity : bunchOfEntites)
         {
@@ -157,4 +160,9 @@ public class AdventureView extends GamePanelSurfaceView {
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
     long numOfBoxesPerRow = 8, numOfBoxesPerCol = 8, averageBoxSizeX, averageBoxSizeY;
+
+    //TODO: Remove when not debugging
+    Bitmap debuggingGrid;
+    Paint debuggingRedFilled;
+    //TODO: Remove when not debugging
 }

@@ -36,6 +36,7 @@ public class PhysicComponent extends Component {
     {
         zePosToGo.posX = zePos.posX;
         zePosToGo.posY = zePos.posY;
+        zePosToGo.owner_ = zePos.owner_;
     }
 
 
