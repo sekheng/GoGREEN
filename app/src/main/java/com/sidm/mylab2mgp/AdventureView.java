@@ -77,6 +77,7 @@ public class AdventureView extends GamePanelSurfaceView {
                 BitComponent zeBoxImage = new BitComponent();
                 zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(boxTransform.scaleX - boxTransform.posX), (int)(boxTransform.scaleY - boxTransform.posY), true));
                 boxEntity.setComponent(zeBoxImage);
+                boxEntity.setComponent(new BoxComponent());
                 allTheBoxes.add(boxEntity);
             }
         }

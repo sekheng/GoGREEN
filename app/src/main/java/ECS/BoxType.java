@@ -7,5 +7,6 @@ package ECS;
 public enum BoxType {
     EMPTY,
     FILL,
+    GARBAGE_COLLECTOR,
     TOTAL_BOXTYPE,
 }
