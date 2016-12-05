@@ -85,6 +85,8 @@ public class AdventureView extends GamePanelSurfaceView {
         debuggingGrid = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true);
         debuggingRedFilled = new Paint();
         debuggingRedFilled.setARGB(255,255,0,0);
+        debuggingBlueFilled = new Paint();
+        debuggingBlueFilled.setARGB(255, 0, 255, 0);
         //TODO: Remove when not debugging
 
         Log.v(TAG, "BOXx" + Long.toString(averageBoxSizeX));
@@ -199,6 +201,6 @@ public class AdventureView extends GamePanelSurfaceView {
 
     //TODO: Remove when not debugging
     Bitmap debuggingGrid;
-    Paint debuggingRedFilled;
+    Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
 }
