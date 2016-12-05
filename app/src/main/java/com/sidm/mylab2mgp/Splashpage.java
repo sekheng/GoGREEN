@@ -47,10 +47,11 @@ public class Splashpage extends Activity {
                         if(_active) {
 //                            waited += (float)(temp);
                             waited = timer.getTimeSeconds();
-                            if((waited > _splashTime/2))
+                            float timeTotriggerFade = _splashTime/4;
+                            if(waited > timeTotriggerFade)
                             {
 //                                temp -= waited/1000000;
-                                temp -= 0.00595f;
+                                temp -= 0.000008f;
                                 if(temp < 0) {
                                     temp = 0;
                                 }
@@ -94,6 +95,6 @@ public class Splashpage extends Activity {
         super.onDestroy();
     }
     protected boolean _active = true;
-    protected int _splashTime = 10;   //s
+    protected int _splashTime = 8;   //s
     protected float temp = 0.f;
 }
