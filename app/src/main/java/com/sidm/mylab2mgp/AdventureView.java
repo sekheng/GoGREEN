@@ -93,7 +93,7 @@ public class AdventureView extends GamePanelSurfaceView {
         zeEntity = new Entity("small garbage");
         GarbageComponent zeGarbage = new GarbageComponent();
         zeGarbage.zeGrids = allTheBoxes;
-        short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(4 + (5*numOfBoxesPerCol)),(short)(4 + (6*numOfBoxesPerCol))};
+        short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(5 + (4*numOfBoxesPerCol)),(short)(6 + (4*numOfBoxesPerCol))};
         zeGarbage.setSpaces(zeNewSpace);
         zeEntity.setComponent(zeGarbage);
         bunchOfEntites.add(zeEntity);
@@ -120,7 +120,7 @@ public class AdventureView extends GamePanelSurfaceView {
             switch (zeBoxType.whatBox)
             {
                 case FILL:
-                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX - zeTransform.posX, zeTransform.scaleY - zeTransform.posY,0,0,debuggingRedFilled);
+                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingRedFilled);
                     break;
                 default:
             }
