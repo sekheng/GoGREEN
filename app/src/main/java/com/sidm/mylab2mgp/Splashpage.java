@@ -15,6 +15,9 @@ package com.sidm.mylab2mgp;
 
 public class Splashpage extends Activity {
     private ImageView imageView;
+
+    timer counter = new timer();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,20 +34,20 @@ public class Splashpage extends Activity {
             @Override
             public void run() {
                 try {
-                    float waited = 0;
+                    timer.startTimer(1000,1000);
+                    int waited = 0;
                     temp = 1;
-                    last_time = System.nanoTime();//how to hardcode 101
                     while(_active && (waited < _splashTime && temp > 0)) {
 
                         /*long time = System.nanoTime();
                         int delta_time = (int)((time - last_time) / 1000000);
                         last_time = time;
                         temp = delta_time;*/
-                        sleep(5);
+                        sleep(0);
                         if(_active) {
 //                            waited += (float)(temp);
-                            waited += 5;
-                            if((waited > _splashTime/1.2f))
+                            waited = timer.getTimeSeconds();
+                            if((waited > _splashTime/2))
                             {
 //                                temp -= waited/1000000;
                                 temp -= 0.00595f;
@@ -91,7 +94,6 @@ public class Splashpage extends Activity {
         super.onDestroy();
     }
     protected boolean _active = true;
-    protected int _splashTime = 5000;   //ms
-    protected long last_time = System.nanoTime();
+    protected int _splashTime = 10;   //s
     protected float temp = 0.f;
 }
