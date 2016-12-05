@@ -62,8 +62,8 @@ public class AdventureView extends GamePanelSurfaceView {
         zeBackgroundPaint.setARGB(255,255,255,255);
 
         allTheBoxes = new LinkedList<Entity>();
-        zeOverallBounds = new TransformationComponent(0, Screenheight/10, Screenwidth, Screenheight - (Screenheight/10));
-        for (long numRow = 0; numRow < numOfBoxesPerRow - 1; ++numRow)
+        zeOverallBounds = new TransformationComponent(0, Screenheight/10, Screenwidth, Screenheight - (Screenheight/5));
+        for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
         {
             for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
             {
@@ -131,7 +131,7 @@ public class AdventureView extends GamePanelSurfaceView {
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
             if (x >= zeOverallBounds.posX && x <= zeOverallBounds.scaleX
-                    && y >= zeOverallBounds.posY && y <= zeOverallBounds.scaleY)
+                    && y >= zeOverallBounds.posY && y <= (zeOverallBounds.scaleY + averageBoxSizeY))
             {
                 long boxX = 0, boxY = 0;
                 while (x > (boxX + 1) * averageBoxSizeX)
@@ -156,5 +156,5 @@ public class AdventureView extends GamePanelSurfaceView {
     Entity thePlayer;
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
-    long numOfBoxesPerRow = 10, numOfBoxesPerCol = 10, averageBoxSizeX, averageBoxSizeY;
+    long numOfBoxesPerRow = 8, numOfBoxesPerCol = 8, averageBoxSizeX, averageBoxSizeY;
 }
