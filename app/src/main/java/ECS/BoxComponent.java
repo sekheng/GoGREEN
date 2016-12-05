@@ -21,7 +21,7 @@ public class BoxComponent extends Component {
         }
         else if (zeEvent.equalsIgnoreCase("tellowner") && garbageOwner != null)
         {
-            garbageOwner.onNotify("remove");
+            garbageOwner.onNotify("interact");
             return true;
         }
             return false;

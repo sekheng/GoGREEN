@@ -45,7 +45,7 @@ public class GarbageComponent extends Component {
     }
     public boolean onNotify(String zeEvent)
     {
-        if (zeEvent.equalsIgnoreCase("remove"))
+        if (zeEvent.equalsIgnoreCase("interact"))
         {
             owner_.turnOnFlag_ = 0;
             for (Short zeShort : spacesToOccupy)
