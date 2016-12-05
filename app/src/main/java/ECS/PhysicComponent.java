@@ -19,6 +19,7 @@ public class PhysicComponent extends Component {
             if (zePos.minusPos(zePosToGo).LengthSquared() <= 9)
             {
                 zePosToGo.SetPosZero();
+                owner_.getComponent("zePlayer").onNotify("reached");
             }
             else
             {

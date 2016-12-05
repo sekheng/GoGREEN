@@ -144,6 +144,7 @@ public class AdventureView extends GamePanelSurfaceView {
                     //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
                     PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
                     zePhysics.setNextPosToGo(zeBoxTransform.posX + (averageBoxSizeX * 0.25f), zeBoxTransform.posY + (averageBoxSizeY * 0.25f));
+                    thePlayer.getComponent("zePlayer").onNotify(zeBoxTransform);
                 }
             }
         }

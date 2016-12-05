@@ -9,7 +9,9 @@ public class BoxComponent extends Component {
     {
         name_ = "zeBox";
         whatBox = BoxType.EMPTY;
+        garbageOwner = null;
     }
 
     public BoxType whatBox;
+    public GarbageComponent garbageOwner;
 }

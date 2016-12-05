@@ -27,20 +27,18 @@ public class GarbageComponent extends Component {
     }
     public boolean setSpaces(short num1)
     {
-
+        short []arraysShort = {num1};
+        return setSpaces(arraysShort);
     }
-    public boolean setSpaces(short num1, short num2, short num3, short num4, short num5, short num6, short num7)
-    {
-        setSpaces(num1, num2, num3, num4, num5,num6,num7,(short)-1);
-    }
-    public boolean setSpaces(short num1, short num2, short num3, short num4, short num5, short num6, short num7, short num8)
+    public boolean setSpaces(short[] bunchOfStuff)
     {
         if (spacesToOccupy.isEmpty())
         {
-            for (short num = 0; num < 8; ++num)
+            for (short num : bunchOfStuff)
             {
-                
+                spacesToOccupy.add(num);
             }
+            return true;
         }
         return false;
     }
