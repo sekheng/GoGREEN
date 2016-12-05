@@ -12,15 +12,16 @@ public class PlayerComponent extends Component {
         score_ = 0;
         amountOfGarbageCollected = 0;
         limitOfGarbage = 200;
+        startUpdating = false;
     }
     public void Update(float dt)
     {
-        if (whichBoxPlayerIn != null)
+        if (whichBoxPlayerIn != null && startUpdating)
         {
             switch (whichBoxPlayerIn.whatBox)
             {
                 case FILL:
-
+                    whichBoxPlayerIn.onNotify("tellowner");
                     break;
                 default:
                     break;
@@ -36,8 +37,18 @@ public class PlayerComponent extends Component {
             whichBoxPlayerIn = (BoxComponent)zeEvent;
         return true;
     }
+    public boolean onNotify(String zeEvent)
+    {
+        if (zeEvent.equalsIgnoreCase("reached"))
+        {
+            startUpdating = true;
+            return true;
+        }
+        return false;
+    }
 
     protected BoxComponent whichBoxPlayerIn;
+    protected boolean startUpdating;
     public int score_;
     public float amountOfGarbageCollected, limitOfGarbage;
 }

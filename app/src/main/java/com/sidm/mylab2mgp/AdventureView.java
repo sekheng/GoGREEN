@@ -51,6 +51,7 @@ public class AdventureView extends GamePanelSurfaceView {
         PhysicComponent zePhysics = new PhysicComponent();
         zePhysics.speed = 300;
         zeEntity.setComponent(zePhysics);
+        zeEntity.setComponent(new PlayerComponent());
         bunchOfEntites.add(zeEntity);
 
         // Create the game loop thread
@@ -62,7 +63,8 @@ public class AdventureView extends GamePanelSurfaceView {
         zeBackgroundPaint.setARGB(255,255,255,255);
 
         allTheBoxes = new LinkedList<Entity>();
-        zeOverallBounds = new TransformationComponent(0, Screenheight/10, Screenwidth, Screenheight - (Screenheight/5));
+        float zeNewTotHeight = Screenheight/10;
+        zeOverallBounds = new TransformationComponent(0, zeNewTotHeight, Screenwidth, Screenheight - (zeNewTotHeight * 2.f));
         for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
         {
             for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
@@ -74,19 +76,30 @@ public class AdventureView extends GamePanelSurfaceView {
                         zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
                         (zeOverallBounds.posY) + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
                 boxEntity.setComponent(boxTransform);
-//                BitComponent zeBoxImage = new BitComponent();
-//                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(boxTransform.scaleX - boxTransform.posX), (int)(boxTransform.scaleY - boxTransform.posY), true));
-//                boxEntity.setComponent(zeBoxImage);
                 boxEntity.setComponent(new BoxComponent());
                 allTheBoxes.add(boxEntity);
             }
         }
         averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
         averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
+        //TODO: Remove when not debugging
         debuggingGrid = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true);
+        debuggingRedFilled = new Paint();
+        debuggingRedFilled.setARGB(255,255,0,0);
+        debuggingBlueFilled = new Paint();
+        debuggingBlueFilled.setARGB(255, 0, 255, 0);
+        //TODO: Remove when not debugging
 
         Log.v(TAG, "BOXx" + Long.toString(averageBoxSizeX));
         Log.v(TAG, "BOXy" + Long.toString(averageBoxSizeY));
+
+        zeEntity = new Entity("small garbage");
+        GarbageComponent zeGarbage = new GarbageComponent();
+        zeGarbage.zeGrids = allTheBoxes;
+        short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(5 + (4*numOfBoxesPerCol)),(short)(6 + (4*numOfBoxesPerCol))};
+        zeGarbage.setSpaces(zeNewSpace);
+        zeEntity.setComponent(zeGarbage);
+        bunchOfEntites.add(zeEntity);
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -101,17 +114,36 @@ public class AdventureView extends GamePanelSurfaceView {
         //canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
         BitComponent zeBit;
         TransformationComponent zeTransform;
+        //TODO remove when not debugging
         for (Entity zeEntity : allTheBoxes)
         {
-            //zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
             zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
             canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
+            BoxComponent zeBoxType = (BoxComponent)(zeEntity.getComponent("zeBox"));
+            switch (zeBoxType.whatBox)
+            {
+                case FILL:
+                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingRedFilled);
+                    break;
+                default:
+            }
         }
+        //TODO remove when not debugging
+
         for (Entity zeEntity : bunchOfEntites)
         {
-            zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
-            zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
-            canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+            switch (zeEntity.turnOnFlag_)
+            {
+                case 1:
+                    if (zeEntity.checkActiveComponent("Ze Images"))
+                    {
+                        zeBit = (BitComponent) zeEntity.getComponent("Ze Images");
+                        zeTransform = (TransformationComponent) zeEntity.getComponent("Transformation Stuff");
+                        canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+                    }
+                    break;
+                default:
+            }
         }
 
 
@@ -123,7 +155,13 @@ public class AdventureView extends GamePanelSurfaceView {
         FPS = fps;
        for (Entity zeEntity : bunchOfEntites)
         {
-            zeEntity.Update(dt);
+            switch (zeEntity.turnOnFlag_)
+            {
+                case 1:
+                    zeEntity.Update(dt);
+                    break;
+                default:
+            }
         }
     }
     public boolean onTouchEvent(MotionEvent event){
@@ -148,6 +186,7 @@ public class AdventureView extends GamePanelSurfaceView {
                     //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
                     PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
                     zePhysics.setNextPosToGo(zeBoxTransform.posX + (averageBoxSizeX * 0.25f), zeBoxTransform.posY + (averageBoxSizeY * 0.25f));
+                    thePlayer.getComponent("zePlayer").onNotify(zeBoxTransform);
                 }
             }
         }
@@ -163,6 +202,6 @@ public class AdventureView extends GamePanelSurfaceView {
 
     //TODO: Remove when not debugging
     Bitmap debuggingGrid;
-    Paint debuggingRedFilled;
+    Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
 }
