@@ -31,15 +31,15 @@
         android:alpha="1"
         android:layout_above="@+id/btn_start"
         android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="166dp" />
 
     <Button
         android:id="@+id/btn_next"
-        android:text="Next!"
         android:textSize="18dp"
-        android:layout_width="150dp"
+        android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/button"
+        android:background="@drawable/rightarrow"
         android:textColor="#0b932d"
         android:shadowColor="#7F000000"
         android:shadowDx="-2"
@@ -51,11 +51,11 @@
 
     <Button
         android:id="@+id/btn_previous"
-        android:text="Previous!"
         android:textSize="18dp"
-        android:layout_width="150dp"
+        android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/button"
+        android:background="@drawable/rightarrow"
+        android:rotation="180"
         android:textColor="#0b932d"
         android:shadowColor="#7F000000"
         android:shadowDx="-2"
@@ -72,4 +72,13 @@
         android:id = "@+id/imageSwitcher"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="7dp" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/back"
+        android:id="@+id/btn_back"
+        android:layout_below="@+id/title_gamemode"
+        android:layout_alignLeft="@id/btn_start"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

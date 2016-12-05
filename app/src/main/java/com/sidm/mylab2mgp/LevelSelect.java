@@ -1,8 +1,10 @@
 package com.sidm.mylab2mgp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,13 @@ import android.widget.ViewSwitcher;
  */
 
 public class LevelSelect extends Activity implements OnClickListener {
-    private Button btn_start,btn_next, btn_previous;
+    private Button btn_start,btn_next, btn_previous, btn_back;
+
+    private ImageView imageView;
 
     private ImageSwitcher imageSwitcher;
+
+    private Vibrator vibrator;
 
     Integer[] images = {R.drawable.mode_adventure, R.drawable.mode_unlimited, R.drawable.mode_quicksort};
 
@@ -81,17 +87,57 @@ public class LevelSelect extends Activity implements OnClickListener {
         btn_next = (Button)findViewById(R.id.btn_next);
         btn_previous = (Button)findViewById(R.id.btn_previous);
 
+        btn_back = (Button)findViewById((R.id.btn_back));
+        btn_back.setOnClickListener(this);
+
+        imageView = (ImageView)findViewById(R.id.title_gamemode);
+
         btn_next.setOnClickListener(this);
         btn_previous.setOnClickListener(this);
+
+
+//      setting the buttons to fit screen size
+        ViewGroup.LayoutParams start_params = btn_start.getLayoutParams();
+        ViewGroup.LayoutParams next_params = btn_next.getLayoutParams();
+        ViewGroup.LayoutParams previous_params = btn_previous.getLayoutParams();
+        ViewGroup.LayoutParams back_params = btn_back.getLayoutParams();
+        ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
+
+        start_params .width = screenwidth / 4;
+        start_params .height = screenheight / 8;
+
+        next_params .width = screenheight / 8;
+        next_params .height = screenheight / 8;
+
+        previous_params .width = screenheight / 8;
+        previous_params .height = screenheight / 8;
+
+        back_params.width = screenheight / 8;
+        back_params.height = screenheight / 8;
+
+        imageView_params .height = screenwidth / 5;
+
+        btn_start.setLayoutParams(start_params);
+        btn_next.setLayoutParams(next_params);
+        btn_previous.setLayoutParams(previous_params);
+        btn_back.setLayoutParams(back_params);
+        imageView.setLayoutParams(imageView_params);
+
+        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
     }
     public void onClick(View v)
     {
         Intent intent = new Intent();
         if (v == btn_start)
         {
+            vibrator.vibrate(500);//ms
             intent.setClass(this, Gamepage.class);
             startActivity(intent);
             //intent.setClass(this, Splashpage.class);
+        }
+        if(v == btn_back)
+        {
+            finish();
         }
         if(v == btn_next)
         {
@@ -103,7 +149,7 @@ public class LevelSelect extends Activity implements OnClickListener {
                 imageSwitcher.setImageResource(images[imageNumber]);
             }
         }
-        if(v == btn_previous)
+        else if(v == btn_previous)
         {
             imageSwitcher.setInAnimation(in);
             imageSwitcher.setOutAnimation(out);

@@ -4,9 +4,12 @@ package com.sidm.mylab2mgp;
         import android.content.Intent;
         import android.content.pm.ActivityInfo;
         import android.os.Bundle;
+        import android.util.DisplayMetrics;
         import android.view.MotionEvent;
+        import android.view.ViewGroup;
         import android.view.Window;
         import android.view.WindowManager;
+        import android.widget.Button;
         import android.widget.ImageView;
 
 /**
@@ -16,6 +19,7 @@ package com.sidm.mylab2mgp;
 public class Splashpage extends Activity {
     private ImageView imageView;
 
+    private int waited = 0;
     timer counter = new timer();
 
     @Override
@@ -27,47 +31,48 @@ public class Splashpage extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);   //hide top bar
         setContentView(R.layout.splashpage);
         imageView = (ImageView)findViewById(R.id.imageView);
-        temp = 1;
-        //An error that result in crash is somewhere here.
-        //thread for displaying the Splash Screen
+        temp = 1;//alpha for the logo
+
+        //get the screen size for resizing the logo
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenheight = displayMetrics.heightPixels;
+        int screenwidth = displayMetrics.widthPixels;
+
+        ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
+
+        imageView_params .height = screenwidth / 5;
+
+        imageView.setLayoutParams(imageView_params);
+
         Thread splashTread = new Thread() {
             @Override
             public void run() {
-                try {
                     timer.startTimer(1000,1000);
-                    int waited = 0;
+
                     temp = 1;
                     while(_active && (waited < _splashTime && temp > 0)) {
-
-                        /*long time = System.nanoTime();
-                        int delta_time = (int)((time - last_time) / 1000000);
-                        last_time = time;
-                        temp = delta_time;*/
-                        sleep(0);
                         if(_active) {
 //                            waited += (float)(temp);
                             waited = timer.getTimeSeconds();
                             float timeTotriggerFade = _splashTime/4;
                             if(waited > timeTotriggerFade)
                             {
-//                                temp -= waited/1000000;
                                 temp -= 0.000008f;
-                                if(temp < 0) {
+                                if(temp < 0)
+                                {
                                     temp = 0;
                                 }
-                                imageView.setAlpha(temp);
+                                if(temp >= 0) {
+                                    imageView.setAlpha(temp);
+                                }
                             }
                         }
                     }
-                } catch(InterruptedException e) {
-                    //do nothing
-                } finally {
                     finish();
                     //Create new activity based on and intent with CurrentActivity
                     Intent intent = new Intent(Splashpage.this, Mainmenu.class);
                     startActivity(intent);
-
-                }
             }
         };
         splashTread.start();
@@ -76,7 +81,8 @@ public class Splashpage extends Activity {
     @Override
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            _active = false;
+           // _active = false;
+            waited = _splashTime/4 + 1;//press to trigger fading
         }
         return true;
     }
