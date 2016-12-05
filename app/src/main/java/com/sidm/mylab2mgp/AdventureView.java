@@ -81,10 +81,22 @@ public class AdventureView extends GamePanelSurfaceView {
         }
         averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
         averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
+        //TODO: Remove when not debugging
         debuggingGrid = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true);
+        debuggingRedFilled = new Paint();
+        debuggingRedFilled.setARGB(255,255,0,0);
+        //TODO: Remove when not debugging
 
         Log.v(TAG, "BOXx" + Long.toString(averageBoxSizeX));
         Log.v(TAG, "BOXy" + Long.toString(averageBoxSizeY));
+
+        zeEntity = new Entity("small garbage");
+        GarbageComponent zeGarbage = new GarbageComponent();
+        zeGarbage.zeGrids = allTheBoxes;
+        short []zeNewSpace = {24,25,26};
+        zeGarbage.setSpaces(zeNewSpace);
+        zeEntity.setComponent(zeGarbage);
+        bunchOfEntites.add(zeEntity);
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -104,6 +116,14 @@ public class AdventureView extends GamePanelSurfaceView {
         {
             zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
             canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
+            BoxComponent zeBoxType = (BoxComponent)(zeEntity.getComponent("zeBox"));
+            switch (zeBoxType.whatBox)
+            {
+                case FILL:
+                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX - zeTransform.posX, zeTransform.scaleY - zeTransform.posY,0,0,debuggingRedFilled);
+                    break;
+                default:
+            }
         }
         //TODO remove when not debugging
 
@@ -112,9 +132,12 @@ public class AdventureView extends GamePanelSurfaceView {
             switch (zeEntity.turnOnFlag_)
             {
                 case 1:
-                    zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
-                    zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
-                    canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+                    if (zeEntity.checkActiveComponent("Ze Images"))
+                    {
+                        zeBit = (BitComponent) zeEntity.getComponent("Ze Images");
+                        zeTransform = (TransformationComponent) zeEntity.getComponent("Transformation Stuff");
+                        canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+                    }
                     break;
                 default:
             }

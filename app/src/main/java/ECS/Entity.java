@@ -58,8 +58,13 @@ public class Entity implements BaseInterface {
         turnOnFlag_ = (byte)zeEvent;
         return true;
     }
+    public boolean checkActiveComponent(String zeName)
+    {
+        return allTheComponents.containsKey(zeName);
+    }
 
     String name_;
     private HashMap<String, Component> allTheComponents;
+    //private HashMap<String, Boolean> activeComponents;
     public byte turnOnFlag_;
 }

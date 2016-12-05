@@ -19,7 +19,21 @@ public class BoxComponent extends Component {
             whatBox = BoxType.EMPTY;
             return true;
         }
-        return false;
+        else if (zeEvent.equalsIgnoreCase("tellowner") && garbageOwner != null)
+        {
+            garbageOwner.onNotify("remove");
+            return true;
+        }
+            return false;
+    }
+    public boolean onNotify(Component zeEvent)
+    {
+        if (zeEvent.name_ == "zeGarbage")
+            garbageOwner = (GarbageComponent)zeEvent;
+        else
+            garbageOwner = (GarbageComponent)(zeEvent.owner_.getComponent("garbageOwner"));
+        whatBox = BoxType.FILL;
+        return true;
     }
 
     public BoxType whatBox;

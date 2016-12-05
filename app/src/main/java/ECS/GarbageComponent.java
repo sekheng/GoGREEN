@@ -32,17 +32,29 @@ public class GarbageComponent extends Component {
     }
     public boolean setSpaces(short[] bunchOfStuff)
     {
-        if (spacesToOccupy.isEmpty())
+        if (spacesToOccupy.isEmpty() && zeGrids != null)
         {
             for (short num : bunchOfStuff)
             {
                 spacesToOccupy.add(num);
+                zeGrids.get(num).getComponent("zeBox").onNotify(this);
             }
             return true;
         }
         return false;
     }
-
+    public boolean onNotify(String zeEvent)
+    {
+        if (zeEvent.equalsIgnoreCase("remove"))
+        {
+            owner_.turnOnFlag_ = 0;
+            for (Short zeShort : spacesToOccupy)
+            {
+                zeGrids.get(zeShort.intValue()).getComponent("zeBox").onNotify("reset");
+            }
+        }
+        return false;
+    }
 
     public int scoreGive_;
     LinkedList<Short> spacesToOccupy;

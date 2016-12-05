@@ -21,7 +21,7 @@ public class PlayerComponent extends Component {
             switch (whichBoxPlayerIn.whatBox)
             {
                 case FILL:
-
+                    whichBoxPlayerIn.onNotify("tellowner");
                     break;
                 default:
                     break;
