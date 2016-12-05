@@ -74,9 +74,6 @@ public class AdventureView extends GamePanelSurfaceView {
                         zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
                         (zeOverallBounds.posY) + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
                 boxEntity.setComponent(boxTransform);
-//                BitComponent zeBoxImage = new BitComponent();
-//                zeBoxImage.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(boxTransform.scaleX - boxTransform.posX), (int)(boxTransform.scaleY - boxTransform.posY), true));
-//                boxEntity.setComponent(zeBoxImage);
                 boxEntity.setComponent(new BoxComponent());
                 allTheBoxes.add(boxEntity);
             }
@@ -103,7 +100,6 @@ public class AdventureView extends GamePanelSurfaceView {
         TransformationComponent zeTransform;
         for (Entity zeEntity : allTheBoxes)
         {
-            //zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
             zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
             canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
         }
