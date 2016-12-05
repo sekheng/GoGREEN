@@ -51,6 +51,7 @@ public class AdventureView extends GamePanelSurfaceView {
         PhysicComponent zePhysics = new PhysicComponent();
         zePhysics.speed = 300;
         zeEntity.setComponent(zePhysics);
+        zeEntity.setComponent(new PlayerComponent());
         bunchOfEntites.add(zeEntity);
 
         // Create the game loop thread
@@ -98,16 +99,25 @@ public class AdventureView extends GamePanelSurfaceView {
         //canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
         BitComponent zeBit;
         TransformationComponent zeTransform;
+        //TODO remove when not debugging
         for (Entity zeEntity : allTheBoxes)
         {
             zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
             canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
         }
+        //TODO remove when not debugging
+
         for (Entity zeEntity : bunchOfEntites)
         {
-            zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
-            zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
-            canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+            switch (zeEntity.turnOnFlag_)
+            {
+                case 1:
+                    zeBit = (BitComponent)zeEntity.getComponent("Ze Images");
+                    zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
+                    canvas.drawBitmap(zeBit.getCurrImage(), zeTransform.posX, zeTransform.posY, null);
+                    break;
+                default:
+            }
         }
 
 
@@ -119,7 +129,13 @@ public class AdventureView extends GamePanelSurfaceView {
         FPS = fps;
        for (Entity zeEntity : bunchOfEntites)
         {
-            zeEntity.Update(dt);
+            switch (zeEntity.turnOnFlag_)
+            {
+                case 1:
+                    zeEntity.Update(dt);
+                    break;
+                default:
+            }
         }
     }
     public boolean onTouchEvent(MotionEvent event){

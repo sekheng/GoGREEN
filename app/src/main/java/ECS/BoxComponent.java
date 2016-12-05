@@ -11,6 +11,16 @@ public class BoxComponent extends Component {
         whatBox = BoxType.EMPTY;
         garbageOwner = null;
     }
+    public boolean onNotify(String zeEvent)
+    {
+        if (zeEvent.equalsIgnoreCase("reset"))
+        {
+            garbageOwner = null;
+            whatBox = BoxType.EMPTY;
+            return true;
+        }
+        return false;
+    }
 
     public BoxType whatBox;
     public GarbageComponent garbageOwner;
