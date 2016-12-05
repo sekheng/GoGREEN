@@ -93,7 +93,7 @@ public class AdventureView extends GamePanelSurfaceView {
         zeEntity = new Entity("small garbage");
         GarbageComponent zeGarbage = new GarbageComponent();
         zeGarbage.zeGrids = allTheBoxes;
-        short []zeNewSpace = {24,25,26};
+        short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(4 + (5*numOfBoxesPerCol)),(short)(4 + (6*numOfBoxesPerCol))};
         zeGarbage.setSpaces(zeNewSpace);
         zeEntity.setComponent(zeGarbage);
         bunchOfEntites.add(zeEntity);
