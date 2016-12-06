@@ -37,6 +37,10 @@ public class Component implements BaseInterface {
     {
         return false;
     }
+    public boolean onNotify(BaseInterface zeEvent)
+    {
+        return false;
+    }
     public String name_;
     public Entity owner_;
 }

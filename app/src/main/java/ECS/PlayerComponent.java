@@ -46,6 +46,15 @@ public class PlayerComponent extends Component {
         }
         return false;
     }
+    public boolean onNotify(float zeEvent)
+    {
+        if (zeEvent > TransformationComponent.EPSILON)
+        {
+            amountOfGarbageCollected += zeEvent;
+            return true;
+        }
+        return false;
+    }
 
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating;

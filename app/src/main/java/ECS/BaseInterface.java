@@ -5,6 +5,7 @@ package ECS;
  */
 
 public interface BaseInterface {
-    public void Update(long dt);
-    public void Exit();
+    void Update(long dt);
+    void Update(float dt);
+    void Exit();
 }

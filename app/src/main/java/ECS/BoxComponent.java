@@ -28,7 +28,7 @@ public class BoxComponent extends Component {
             garbageOwner.onNotify("interact");
             return true;
         }
-            return false;
+        return false;
     }
     public boolean onNotify(Component zeEvent)
     {
@@ -38,6 +38,15 @@ public class BoxComponent extends Component {
             garbageOwner = (GarbageComponent)(zeEvent.owner_.getComponent("garbageOwner"));
         whatBox = BoxType.FILL;
         return true;
+    }
+    public boolean onNotify(int zeEvent)
+    {
+        if (zeEvent >= 0)
+        {
+            whatBox.Value_ = (byte)zeEvent;
+            return true;
+        }
+        return false;
     }
 
     public BoxType whatBox;

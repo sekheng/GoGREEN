@@ -125,6 +125,9 @@ public class AdventureView extends GamePanelSurfaceView {
                 case FILL:
                     canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingRedFilled);
                     break;
+                case BIN:
+                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingBlueFilled);
+                    break;
                 default:
             }
         }
