@@ -108,6 +108,8 @@ public class AdventureView extends GamePanelSurfaceView {
         zeCollector.onNotify(PlayerActiveStuff);
         zeEntity.setComponent(zeCollector);
         bunchOfEntites.add(zeEntity);
+
+        timeLeft = 10.f;
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -120,6 +122,7 @@ public class AdventureView extends GamePanelSurfaceView {
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
+        RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, Screenheight - (Screenheight / 10), 50);
         // 4d) Draw the spaceships
         //canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
         BitComponent zeBit;
@@ -176,7 +179,10 @@ public class AdventureView extends GamePanelSurfaceView {
 //                default:
 //            }
 //        }
-        thePlayer.Update(dt);
+        if (fps > 25) {
+            thePlayer.Update(dt);
+            timeLeft = Math.max(timeLeft - dt, 0);
+        }
     }
     public boolean onTouchEvent(MotionEvent event){
 
