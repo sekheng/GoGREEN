@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.animation.Transformation;
 
 import java.util.LinkedList;
 
@@ -51,7 +50,8 @@ public class AdventureView extends GamePanelSurfaceView {
         PhysicComponent zePhysics = new PhysicComponent();
         zePhysics.speed = 300;
         zeEntity.setComponent(zePhysics);
-        zeEntity.setComponent(new PlayerComponent());
+        PlayerActiveStuff = new PlayerComponent();
+        zeEntity.setComponent(PlayerActiveStuff);
         bunchOfEntites.add(zeEntity);
 
         // Create the game loop thread
@@ -87,18 +87,26 @@ public class AdventureView extends GamePanelSurfaceView {
         debuggingRedFilled = new Paint();
         debuggingRedFilled.setARGB(255,255,0,0);
         debuggingBlueFilled = new Paint();
-        debuggingBlueFilled.setARGB(255, 0, 255, 0);
+        debuggingBlueFilled.setARGB(255, 0, 0, 255);
         //TODO: Remove when not debugging
-
-        Log.v(TAG, "BOXx" + Long.toString(averageBoxSizeX));
-        Log.v(TAG, "BOXy" + Long.toString(averageBoxSizeY));
 
         zeEntity = new Entity("small garbage");
         GarbageComponent zeGarbage = new GarbageComponent();
         zeGarbage.zeGrids = allTheBoxes;
         short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(5 + (4*numOfBoxesPerCol)),(short)(6 + (4*numOfBoxesPerCol))};
         zeGarbage.setSpaces(zeNewSpace);
+        zeGarbage.onNotify(PlayerActiveStuff);
+        zeGarbage.onNotify(150.f);
         zeEntity.setComponent(zeGarbage);
+        bunchOfEntites.add(zeEntity);
+
+        zeEntity = new Entity("Garbage Bin");
+        GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
+        zeCollector.zeGrids = allTheBoxes;
+        short []zeNewSpace2 = {(short)(4 + (6*numOfBoxesPerCol)),(short)(5 + (6*numOfBoxesPerCol)),(short)(4 + (7*numOfBoxesPerCol)), (short)(5 + (7*numOfBoxesPerCol))};
+        zeCollector.setSpaces(zeNewSpace2);
+        zeCollector.onNotify(PlayerActiveStuff);
+        zeEntity.setComponent(zeCollector);
         bunchOfEntites.add(zeEntity);
     }
 
@@ -110,6 +118,8 @@ public class AdventureView extends GamePanelSurfaceView {
 //        canvas.drawBitmap(scaledbg, bgX + Screenwidth, bgY, null);  // 2nd image
         canvas.drawRoundRect(0,0,Screenwidth,Screenheight,0,0,zeBackgroundPaint);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
+        RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
+        RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
         // 4d) Draw the spaceships
         //canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
         BitComponent zeBit;
@@ -199,6 +209,7 @@ public class AdventureView extends GamePanelSurfaceView {
     LinkedList<Entity> bunchOfEntites;
     LinkedList<Entity> allTheBoxes;
     Entity thePlayer;
+    PlayerComponent PlayerActiveStuff;
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
     long numOfBoxesPerRow = 8, numOfBoxesPerCol = 8, averageBoxSizeX, averageBoxSizeY;

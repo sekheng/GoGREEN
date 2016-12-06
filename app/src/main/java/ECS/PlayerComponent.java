@@ -20,11 +20,10 @@ public class PlayerComponent extends Component {
         {
             switch (whichBoxPlayerIn.whatBox)
             {
-                case FILL:
-                    whichBoxPlayerIn.onNotify("tellowner");
+                case EMPTY:
                     break;
                 default:
-                    break;
+                    whichBoxPlayerIn.onNotify("tellowner");
             }
             whichBoxPlayerIn = null;
         }
@@ -44,11 +43,17 @@ public class PlayerComponent extends Component {
             startUpdating = true;
             return true;
         }
+        else if (zeEvent.equalsIgnoreCase("emptytrash"))
+        {
+            score_ += amountOfGarbageCollected;
+            amountOfGarbageCollected = 0;
+            return true;
+        }
         return false;
     }
     public boolean onNotify(float zeEvent)
     {
-        if (zeEvent > TransformationComponent.EPSILON)
+        if (zeEvent > TransformationComponent.EPSILON && (amountOfGarbageCollected + zeEvent) < limitOfGarbage)
         {
             amountOfGarbageCollected += zeEvent;
             return true;
@@ -58,6 +63,5 @@ public class PlayerComponent extends Component {
 
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating;
-    public int score_;
-    public float amountOfGarbageCollected, limitOfGarbage;
+    public float amountOfGarbageCollected, limitOfGarbage, score_;
 }

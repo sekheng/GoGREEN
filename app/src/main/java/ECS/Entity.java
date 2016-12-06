@@ -65,6 +65,5 @@ public class Entity implements BaseInterface {
 
     String name_;
     private HashMap<String, Component> allTheComponents;
-    //private HashMap<String, Boolean> activeComponents;
     public byte turnOnFlag_;
 }

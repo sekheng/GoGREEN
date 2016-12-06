@@ -32,11 +32,15 @@ public class BoxComponent extends Component {
     }
     public boolean onNotify(Component zeEvent)
     {
+//        if (zeEvent.name_ == "zeGarbage")
+//            garbageOwner = (GarbageComponent)zeEvent;
+//        else
+//            garbageOwner = (GarbageComponent)(zeEvent.owner_.getComponent("garbageOwner"));
+        garbageOwner = (GarbageComponent)(zeEvent);
         if (zeEvent.name_ == "zeGarbage")
-            garbageOwner = (GarbageComponent)zeEvent;
-        else
-            garbageOwner = (GarbageComponent)(zeEvent.owner_.getComponent("garbageOwner"));
-        whatBox = BoxType.FILL;
+            whatBox = BoxType.FILL;
+        else if (zeEvent.name_ == "zeGarbageBin")
+            whatBox = BoxType.BIN;
         return true;
     }
     public boolean onNotify(int zeEvent)

@@ -9,13 +9,17 @@ import java.util.LinkedList;
 public class GarbageCollectorComponent extends GarbageComponent {
     public GarbageCollectorComponent()
     {
-        name_ = "zeGarbage";
+        name_ = "zeGarbageBin";
         spacesToOccupy = new LinkedList<Short>();
         zeGrids = null;
     }
     public boolean onNotify(String zeEvent)
     {
-
+        if (zeEvent.equalsIgnoreCase("interact"))
+        {
+            zePlayer.onNotify("emptytrash");
+            return true;
+        }
         return false;
     }
     public boolean onNotify(int zeEvent)
@@ -32,11 +36,9 @@ public class GarbageCollectorComponent extends GarbageComponent {
             {
                 spacesToOccupy.add(num);
                 zeGrids.get(num).getComponent("zeBox").onNotify(this);
-                zeGrids.get(num).getComponent("zeBox").onNotify(BoxType.BIN.Value_);
             }
             return true;
         }
         return false;
     }
-
 }

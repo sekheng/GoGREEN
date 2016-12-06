@@ -13,6 +13,7 @@ public class GarbageComponent extends Component {
         scoreGive_ = 1;
         spacesToOccupy = new LinkedList<Short>();
         zeGrids = null;
+        zePlayer = null;
     }
     public boolean setSpaces(LinkedList<Short> zeSpace)
     {
@@ -47,16 +48,36 @@ public class GarbageComponent extends Component {
     {
         if (zeEvent.equalsIgnoreCase("interact"))
         {
-            owner_.turnOnFlag_ = 0;
-            for (Short zeShort : spacesToOccupy)
-            {
-                zeGrids.get(zeShort.intValue()).getComponent("zeBox").onNotify("reset");
+            if (zePlayer.onNotify(scoreGive_)) {
+                owner_.turnOnFlag_ = 0;
+                for (Short zeShort : spacesToOccupy) {
+                    zeGrids.get(zeShort.intValue()).getComponent("zeBox").onNotify("reset");
+                }
             }
         }
         return false;
     }
+    public boolean onNotify(Component zeEvent)
+    {
+        if (zeEvent.name_ == "zePlayer")
+        {
+            zePlayer = (PlayerComponent)(zeEvent);
+            return true;
+        }
+        return false;
+    }
+    public boolean onNotify(float zeEvent)
+    {
+        if (zeEvent > TransformationComponent.EPSILON)
+        {
+            scoreGive_ = zeEvent;
+            return true;
+        }
+        return false;
+    }
 
-    public int scoreGive_;
+    public float scoreGive_;
     LinkedList<Short> spacesToOccupy;
     public LinkedList<Entity> zeGrids;
+    PlayerComponent zePlayer;
 }

@@ -4,7 +4,7 @@ package ECS;
  * Created by lenov on 05/12/2016.
  */
 
-public enum BoxType implements BaseInterface {
+public enum BoxType {
     EMPTY((byte)0),
     FILL((byte)1),
     BIN((byte)2),
@@ -17,19 +17,6 @@ public enum BoxType implements BaseInterface {
     BoxType(byte zeVal)
     {
         Value_ = zeVal;
-    }
-
-    public void Update(long dt)
-    {
-
-    }
-    public void Update(float dt)
-    {
-
-    }
-    public void Exit()
-    {
-
     }
 
     public byte Value_;
