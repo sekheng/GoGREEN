@@ -26,6 +26,7 @@ public class PlayerComponent extends Component {
                     whichBoxPlayerIn.onNotify("tellowner");
             }
             whichBoxPlayerIn = null;
+            startUpdating = false;
         }
     }
     public boolean onNotify(Component zeEvent)
