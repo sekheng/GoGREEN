@@ -166,16 +166,17 @@ public class AdventureView extends GamePanelSurfaceView {
     //Update method to update the game play
     public void update(float dt, float fps){
         FPS = fps;
-       for (Entity zeEntity : bunchOfEntites)
-        {
-            switch (zeEntity.turnOnFlag_)
-            {
-                case 1:
-                    zeEntity.Update(dt);
-                    break;
-                default:
-            }
-        }
+//       for (Entity zeEntity : bunchOfEntites)
+//        {
+//            switch (zeEntity.turnOnFlag_)
+//            {
+//                case 1:
+//                    zeEntity.Update(dt);
+//                    break;
+//                default:
+//            }
+//        }
+        thePlayer.Update(dt);
     }
     public boolean onTouchEvent(MotionEvent event){
 
@@ -213,6 +214,7 @@ public class AdventureView extends GamePanelSurfaceView {
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
     long numOfBoxesPerRow = 8, numOfBoxesPerCol = 8, averageBoxSizeX, averageBoxSizeY;
+    float timeLeft = 10.f;
 
     //TODO: Remove when not debugging
     Bitmap debuggingGrid;
