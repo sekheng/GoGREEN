@@ -105,6 +105,8 @@ public class AdventureView extends GamePanelSurfaceView {
 //        AmountOfTrashLeft.add(zeEntity);
 //        bunchOfEntites.add(zeEntity);
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace);
+        short []anotherSpace = {(short)(4 + (2*numOfBoxesPerCol)),(short)(5 + (2*numOfBoxesPerCol))};
+        GarbageBuilder.getInstance().buildSmalleGarbage("smaller garbage", anotherSpace);
 
 
         zeEntity = new Entity("Garbage Bin");
