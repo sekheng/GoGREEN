@@ -24,13 +24,27 @@ public class Gamepage extends Activity implements OnClickListener {
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);   //hide top bar
         //setContentView(new GamePanelSurfaceView(this));
-        setContentView(new AdventureView(this));
+        zeCurrentGameView = new AdventureView(this);
+        setContentView(zeCurrentGameView);
     }
 
     public void onClick(View v)
     {
         Intent intent = new Intent();
 
+        startActivity(intent);
+    }
+    public void onClick(String zeEvent)
+    {
+        Intent intent = new Intent();
+        if (zeEvent.equalsIgnoreCase("win!"))
+        {
+            intent.setClass(this, WinScreen.class);
+        }
+        else if (zeEvent.equalsIgnoreCase("lose!"))
+        {
+            intent.setClass(this, LoseScreen.class);
+        }
         startActivity(intent);
     }
     @Override
@@ -47,4 +61,6 @@ public class Gamepage extends Activity implements OnClickListener {
     {
         super.onDestroy();
     }
+
+    private GamePanelSurfaceView zeCurrentGameView;
 }

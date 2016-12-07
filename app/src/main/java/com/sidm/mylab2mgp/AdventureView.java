@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.LinkedList;
@@ -22,7 +21,7 @@ public class AdventureView extends GamePanelSurfaceView {
 
         // Context is the current state of the application/object
         super(context);
-
+        zeCurrContext = (Gamepage)context;
 
         // Adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
@@ -37,6 +36,8 @@ public class AdventureView extends GamePanelSurfaceView {
         scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
 
         bunchOfEntites = new LinkedList<Entity>();
+        bunchOfInactive = new LinkedList<Entity>();
+        AmountOfTrashLeft = new LinkedList<Entity>();
         Entity zeEntity = new Entity(new String("zeShip"));
         thePlayer = zeEntity;
         TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
@@ -98,6 +99,7 @@ public class AdventureView extends GamePanelSurfaceView {
         zeGarbage.onNotify(PlayerActiveStuff);
         zeGarbage.onNotify(150.f);
         zeEntity.setComponent(zeGarbage);
+        AmountOfTrashLeft.add(zeEntity);
         bunchOfEntites.add(zeEntity);
 
         zeEntity = new Entity("Garbage Bin");
@@ -180,8 +182,33 @@ public class AdventureView extends GamePanelSurfaceView {
 //            }
 //        }
         if (fps > 25) {
-            thePlayer.Update(dt);
-            timeLeft = Math.max(timeLeft - dt, 0);
+            if (timeLeft <= 0)
+            {
+                zeCurrContext.onClick("lose!");
+            }
+            else if (PlayerActiveStuff.amountOfGarbageCollected == 0 && AmountOfTrashLeft.isEmpty())
+            {
+                zeCurrContext.onClick("win!");
+            }
+            else {
+                thePlayer.Update(dt);
+                timeLeft = Math.max(timeLeft - dt, 0);
+                boolean stopTheLoop = false;
+                for (Entity zeEntity : bunchOfEntites) {
+                    switch (zeEntity.turnOnFlag_) {
+                        case 0:
+                            bunchOfEntites.remove(zeEntity);
+                            bunchOfInactive.add(zeEntity);
+                            if (zeEntity.checkActiveComponent("zeGarbage"))
+                                AmountOfTrashLeft.remove(zeEntity);
+                            stopTheLoop = true;
+                            break;
+                        default:
+                    }
+                    if (stopTheLoop)
+                        break;
+                }
+            }
         }
     }
     public boolean onTouchEvent(MotionEvent event){
@@ -213,7 +240,7 @@ public class AdventureView extends GamePanelSurfaceView {
         return super.onTouchEvent(event);
     }
 
-    LinkedList<Entity> bunchOfEntites;
+    LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
     LinkedList<Entity> allTheBoxes;
     Entity thePlayer;
     PlayerComponent PlayerActiveStuff;
