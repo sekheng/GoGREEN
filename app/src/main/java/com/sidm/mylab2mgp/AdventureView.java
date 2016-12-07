@@ -35,34 +35,6 @@ public class AdventureView extends GamePanelSurfaceView {
         bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
         scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
 
-        bunchOfEntites = new LinkedList<Entity>();
-        bunchOfInactive = new LinkedList<Entity>();
-        AmountOfTrashLeft = new LinkedList<Entity>();
-        Entity zeEntity = new Entity(new String("zeShip"));
-        thePlayer = zeEntity;
-        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
-        zeEntity.setComponent(zeTransfrom);
-        BitComponent zeImages = new BitComponent();
-        for (int num = 0; num < 4; ++num)
-        {
-            zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true));
-        }
-        zeEntity.setComponent(zeImages);
-        PhysicComponent zePhysics = new PhysicComponent();
-        zePhysics.speed = 300;
-        zeEntity.setComponent(zePhysics);
-        PlayerActiveStuff = new PlayerComponent();
-        zeEntity.setComponent(PlayerActiveStuff);
-        bunchOfEntites.add(zeEntity);
-
-        // Create the game loop thread
-        myThread = new GameThread(getHolder(), this);
-
-        // Make the GamePanel focusable so it can handle events
-        setFocusable(true);
-        zeBackgroundPaint = new Paint();
-        zeBackgroundPaint.setARGB(255,255,255,255);
-
         allTheBoxes = new LinkedList<Entity>();
         float zeNewTotHeight = Screenheight/10;
         zeOverallBounds = new TransformationComponent(0, zeNewTotHeight, Screenwidth, Screenheight - (zeNewTotHeight * 2.f));
@@ -91,16 +63,49 @@ public class AdventureView extends GamePanelSurfaceView {
         debuggingBlueFilled.setARGB(255, 0, 0, 255);
         //TODO: Remove when not debugging
 
-        zeEntity = new Entity("small garbage");
-        GarbageComponent zeGarbage = new GarbageComponent();
-        zeGarbage.zeGrids = allTheBoxes;
-        short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(5 + (4*numOfBoxesPerCol)),(short)(6 + (4*numOfBoxesPerCol))};
-        zeGarbage.setSpaces(zeNewSpace);
-        zeGarbage.onNotify(PlayerActiveStuff);
-        zeGarbage.onNotify(150.f);
-        zeEntity.setComponent(zeGarbage);
-        AmountOfTrashLeft.add(zeEntity);
+        thePlayer = new Entity("Player");   //For now, it ca make my life easier.
+        bunchOfEntites = new LinkedList<Entity>();
+        bunchOfInactive = new LinkedList<Entity>();
+        AmountOfTrashLeft = new LinkedList<Entity>();
+        GarbageBuilder.getInstance().setObjectPools(bunchOfEntites, bunchOfInactive, AmountOfTrashLeft, allTheBoxes, thePlayer);
+
+        Entity zeEntity = thePlayer;
+        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
+        zeEntity.setComponent(zeTransfrom);
+        BitComponent zeImages = new BitComponent();
+        for (int num = 0; num < 4; ++num)
+        {
+            zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true));
+        }
+        zeEntity.setComponent(zeImages);
+        PhysicComponent zePhysics = new PhysicComponent();
+        zePhysics.speed = 300;
+        zeEntity.setComponent(zePhysics);
+        PlayerActiveStuff = new PlayerComponent();
+        zeEntity.setComponent(PlayerActiveStuff);
         bunchOfEntites.add(zeEntity);
+
+        // Create the game loop thread
+        myThread = new GameThread(getHolder(), this);
+
+        // Make the GamePanel focusable so it can handle events
+        setFocusable(true);
+        zeBackgroundPaint = new Paint();
+        zeBackgroundPaint.setARGB(255,255,255,255);
+
+
+//        zeEntity = new Entity("small garbage");
+//        GarbageComponent zeGarbage = new GarbageComponent();
+//        zeGarbage.zeGrids = allTheBoxes;
+        short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(5 + (4*numOfBoxesPerCol)),(short)(6 + (4*numOfBoxesPerCol))};
+//        zeGarbage.setSpaces(zeNewSpace);
+//        zeGarbage.onNotify(PlayerActiveStuff);
+//        zeGarbage.onNotify(150.f);
+//        zeEntity.setComponent(zeGarbage);
+//        AmountOfTrashLeft.add(zeEntity);
+//        bunchOfEntites.add(zeEntity);
+        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace);
+
 
         zeEntity = new Entity("Garbage Bin");
         GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();

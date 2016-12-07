@@ -10,6 +10,7 @@ public class PhysicComponent extends Component {
         name_ = "zePhysic";
         speed = 1;
         zePosToGo = new TransformationComponent(0,0,0,0);
+        zeDirection = new TransformationComponent(0,0,0,0);
     }
     public void Update(float dt)
     {
@@ -23,7 +24,7 @@ public class PhysicComponent extends Component {
             }
             else
             {
-                TransformationComponent zeDirection = (zePosToGo.minusPos(zePos)).normalizeRef();
+                zeDirection = (zePosToGo.minusPos(zePos)).normalizeRef();
                 zePos.plusPosRef(zeDirection.multiplyPosRef(dt * speed));
             }
         }
@@ -39,8 +40,12 @@ public class PhysicComponent extends Component {
         zePosToGo.posY = zePos.posY;
         zePosToGo.owner_ = zePos.owner_;
     }
+    public TransformationComponent getCurrDirection()
+    {
+        return zeDirection;
+    }
 
 
     public float speed;
-    private TransformationComponent zePosToGo;
+    private TransformationComponent zePosToGo, zeDirection;
 }
