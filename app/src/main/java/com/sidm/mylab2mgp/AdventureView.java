@@ -7,7 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.animation.Animation;
 
+import java.io.InputStream;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
@@ -23,6 +25,7 @@ public class AdventureView extends GamePanelSurfaceView {
         // Context is the current state of the application/object
         super(context);
         zeCurrContext = (Gamepage)context;
+
 
         // Adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
@@ -96,6 +99,9 @@ public class AdventureView extends GamePanelSurfaceView {
         zeEntity.setComponent(zePhysics);
         PlayerActiveStuff = new PlayerComponent();
         zeEntity.setComponent(PlayerActiveStuff);
+        AnimationComponent zeAnimation = new AnimationComponent(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.protagonist),
+                Screenwidth/4, Screenheight/17,true),448,64,0.5f,8,2,3);
+        zeEntity.setComponent(zeAnimation);
         bunchOfEntites.add(zeEntity);
 
         // Create the game loop thread
@@ -173,7 +179,15 @@ public class AdventureView extends GamePanelSurfaceView {
             switch (zeEntity.turnOnFlag_)
             {
                 case 1:
-                    if (zeEntity.checkActiveComponent("Ze Images"))
+                    if(zeEntity.checkActiveComponent("zeAnimations"))
+                    {
+                        zeTransform = (TransformationComponent) zeEntity.getComponent("Transformation Stuff");
+                        AnimationComponent zeDraw = (AnimationComponent) zeEntity.getComponent("zeAnimations");
+                        zeDraw.draw(canvas);
+                        zeDraw.setX((int)zeTransform.posX);
+                        zeDraw.setY((int)zeTransform.posY);
+                    }
+                    else if (zeEntity.checkActiveComponent("Ze Images"))
                     {
                         zeBit = (BitComponent) zeEntity.getComponent("Ze Images");
                         zeTransform = (TransformationComponent) zeEntity.getComponent("Transformation Stuff");
@@ -212,6 +226,7 @@ public class AdventureView extends GamePanelSurfaceView {
             }
             else {
                 thePlayer.Update(dt);
+
                 timeLeft = Math.max(timeLeft - dt, 0);
                 boolean stopTheLoop = false;
                 for (Entity zeEntity : bunchOfEntites) {

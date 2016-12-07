@@ -16,6 +16,7 @@ import android.widget.Button;
  */
 
 public class Gamepage extends Activity implements OnClickListener {
+    private Button btn_random;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +31,11 @@ public class Gamepage extends Activity implements OnClickListener {
 
     public void onClick(View v)
     {
-        Intent intent = new Intent();
+        if(v == btn_random) {
+            Intent intent = new Intent();
 
-        startActivity(intent);
+            startActivity(intent);
+        }
     }
     public void onClick(String zeEvent)
     {
@@ -40,12 +43,16 @@ public class Gamepage extends Activity implements OnClickListener {
         if (zeEvent.equalsIgnoreCase("win!"))
         {
             intent.setClass(this, WinScreen.class);
+            finishAfterTransition();
+            startActivity(intent);
         }
         else if (zeEvent.equalsIgnoreCase("lose!"))
         {
             intent.setClass(this, LoseScreen.class);
+            finishAfterTransition();
+            startActivity(intent);
         }
-        startActivity(intent);
+
     }
     @Override
     protected void onPause()

@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.io.InputStream;
+
 public class Mainmenu extends Activity implements OnClickListener {
 
     private Button btn_start;
@@ -28,6 +30,8 @@ public class Mainmenu extends Activity implements OnClickListener {
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);   //hide top bar
         setContentView(R.layout.mainmenu);
+
+        //InputStream is = getClass().getClassLoader().getResourceAsStream("Laser_Shoot5.wav");
 
         btn_start = (Button)findViewById(R.id.btn_start);
         btn_start.setOnClickListener(this);
