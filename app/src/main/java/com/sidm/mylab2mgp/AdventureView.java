@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
 import ECS.*;
@@ -32,8 +33,9 @@ public class AdventureView extends GamePanelSurfaceView {
         Screenheight = metrics.heightPixels;
 
         // 1e)load the image when this class is being instantiated
-        bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
-        scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
+
+//        bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
+//        scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
 
         allTheBoxes = new LinkedList<Entity>();
         float zeNewTotHeight = Screenheight/10;
@@ -55,8 +57,18 @@ public class AdventureView extends GamePanelSurfaceView {
         }
         averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
         averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
+        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
+        if (!initializedOnceStuff)
+        {
+            GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true), "debuggingGrid");
+            for (int num = 0; num < 4; ++num)
+            {
+                GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true), "ship"+num);
+            }
+            initializedOnceStuff = true;
+        }
         //TODO: Remove when not debugging
-        debuggingGrid = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true);
+        debuggingGrid = GraphicsSystem.getInstance().getImage("debuggingGrid");
         debuggingRedFilled = new Paint();
         debuggingRedFilled.setARGB(255,255,0,0);
         debuggingBlueFilled = new Paint();
@@ -70,12 +82,13 @@ public class AdventureView extends GamePanelSurfaceView {
         GarbageBuilder.getInstance().setObjectPools(bunchOfEntites, bunchOfInactive, AmountOfTrashLeft, allTheBoxes, thePlayer);
 
         Entity zeEntity = thePlayer;
-        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
+//        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
         zeEntity.setComponent(zeTransfrom);
         BitComponent zeImages = new BitComponent();
         for (int num = 0; num < 4; ++num)
         {
-            zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true));
+            //zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true));
+            zeImages.setImages(GraphicsSystem.getInstance().getImage("ship"+num));
         }
         zeEntity.setComponent(zeImages);
         PhysicComponent zePhysics = new PhysicComponent();
@@ -260,4 +273,5 @@ public class AdventureView extends GamePanelSurfaceView {
     Bitmap debuggingGrid;
     Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
+    static boolean initializedOnceStuff = false;
 }

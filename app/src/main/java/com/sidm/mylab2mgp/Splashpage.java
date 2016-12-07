@@ -45,6 +45,8 @@ public class Splashpage extends Activity {
 
         imageView.setLayoutParams(imageView_params);
 
+
+
         Thread splashTread = new Thread() {
             @Override
             public void run() {
