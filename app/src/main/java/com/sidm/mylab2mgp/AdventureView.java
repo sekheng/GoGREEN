@@ -1,5 +1,6 @@
 package com.sidm.mylab2mgp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ public class AdventureView extends GamePanelSurfaceView {
 
         // Context is the current state of the application/object
         super(context);
+        //activityTracker = activity;
         zeCurrContext = (Gamepage)context;
 
 

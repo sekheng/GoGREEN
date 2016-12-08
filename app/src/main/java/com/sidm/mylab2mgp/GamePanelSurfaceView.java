@@ -1,5 +1,6 @@
 package com.sidm.mylab2mgp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,8 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
 
     // Variable for Game State check
     private short GameState;
+
+    //Activity activityTracker;
 
     //constructor for this GamePanelSurfaceView class
     public GamePanelSurfaceView (Context context){
