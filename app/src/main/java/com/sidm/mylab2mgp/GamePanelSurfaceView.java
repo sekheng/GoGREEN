@@ -27,10 +27,10 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
     protected short bgX = 0, bgY = 0;
 
     // 4a) bitmap array to stores 4 images of the spaceship
-    protected  Bitmap[] ship_friend = new Bitmap[4];
+    //protected  Bitmap[] ship_friend = new Bitmap[4];
 
     // 4b) Variable as an index to keep track of the spaceship images
-    protected short shipindex = 0;
+    //protected short shipindex = 0;
 
     protected short mX = 0, mY = 0;
 
@@ -59,14 +59,14 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         Screenheight = metrics.heightPixels;
 
         // 1e)load the image when this class is being instantiated
-        bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
-        scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
+//        bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
+//        scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
 
         // 4c) Load the images of the spaceships
-        for (int num = 0; num < 4; ++num)
-        {
-            ship_friend[num] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), Screenwidth, Screenheight, true);
-        }
+//        for (int num = 0; num < 4; ++num)
+//        {
+//            ship_friend[num] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), Screenwidth, Screenheight, true);
+//        }
 
 
         // Create the game loop thread
@@ -117,7 +117,7 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         canvas.drawBitmap(scaledbg, bgX + Screenwidth, bgY, null);  // 2nd image
 
         // 4d) Draw the spaceships
-        canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
+//        canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
 
         // Bonus) To print FPS on the screen
 
@@ -139,8 +139,8 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
 
 
                 // 4e) Update the spaceship images / shipIndex so that the animation will occur.
-                shipindex++;
-                shipindex %= 4;
+//                shipindex++;
+//                shipindex %= 4;
             }
             break;
         }
@@ -175,8 +175,8 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         short y = (short)event.getY();
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            mX = (short)(x - (ship_friend[shipindex].getWidth() / 2));
-            mY = (short)(y - (ship_friend[shipindex].getHeight() / 2));
+//            mX = (short)(x - (ship_friend[shipindex].getWidth() / 2));
+//            mY = (short)(y - (ship_friend[shipindex].getHeight() / 2));
         }
         return super.onTouchEvent(event);
     }

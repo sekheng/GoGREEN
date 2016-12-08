@@ -66,10 +66,10 @@ public class AdventureView extends GamePanelSurfaceView {
         if (!initializedOnceStuff)
         {
             GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true), "debuggingGrid");
-            for (int num = 0; num < 4; ++num)
-            {
-                GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true), "ship"+num);
-            }
+//            for (int num = 0; num < 4; ++num)
+//            {
+//                GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true), "ship"+num);
+//            }
             initializedOnceStuff = true;
         }
         //TODO: Remove when not debugging
