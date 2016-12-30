@@ -12,6 +12,8 @@ package com.sidm.mylab2mgp;
         import android.widget.Button;
         import android.widget.ImageView;
 
+        import ECS.GridSystem;
+
 /**
  * Created by lenov on 17/11/2016.
  */
@@ -38,6 +40,8 @@ public class Splashpage extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenheight = displayMetrics.heightPixels;
         int screenwidth = displayMetrics.widthPixels;
+
+        GridSystem.getInstance().setScreenWidthHeight(screenwidth, screenheight);
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 

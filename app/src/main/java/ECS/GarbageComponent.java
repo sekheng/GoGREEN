@@ -14,6 +14,7 @@ public class GarbageComponent extends Component {
         spacesToOccupy = new LinkedList<Short>();
         zeGrids = null;
         zePlayer = null;
+        row = col = 0;
     }
     public boolean setSpaces(LinkedList<Short> zeSpace)
     {
@@ -80,4 +81,5 @@ public class GarbageComponent extends Component {
     LinkedList<Short> spacesToOccupy;
     public LinkedList<Entity> zeGrids;
     PlayerComponent zePlayer;
+    short row, col;
 }
