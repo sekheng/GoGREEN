@@ -22,7 +22,8 @@ public class GridSystem extends ECSystem {
     }
     public void Exit()
     {
-
+        for (Entity zeBox : allTheBoxes)
+                zeBox.getComponent("zeBox").Exit();
     }
     public TransformationComponent getBoundary()
     {

@@ -34,9 +34,9 @@ public class AdventureView extends GamePanelSurfaceView {
         getHolder().addCallback(this);
 
         // 1d) Set information to get screen size
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        Screenwidth = metrics.widthPixels;
-        Screenheight = metrics.heightPixels;
+//        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+//        Screenwidth = metrics.widthPixels;
+//        Screenheight = metrics.heightPixels;
 
         // 1e)load the image when this class is being instantiated
 
@@ -44,26 +44,26 @@ public class AdventureView extends GamePanelSurfaceView {
 //        scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
 
         //allTheBoxes = new LinkedList<Entity>();
-        float zeNewTotHeight = Screenheight/10;
-        zeOverallBounds = new TransformationComponent(0, zeNewTotHeight, Screenwidth, Screenheight - (zeNewTotHeight * 2.f));
-        for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
-        {
-            for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
-            {
-                Entity boxEntity = new Entity("Box");
-                TransformationComponent boxTransform = new TransformationComponent(
-                        zeOverallBounds.posX + (numCol * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
-                        zeOverallBounds.posY + (numRow * (zeOverallBounds.scaleY / numOfBoxesPerRow)),
-                        zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
-                        (zeOverallBounds.posY) + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
-                boxEntity.setComponent(boxTransform);
-                boxEntity.setComponent(new BoxComponent());
-                //allTheBoxes.add(boxEntity);
-            }
-        }
+        float zeNewTotHeight = GridSystem.getInstance().getScreenHeight()/10;
+        zeOverallBounds = new TransformationComponent(0, zeNewTotHeight, GridSystem.getInstance().getScreenWidth(), GridSystem.getInstance().getScreenHeight() - (zeNewTotHeight * 2.f));
+//        for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
+//        {
+//            for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
+//            {
+//                Entity boxEntity = new Entity("Box");
+//                TransformationComponent boxTransform = new TransformationComponent(
+//                        zeOverallBounds.posX + (numCol * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
+//                        zeOverallBounds.posY + (numRow * (zeOverallBounds.scaleY / numOfBoxesPerRow)),
+//                        zeOverallBounds.posX + ((numCol+1) * (zeOverallBounds.scaleX / numOfBoxesPerCol)),
+//                        (zeOverallBounds.posY) + ((numRow+1) * (zeOverallBounds.scaleY / numOfBoxesPerRow)));
+//                boxEntity.setComponent(boxTransform);
+//                boxEntity.setComponent(new BoxComponent());
+//                //allTheBoxes.add(boxEntity);
+//            }
+//        }
         averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
         averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
-        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
+        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)GridSystem.getInstance().getScreenWidth()/10,(short)GridSystem.getInstance().getScreenHeight()/10);
 //        if (!initializedOnceStuff)
 //        {
 //            GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)(averageBoxSizeX), (int)(averageBoxSizeY), true), "debuggingGrid");
@@ -104,7 +104,7 @@ public class AdventureView extends GamePanelSurfaceView {
         PlayerActiveStuff = new PlayerComponent();
         zeEntity.setComponent(PlayerActiveStuff);
         AnimationComponent zeAnimation = new AnimationComponent(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.protagonist),
-                Screenwidth/4, Screenheight/17,true),448,64,0.5f,8,2,3);
+                GridSystem.getInstance().getScreenWidth()/4, GridSystem.getInstance().getScreenHeight()/17,true),448,64,0.5f,8,2,3);
         zeEntity.setComponent(zeAnimation);
         bunchOfEntites.add(zeEntity);
 
@@ -150,11 +150,11 @@ public class AdventureView extends GamePanelSurfaceView {
             return;
 //        canvas.drawBitmap(scaledbg,bgX,bgY,null);   // 1st background image
 //        canvas.drawBitmap(scaledbg, bgX + Screenwidth, bgY, null);  // 2nd image
-        canvas.drawRoundRect(0,0,Screenwidth,Screenheight,0,0,zeBackgroundPaint);
+        canvas.drawRoundRect(0,0,GridSystem.getInstance().getScreenWidth(),GridSystem.getInstance().getScreenHeight(),0,0,zeBackgroundPaint);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
-        RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, Screenheight - (Screenheight / 10), 50);
+        RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
         // 4d) Draw the spaceships
         //canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
         BitComponent zeBit;
@@ -223,10 +223,12 @@ public class AdventureView extends GamePanelSurfaceView {
             if (timeLeft <= 0)
             {
                 zeCurrContext.onClick("lose!");
+                GridSystem.getInstance().Exit();
             }
             else if (PlayerActiveStuff.amountOfGarbageCollected == 0 && AmountOfTrashLeft.isEmpty())
             {
                 zeCurrContext.onClick("win!");
+                GridSystem.getInstance().Exit();
             }
             else {
                 thePlayer.Update(dt);

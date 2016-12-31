@@ -32,10 +32,6 @@ public class BoxComponent extends Component {
     }
     public boolean onNotify(Component zeEvent)
     {
-//        if (zeEvent.name_ == "zeGarbage")
-//            garbageOwner = (GarbageComponent)zeEvent;
-//        else
-//            garbageOwner = (GarbageComponent)(zeEvent.owner_.getComponent("garbageOwner"));
         garbageOwner = (GarbageComponent)(zeEvent);
         if (zeEvent.name_ == "zeGarbage")
             whatBox = BoxType.FILL;

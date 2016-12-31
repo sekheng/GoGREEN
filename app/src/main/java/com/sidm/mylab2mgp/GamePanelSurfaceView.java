@@ -21,7 +21,7 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
             , scaledbg; // scaledbg = scaled version of background
 
     // 1b) Define Screen width and Screen height as integer
-    int Screenwidth, Screenheight;
+//    int Screenwidth, Screenheight;
 
     // 1c) Variables for defining background start and end point
     protected short bgX = 0, bgY = 0;
@@ -54,9 +54,9 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         getHolder().addCallback(this);
 
         // 1d) Set information to get screen size
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        Screenwidth = metrics.widthPixels;
-        Screenheight = metrics.heightPixels;
+//        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+//        Screenwidth = metrics.widthPixels;
+//        Screenheight = metrics.heightPixels;
 
         // 1e)load the image when this class is being instantiated
 //        bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
@@ -114,7 +114,7 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         if (canvas == null)
             return;
         canvas.drawBitmap(scaledbg,bgX,bgY,null);   // 1st background image
-        canvas.drawBitmap(scaledbg, bgX + Screenwidth, bgY, null);  // 2nd image
+        canvas.drawBitmap(scaledbg, bgX , bgY, null);  // 2nd image
 
         // 4d) Draw the spaceships
 //        canvas.drawBitmap(ship_friend[shipindex],mX,mY,null);   // location of the ship based on the touch
@@ -132,7 +132,7 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
             case 0: {
                 // 3) Update the background to allow panning effect
                 bgX -= 500 * dt;    // Temp value to speed the panning
-                if (bgX < -Screenwidth)
+                if (bgX < 0)
                 {
                     bgX = 0;
                 }
