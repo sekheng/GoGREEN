@@ -43,9 +43,11 @@ public class AdventureView extends GamePanelSurfaceView {
 //        bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
 //        scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
 
+
+        zeOverallBounds = GridSystem.getInstance().getBoundary();
         //allTheBoxes = new LinkedList<Entity>();
-        float zeNewTotHeight = GridSystem.getInstance().getScreenHeight()/10;
-        zeOverallBounds = new TransformationComponent(0, zeNewTotHeight, GridSystem.getInstance().getScreenWidth(), GridSystem.getInstance().getScreenHeight() - (zeNewTotHeight * 2.f));
+//        float zeNewTotHeight = GridSystem.getInstance().getScreenHeight()/10;
+//        zeOverallBounds = new TransformationComponent(0, zeNewTotHeight, GridSystem.getInstance().getScreenWidth(), GridSystem.getInstance().getScreenHeight() - (zeNewTotHeight * 2.f));
 //        for (long numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
 //        {
 //            for (long numCol = 0; numCol < numOfBoxesPerCol; ++numCol)
@@ -61,8 +63,8 @@ public class AdventureView extends GamePanelSurfaceView {
 //                //allTheBoxes.add(boxEntity);
 //            }
 //        }
-        averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
-        averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
+//        averageBoxSizeX = (long)zeOverallBounds.scaleX / numOfBoxesPerCol;
+//        averageBoxSizeY = (long)zeOverallBounds.scaleY / numOfBoxesPerRow;
         TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)GridSystem.getInstance().getScreenWidth()/10,(short)GridSystem.getInstance().getScreenHeight()/10);
 //        if (!initializedOnceStuff)
 //        {
@@ -89,15 +91,15 @@ public class AdventureView extends GamePanelSurfaceView {
         GarbageBuilder.getInstance().setObjectPools(bunchOfEntites, bunchOfInactive, AmountOfTrashLeft, GridSystem.getInstance().allTheBoxes, thePlayer);
 
         Entity zeEntity = thePlayer;
-//        TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
+        //TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)Screenwidth/10,(short)Screenheight/10);
         zeEntity.setComponent(zeTransfrom);
-        BitComponent zeImages = new BitComponent();
-        for (int num = 0; num < 4; ++num)
-        {
-            //zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true));
-            zeImages.setImages(GraphicsSystem.getInstance().getImage("ship"+num));
-        }
-        zeEntity.setComponent(zeImages);
+//        BitComponent zeImages = new BitComponent();
+//        for (int num = 0; num < 4; ++num)
+//        {
+//            //zeImages.setImages(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ship2_1 + num), (int)zeTransfrom.scaleX, (int)zeTransfrom.scaleY, true));
+//            zeImages.setImages(GraphicsSystem.getInstance().getImage("ship"+num));
+//        }
+//        zeEntity.setComponent(zeImages);
         PhysicComponent zePhysics = new PhysicComponent();
         zePhysics.speed = 300;
         zeEntity.setComponent(zePhysics);
@@ -120,27 +122,29 @@ public class AdventureView extends GamePanelSurfaceView {
 //        zeEntity = new Entity("small garbage");
 //        GarbageComponent zeGarbage = new GarbageComponent();
 //        zeGarbage.zeGrids = allTheBoxes;
-        short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(5 + (4*numOfBoxesPerCol)),(short)(6 + (4*numOfBoxesPerCol))};
+        //short []zeNewSpace = {(short)(4 + (4*numOfBoxesPerCol)),(short)(5 + (4*numOfBoxesPerCol)),(short)(6 + (4*numOfBoxesPerCol))};
 //        zeGarbage.setSpaces(zeNewSpace);
 //        zeGarbage.onNotify(PlayerActiveStuff);
 //        zeGarbage.onNotify(150.f);
 //        zeEntity.setComponent(zeGarbage);
 //        AmountOfTrashLeft.add(zeEntity);
 //        bunchOfEntites.add(zeEntity);
+//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace);
+//        short []anotherSpace = {(short)(4 + (2*numOfBoxesPerCol)),(short)(5 + (2*numOfBoxesPerCol))};
+//        GarbageBuilder.getInstance().buildSmalleGarbage("smaller garbage", anotherSpace);
+
+
+//        zeEntity = new Entity("Garbage Bin");
+//        GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
+//        zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;
+//        short []zeNewSpace2 = {(short)(4 + (6*numOfBoxesPerCol)),(short)(5 + (6*numOfBoxesPerCol)),(short)(4 + (7*numOfBoxesPerCol)), (short)(5 + (7*numOfBoxesPerCol))};
+//        zeCollector.setSpaces(zeNewSpace2);
+//        zeCollector.onNotify(PlayerActiveStuff);
+//        zeEntity.setComponent(zeCollector);
+//        bunchOfEntites.add(zeEntity);
+
+        short []zeNewSpace = {5,5}; // This means row 5, col 5
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace);
-        short []anotherSpace = {(short)(4 + (2*numOfBoxesPerCol)),(short)(5 + (2*numOfBoxesPerCol))};
-        GarbageBuilder.getInstance().buildSmalleGarbage("smaller garbage", anotherSpace);
-
-
-        zeEntity = new Entity("Garbage Bin");
-        GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
-        zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;
-        short []zeNewSpace2 = {(short)(4 + (6*numOfBoxesPerCol)),(short)(5 + (6*numOfBoxesPerCol)),(short)(4 + (7*numOfBoxesPerCol)), (short)(5 + (7*numOfBoxesPerCol))};
-        zeCollector.setSpaces(zeNewSpace2);
-        zeCollector.onNotify(PlayerActiveStuff);
-        zeEntity.setComponent(zeCollector);
-        bunchOfEntites.add(zeEntity);
-
         timeLeft = 10.f;
     }
 
@@ -209,16 +213,6 @@ public class AdventureView extends GamePanelSurfaceView {
     //Update method to update the game play
     public void update(float dt, float fps){
         FPS = fps;
-//       for (Entity zeEntity : bunchOfEntites)
-//        {
-//            switch (zeEntity.turnOnFlag_)
-//            {
-//                case 1:
-//                    zeEntity.Update(dt);
-//                    break;
-//                default:
-//            }
-//        }
         if (fps > 25) {
             if (timeLeft <= 0)
             {
@@ -260,20 +254,20 @@ public class AdventureView extends GamePanelSurfaceView {
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
             if (x >= zeOverallBounds.posX && x <= zeOverallBounds.scaleX
-                    && y >= zeOverallBounds.posY && y <= (zeOverallBounds.scaleY + averageBoxSizeY))
+                    && y >= zeOverallBounds.posY && y <= (zeOverallBounds.scaleY + GridSystem.getInstance().getAverageBoxSize().scaleY))
             {
                 long boxX = 0, boxY = 0;
-                while (x > (boxX + 1) * averageBoxSizeX)
+                while (x > (boxX + 1) * GridSystem.getInstance().getAverageBoxSize().scaleX)
                     ++boxX;
-                while (y > (boxY + 1) * averageBoxSizeY * 1.25f)
+                while (y > (boxY + 1) * GridSystem.getInstance().getAverageBoxSize().scaleY * 1.25f)
                     ++boxY;
-                long totalNum = boxX + (boxY * numOfBoxesPerCol);
+                long totalNum = boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol());
                 if (totalNum < GridSystem.getInstance().allTheBoxes.size()) {
-                    Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int) (boxX + (boxY * numOfBoxesPerCol)));
+                    Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int) (boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol())));
                     TransformationComponent zeBoxTransform = (TransformationComponent) (theExactBox.getComponent("Transformation Stuff"));
                     //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
                     PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
-                    zePhysics.setNextPosToGo(zeBoxTransform.posX + (averageBoxSizeX * 0.25f), zeBoxTransform.posY + (averageBoxSizeY * 0.25f));
+                    zePhysics.setNextPosToGo(zeBoxTransform.posX + (GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f), zeBoxTransform.posY + (GridSystem.getInstance().getAverageBoxSize().scaleY * 0.25f));
                     thePlayer.getComponent("zePlayer").onNotify(zeBoxTransform);
                 }
             }
@@ -287,7 +281,7 @@ public class AdventureView extends GamePanelSurfaceView {
     PlayerComponent PlayerActiveStuff;
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
-    long numOfBoxesPerRow = 8, numOfBoxesPerCol = 8, averageBoxSizeX, averageBoxSizeY;
+    //long numOfBoxesPerRow = 8, numOfBoxesPerCol = 8, averageBoxSizeX, averageBoxSizeY;
     float timeLeft = 10.f;
 
     //TODO: Remove when not debugging

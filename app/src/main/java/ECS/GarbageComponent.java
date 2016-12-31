@@ -29,8 +29,20 @@ public class GarbageComponent extends Component {
     }
     public boolean setSpaces(short num1)
     {
-        short []arraysShort = {num1};
-        return setSpaces(arraysShort);
+        if (row > 0 && col > 0 && spacesToOccupy.isEmpty() && zeGrids != null)
+        {
+            for (byte numOfRow = 0; numOfRow < row; ++numOfRow)
+            {
+                for (byte numOfCol = 0; numOfCol < col; ++numOfCol)
+                {
+                    int TheExactIndex = (numOfRow * GridSystem.getInstance().getNumOfBoxesPerCol()) + numOfCol + num1;
+                    spacesToOccupy.add((short)TheExactIndex);
+                    zeGrids.get(TheExactIndex).getComponent("zeBox").onNotify(this);
+                }
+            }
+            return true;
+        }
+        return false;
     }
     public boolean setSpaces(short[] bunchOfStuff)
     {
@@ -76,10 +88,20 @@ public class GarbageComponent extends Component {
         }
         return false;
     }
+    public boolean setRowCol(byte zeRow, byte zeCol)
+    {
+        if (zeRow > 0 && zeCol > 0)
+        {
+            row = zeRow;
+            col = zeCol;
+            return true;
+        }
+        return false;
+    }
 
     public float scoreGive_;
     LinkedList<Short> spacesToOccupy;
     public LinkedList<Entity> zeGrids;
     PlayerComponent zePlayer;
-    short row, col;
+    byte row, col;
 }

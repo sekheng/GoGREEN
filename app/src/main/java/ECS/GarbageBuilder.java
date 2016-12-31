@@ -16,10 +16,17 @@ public class GarbageBuilder {
 
     public Entity buildSmalleGarbage(String zeName, short[] zeGridCoordinate)
     {
+        if (zeGridCoordinate.length == 0 || zeGridCoordinate.length > 2)
+            return null;
+        short row = 0, col = 0;
+        row = zeGridCoordinate[0];
+        col = zeGridCoordinate[1];
         Entity zeEntity = new Entity(zeName);
         GarbageComponent zeGarbage = new GarbageComponent();
+        zeGarbage.setRowCol((byte)1, (byte)2);
         zeGarbage.zeGrids = allTheBoxes;
-        zeGarbage.setSpaces(zeGridCoordinate);
+        //zeGarbage.setSpaces(zeGridCoordinate);
+        zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
         zeGarbage.onNotify(150.f);
         zeGarbage.onNotify(thePlayer.getComponent("zePlayer"));
         zeEntity.setComponent(zeGarbage);

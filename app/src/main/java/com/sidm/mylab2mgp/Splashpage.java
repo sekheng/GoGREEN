@@ -3,6 +3,8 @@ package com.sidm.mylab2mgp;
         import android.app.Activity;
         import android.content.Intent;
         import android.content.pm.ActivityInfo;
+        import android.graphics.Bitmap;
+        import android.graphics.BitmapFactory;
         import android.os.Bundle;
         import android.util.DisplayMetrics;
         import android.view.MotionEvent;
@@ -12,6 +14,7 @@ package com.sidm.mylab2mgp;
         import android.widget.Button;
         import android.widget.ImageView;
 
+        import ECS.GraphicsSystem;
         import ECS.GridSystem;
 
 /**
@@ -42,6 +45,7 @@ public class Splashpage extends Activity {
         int screenwidth = displayMetrics.widthPixels;
 
         GridSystem.getInstance().setScreenWidthHeight(screenwidth, screenheight);
+        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "debuggingGrid");
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 
