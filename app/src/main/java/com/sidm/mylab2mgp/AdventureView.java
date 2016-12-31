@@ -145,6 +145,9 @@ public class AdventureView extends GamePanelSurfaceView {
 
         short []zeNewSpace = {5,5}; // This means row 5, col 5
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace);
+
+        short []anotherSpave = {2,2};
+        GarbageBuilder.getInstance().buildGarbageBin("ze Garbage Bin", anotherSpave);
         timeLeft = 10.f;
     }
 

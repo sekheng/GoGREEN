@@ -34,6 +34,19 @@ public class GarbageBuilder {
         activeList.add(zeEntity);
         return zeEntity;
     }
+    public Entity buildGarbageBin(String zeName, short []zeGridCoordinate)
+    {
+        Entity zeEntity = new Entity("Garbage Bin");
+        GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
+        int row = 2, col = 2;
+        zeCollector.setRowCol((byte)row, (byte)col);
+        zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;
+        zeCollector.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+        zeCollector.onNotify(thePlayer.getComponent("zePlayer"));
+        zeEntity.setComponent(zeCollector);
+        activeList.add(zeEntity);
+        return zeEntity;
+    }
     public void setObjectPools(LinkedList<Entity> zeActive, LinkedList<Entity> zeInactive, LinkedList<Entity> zeGarbage, LinkedList<Entity> zeBoxes, Entity zePlayer)
     {
         activeList = zeActive;
