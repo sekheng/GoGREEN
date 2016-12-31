@@ -69,5 +69,15 @@ public class Gamepage extends Activity implements OnClickListener {
         super.onDestroy();
     }
 
+    protected void onStart()    // Executes when app? is starting up
+    {
+        super.onStart();
+    }
+    protected void onResume()   // Runs after onStart or after onPause.
+    {
+        super.onResume();
+    }
+
+
     private GamePanelSurfaceView zeCurrentGameView;
 }
