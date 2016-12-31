@@ -42,7 +42,7 @@ public class AdventureView extends GamePanelSurfaceView {
 
 //        bg = BitmapFactory.decodeResource(getResources(), R.drawable.gamescene);
 //        scaledbg = Bitmap.createScaledBitmap(bg,Screenwidth,Screenheight,true);
-
+            scaledbg = GraphicsSystem.getInstance().getImage("AdventureBackground");
 
         zeOverallBounds = GridSystem.getInstance().getBoundary();
         //allTheBoxes = new LinkedList<Entity>();
@@ -157,7 +157,9 @@ public class AdventureView extends GamePanelSurfaceView {
             return;
 //        canvas.drawBitmap(scaledbg,bgX,bgY,null);   // 1st background image
 //        canvas.drawBitmap(scaledbg, bgX + Screenwidth, bgY, null);  // 2nd image
-        canvas.drawRoundRect(0,0,GridSystem.getInstance().getScreenWidth(),GridSystem.getInstance().getScreenHeight(),0,0,zeBackgroundPaint);
+
+        //canvas.drawRoundRect(0,0,GridSystem.getInstance().getScreenWidth(),GridSystem.getInstance().getScreenHeight(),0,0,zeBackgroundPaint);
+        canvas.drawBitmap(scaledbg, 0, 0, null);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);

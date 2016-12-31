@@ -46,6 +46,7 @@ public class Splashpage extends Activity {
 
         GridSystem.getInstance().setScreenWidthHeight(screenwidth, screenheight);
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "debuggingGrid");
+        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.adventure_background), screenwidth, screenheight, true), "AdventureBackground");
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 
