@@ -30,6 +30,11 @@ public class TransformationComponent extends Component {
         posX = zeX;
         posY = zeY;
     }
+    public void setPosition(TransformationComponent rhs)
+    {
+        posX = rhs.posX;
+        posY = rhs.posY;
+    }
     public void setScale(float zeX, float zeY)
     {
         scaleX = zeX;

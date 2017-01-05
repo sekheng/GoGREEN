@@ -22,14 +22,15 @@ public class GarbageBuilder {
         row = zeGridCoordinate[0];
         col = zeGridCoordinate[1];
         Entity zeEntity = new Entity(zeName);
+        zeEntity.setComponent(new TransformationComponent());
         GarbageComponent zeGarbage = new GarbageComponent();
+        zeEntity.setComponent(zeGarbage);
         zeGarbage.setRowCol((byte)1, (byte)2);
         zeGarbage.zeGrids = allTheBoxes;
         //zeGarbage.setSpaces(zeGridCoordinate);
         zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
         zeGarbage.onNotify(150.f);
         zeGarbage.onNotify(thePlayer.getComponent("zePlayer"));
-        zeEntity.setComponent(zeGarbage);
         Garbage.add(zeEntity);
         activeList.add(zeEntity);
         return zeEntity;
@@ -37,13 +38,15 @@ public class GarbageBuilder {
     public Entity buildGarbageBin(String zeName, short []zeGridCoordinate)
     {
         Entity zeEntity = new Entity("Garbage Bin");
+        zeEntity.setComponent(new TransformationComponent());
         GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
-        int row = 2, col = 2;
+        zeEntity.setComponent(zeCollector);
+        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("RecycleBin")));
+        int row = 1, col = 1;
         zeCollector.setRowCol((byte)row, (byte)col);
         zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;
         zeCollector.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
         zeCollector.onNotify(thePlayer.getComponent("zePlayer"));
-        zeEntity.setComponent(zeCollector);
         activeList.add(zeEntity);
         return zeEntity;
     }

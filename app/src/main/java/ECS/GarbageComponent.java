@@ -29,6 +29,7 @@ public class GarbageComponent extends Component {
     }
     public boolean setSpaces(short num1)
     {
+        boolean settingPosition = true;
         if (row > 0 && col > 0 && spacesToOccupy.isEmpty() && zeGrids != null)
         {
             for (byte numOfRow = 0; numOfRow < row; ++numOfRow)
@@ -38,6 +39,13 @@ public class GarbageComponent extends Component {
                     int TheExactIndex = (numOfRow * GridSystem.getInstance().getNumOfBoxesPerCol()) + numOfCol + num1;
                     spacesToOccupy.add((short)TheExactIndex);
                     zeGrids.get(TheExactIndex).getComponent("zeBox").onNotify(this);
+                    if (settingPosition)
+                    {
+                        settingPosition = !settingPosition;
+                        TransformationComponent zePos = (TransformationComponent)owner_.getComponent("Transformation Stuff");
+                        TransformationComponent zeBoxTransform = (TransformationComponent)zeGrids.get(TheExactIndex).getComponent("Transformation Stuff");
+                        zePos.setPosition(zeBoxTransform);
+                    }
                 }
             }
             return true;
