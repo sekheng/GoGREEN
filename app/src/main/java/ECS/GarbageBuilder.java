@@ -25,7 +25,8 @@ public class GarbageBuilder {
         zeEntity.setComponent(new TransformationComponent());
         GarbageComponent zeGarbage = new GarbageComponent();
         zeEntity.setComponent(zeGarbage);
-        zeGarbage.setRowCol((byte)1, (byte)2);
+        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("RottenApple")));  // setting the images
+        zeGarbage.setRowCol((byte)2, (byte)1);
         zeGarbage.zeGrids = allTheBoxes;
         //zeGarbage.setSpaces(zeGridCoordinate);
         zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));

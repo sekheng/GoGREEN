@@ -50,6 +50,7 @@ public class Splashpage extends Activity {
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "debuggingGrid");
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.adventure_background), screenwidth, screenheight, true), "AdventureBackground");
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.recyclebin), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "RecycleBin");
+        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small_trash), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY * 2, true), "RottenApple");
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 
