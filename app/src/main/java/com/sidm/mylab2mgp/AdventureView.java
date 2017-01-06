@@ -32,6 +32,9 @@ public class AdventureView extends GamePanelSurfaceView {
         BGM_.start();
         BGM_.setLooping(true);
         allTheSounds_ = new HashMap<>();
+        audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
+        playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
+        allTheSounds_.put("GarbagePicked", playSounds_.load(context, R.raw.pick_garbage, 1));
 
         // Adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
@@ -55,20 +58,20 @@ public class AdventureView extends GamePanelSurfaceView {
         AmountOfTrashLeft = new LinkedList<Entity>();
         GarbageBuilder.getInstance().setObjectPools(bunchOfEntites, bunchOfInactive, AmountOfTrashLeft, GridSystem.getInstance().allTheBoxes, thePlayer);
 
-        Entity zeEntity = thePlayer;
-        zeEntity.setComponent(zeTransfrom);
+        thePlayer.setComponent(zeTransfrom);
         playerTransform = zeTransfrom;
 
         PhysicComponent zePhysics = new PhysicComponent();
         zePhysics.speed = 300;
-        zeEntity.setComponent(zePhysics);
+        thePlayer.setComponent(zePhysics);
         PlayerActiveStuff = new PlayerComponent();
-        zeEntity.setComponent(PlayerActiveStuff);
+        thePlayer.setComponent(PlayerActiveStuff);
+        PlayerActiveStuff.theCurrentGamePlayerOn = this;
         AnimationComponent zeAnimation = new AnimationComponent(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.protagonist),
                 GridSystem.getInstance().getScreenWidth()/4, GridSystem.getInstance().getScreenHeight()/17,true),448,64,0.5f,8,2,3);
-        zeEntity.setComponent(zeAnimation);
+        thePlayer.setComponent(zeAnimation);
         playerBits = zeAnimation;
-        bunchOfEntites.add(zeEntity);
+        bunchOfEntites.add(thePlayer);
 
         // Create the game loop thread
         myThread = new GameThread(getHolder(), this);
@@ -235,7 +238,17 @@ public class AdventureView extends GamePanelSurfaceView {
         {
             playSounds_.unload(zeIDofSound);
         }
-        //playSounds_.release();    // release the sound effects for memory
+        playSounds_.release();    // release the sound effects for memory
+    }
+
+    public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
+    {
+        if (allTheSounds_.containsKey(zeEvent))
+        {
+            playSounds_.play(allTheSounds_.get(zeEvent), 1.0f, 1.0f, 0, 0, 1.0f);
+            return true;
+        }
+        return false;
     }
 
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;

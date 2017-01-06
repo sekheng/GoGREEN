@@ -177,6 +177,10 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         }
         return super.onTouchEvent(event);
     }
+    public boolean onNotify(String zeEvent)
+    {
+        return false;
+    }
     protected static final String TAG = null;
     protected Gamepage zeCurrContext = null;
 }

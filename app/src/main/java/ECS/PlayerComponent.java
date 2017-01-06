@@ -1,5 +1,7 @@
 package ECS;
 
+import com.sidm.mylab2mgp.GamePanelSurfaceView;
+
 /**
  * Created by lenov on 05/12/2016.
  */
@@ -57,6 +59,10 @@ public class PlayerComponent extends Component {
         if (zeEvent > TransformationComponent.EPSILON && (amountOfGarbageCollected + zeEvent) < limitOfGarbage)
         {
             amountOfGarbageCollected += zeEvent;
+            if (theCurrentGamePlayerOn != null)
+            {
+                theCurrentGamePlayerOn.onNotify("GarbagePicked");
+            }
             return true;
         }
         return false;
@@ -65,4 +71,5 @@ public class PlayerComponent extends Component {
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating;
     public float amountOfGarbageCollected, limitOfGarbage, score_;
+    public GamePanelSurfaceView theCurrentGamePlayerOn = null;
 }
