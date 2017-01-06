@@ -17,10 +17,6 @@ public class MusicSystem extends ECSystem {
         return cantTouchThis;
     }
 
-    public void setBGMVolume(float zeNum)
-    {
-        BGM_Volume_ = zeNum;
-    }
     public MediaPlayer getBGM(String zeName)
     {
         return allTheBGM_.get(zeName);
@@ -40,9 +36,11 @@ public class MusicSystem extends ECSystem {
         BGM_Volume_ = 1.0f;
         allTheBGM_ = new HashMap<String, MediaPlayer>();
         allTheSoundIndex_ = new HashMap<String, Integer>();
+        audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
+        allSound_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(5).build();
     }
 
-    private float BGM_Volume_;
+    public float BGM_Volume_;
     private SoundPool allSound_;
     private AudioAttributes audioAttributes_;
     private HashMap<String, MediaPlayer> allTheBGM_;
