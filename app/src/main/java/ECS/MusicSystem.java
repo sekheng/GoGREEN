@@ -30,6 +30,34 @@ public class MusicSystem extends ECSystem {
         }
         return false;
     }
+    public boolean addBGM(MediaPlayer zeBGM, String BGM_ID_)
+    {
+        allTheBGM_.put(BGM_ID_, zeBGM);
+        zeBGM.setLooping(true);
+        //zeBGM.stop();
+        return true;
+    }
+    public boolean playBGM(String zeID)
+    {
+        if (currentBGM_ != null)
+        {
+            currentBGM_.stop();
+        }
+        currentBGM_ = allTheBGM_.get(zeID);
+        currentBGM_.start();
+        return true;
+    }
+    public boolean stopCurrentBGM()
+    {
+        if (currentBGM_ != null)
+        {
+            currentBGM_.pause();
+            currentBGM_.reset();
+            currentBGM_ = null;
+            return true;
+        }
+        return false;
+    }
 
     private static MusicSystem cantTouchThis = null;
     private MusicSystem()
@@ -39,11 +67,13 @@ public class MusicSystem extends ECSystem {
         allTheSoundIndex_ = new HashMap<String, Integer>();
         audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
         allSound_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(5).build();
+        currentBGM_ = null;
     }
 
     public float BGM_Volume_;
     private SoundPool allSound_;
     private AudioAttributes audioAttributes_;
     private HashMap<String, MediaPlayer> allTheBGM_;
+    MediaPlayer currentBGM_;
     private HashMap<String, Integer> allTheSoundIndex_;
 }

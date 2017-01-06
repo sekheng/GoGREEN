@@ -35,6 +35,12 @@ public class AdventureView extends GamePanelSurfaceView {
         audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
         playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
         allTheSounds_.put("GarbagePicked", playSounds_.load(context, R.raw.pick_garbage, 1));
+//        if (initializedThingsOnce)
+//        {
+//            //MusicSystem.getInstance().addBGM(MediaPlayer.create(context, R.raw.adventure_bgm), "Adventure");
+//            initializedThingsOnce = false;
+//        }
+//        MusicSystem.getInstance().playBGM("Adventure");
 
         // Adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
@@ -239,6 +245,7 @@ public class AdventureView extends GamePanelSurfaceView {
             playSounds_.unload(zeIDofSound);
         }
         playSounds_.release();    // release the sound effects for memory
+        MusicSystem.getInstance().stopCurrentBGM();
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
@@ -268,4 +275,5 @@ public class AdventureView extends GamePanelSurfaceView {
     AudioAttributes audioAttributes_;
     HashMap<String, Integer> allTheSounds_;
     MediaPlayer BGM_;
+    //static boolean initializedThingsOnce = true;
 }
