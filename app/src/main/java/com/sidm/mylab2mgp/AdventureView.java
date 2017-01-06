@@ -1,18 +1,12 @@
 package com.sidm.mylab2mgp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
 
-import java.io.InputStream;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
 import ECS.*;
