@@ -10,6 +10,7 @@ import java.util.HashMap;
  * Created by lenov on 06/01/2017.
  */
 
+// This is experimenting with music and sound effects and it appears to be a failure. Don't use any of it's function
 public class MusicSystem extends ECSystem {
     public static MusicSystem getInstance() {
         if (cantTouchThis == null)

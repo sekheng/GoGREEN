@@ -5,8 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import ECS.*;
@@ -23,6 +28,10 @@ public class AdventureView extends GamePanelSurfaceView {
 
         zeCurrContext = (Gamepage)context;
 
+        BGM_ = MediaPlayer.create(zeCurrContext, R.raw.adventure_bgm);
+        BGM_.start();
+        BGM_.setLooping(true);
+        allTheSounds_ = new HashMap<>();
 
         // Adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
@@ -32,6 +41,7 @@ public class AdventureView extends GamePanelSurfaceView {
         zeOverallBounds = GridSystem.getInstance().getBoundary();
 
         TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)GridSystem.getInstance().getScreenWidth()/10,(short)GridSystem.getInstance().getScreenHeight()/10);
+        //TODO: Remove when not debugging
         debuggingGrid = GraphicsSystem.getInstance().getImage("debuggingGrid");
         debuggingRedFilled = new Paint();
         debuggingRedFilled.setARGB(255,255,0,0);
@@ -202,6 +212,32 @@ public class AdventureView extends GamePanelSurfaceView {
         return super.onTouchEvent(event);
     }
 
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder)
+    {
+        if (myThread.isAlive()){
+            myThread.startRun(false);
+        }
+        boolean retry = true;
+        while (retry) {
+            try {
+                myThread.join();
+                retry = false;
+            }
+            catch (InterruptedException e)
+            {
+                e.getCause();
+            }
+        }
+        BGM_.stop();    // Stopping the BGM
+        BGM_.release(); // Releasing the BGM for more memories
+        for (int zeIDofSound : allTheSounds_.values())  // iterating through the hashmap and unload all sound effects
+        {
+            playSounds_.unload(zeIDofSound);
+        }
+        //playSounds_.release();    // release the sound effects for memory
+    }
+
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
     Entity thePlayer;
     TransformationComponent playerTransform;
@@ -215,4 +251,8 @@ public class AdventureView extends GamePanelSurfaceView {
     Bitmap debuggingGrid;
     Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
+    SoundPool playSounds_;
+    AudioAttributes audioAttributes_;
+    HashMap<String, Integer> allTheSounds_;
+    MediaPlayer BGM_;
 }
