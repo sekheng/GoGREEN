@@ -203,9 +203,9 @@ public class AdventureView extends GamePanelSurfaceView {
                     && y >= zeOverallBounds.posY && y <= (zeOverallBounds.scaleY + GridSystem.getInstance().getAverageBoxSize().scaleY))
             {
                 long boxX = 0, boxY = 0;
-                while (x > (boxX + 1) * GridSystem.getInstance().getAverageBoxSize().scaleX)    // (boxX+1) helps to offset the grids
+                while (x > ((boxX + 1) * GridSystem.getInstance().getAverageBoxSize().scaleX) + GridSystem.getInstance().getOffSetFromScreenWidth())    // (boxX+1) helps to offset the grids, and adding the OffsetFromScreenWidth will help rescale it
                     ++boxX;
-                while (y > (boxY+2) * GridSystem.getInstance().getAverageBoxSize().scaleY)      // (boxY+2) helps to offset the grid, if it works then it works lol.
+                while (y > ((boxY+1) * GridSystem.getInstance().getAverageBoxSize().scaleY) + GridSystem.getInstance().getOffSetFromScreenHeight())      // (boxY+2) helps to offset the grid, and adding the OffsetFromScreenWidth will help rescale it
                     ++boxY;
                 long totalNum = boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol());
                 if (totalNum < GridSystem.getInstance().allTheBoxes.size()) {

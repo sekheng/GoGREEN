@@ -19,8 +19,9 @@ public class GridSystem extends ECSystem {
     {
         ScreenWidth = zeWidth;
         ScreenHeight = zeHeight;
-        float zeNewTotHeight = ScreenHeight/10;
-        boundaryOfMap = new TransformationComponent(0, zeNewTotHeight, GridSystem.getInstance().getScreenWidth(), GridSystem.getInstance().getScreenHeight() - (zeNewTotHeight * 2.f));
+        offSetFromScreenWidth = 0;
+        offSetFromScreenHeight = ScreenHeight/10;
+        boundaryOfMap = new TransformationComponent(0, offSetFromScreenHeight, GridSystem.getInstance().getScreenWidth(), GridSystem.getInstance().getScreenHeight() - (offSetFromScreenHeight * 2.f));
         averageBoxSize.setScale(boundaryOfMap.scaleX / numOfBoxesPerRow, boundaryOfMap.scaleY / numOfBoxesPerRow);
         for (int numRow = 0; numRow < numOfBoxesPerRow; ++numRow)
         {
@@ -67,6 +68,9 @@ public class GridSystem extends ECSystem {
     {
         return numOfBoxesPerCol;
     }
+    public int getOffSetFromScreenWidth() { return offSetFromScreenWidth; }
+    public int getOffSetFromScreenHeight() { return offSetFromScreenHeight; }
+
 
     GridSystem()
     {
@@ -77,7 +81,7 @@ public class GridSystem extends ECSystem {
         numOfBoxesPerRow = numOfBoxesPerCol = 8;
     }
     static GridSystem CantTouchTheGrid = null;
-    int ScreenWidth, ScreenHeight, numOfBoxesPerRow, numOfBoxesPerCol;
+    int ScreenWidth, ScreenHeight, numOfBoxesPerRow, numOfBoxesPerCol, offSetFromScreenWidth, offSetFromScreenHeight;
     public LinkedList<Entity> allTheBoxes;
     TransformationComponent boundaryOfMap, averageBoxSize;
 }
