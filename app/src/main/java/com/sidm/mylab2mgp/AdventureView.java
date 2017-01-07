@@ -195,17 +195,17 @@ public class AdventureView extends GamePanelSurfaceView {
     public boolean onTouchEvent(MotionEvent event){
 
         // 5) In event of touch on screen, the spaceship will relocate to the point of touch
-        short x = (short)event.getX();  // temp value of the screen touch
-        short y = (short)event.getY();
+        float x = event.getX();  // temp value of the screen touch
+        float y = event.getY();
         if(event.getAction() == MotionEvent.ACTION_DOWN)
         {
             if (x >= zeOverallBounds.posX && x <= zeOverallBounds.scaleX
                     && y >= zeOverallBounds.posY && y <= (zeOverallBounds.scaleY + GridSystem.getInstance().getAverageBoxSize().scaleY))
             {
                 long boxX = 0, boxY = 0;
-                while (x > (boxX + 1) * GridSystem.getInstance().getAverageBoxSize().scaleX)
+                while (x > (boxX + 1) * GridSystem.getInstance().getAverageBoxSize().scaleX)    // (boxX+1) helps to offset the grids
                     ++boxX;
-                while (y > (boxY + 1) * GridSystem.getInstance().getAverageBoxSize().scaleY * 1.25f)
+                while (y > (boxY+2) * GridSystem.getInstance().getAverageBoxSize().scaleY)      // (boxY+2) helps to offset the grid, if it works then it works lol.
                     ++boxY;
                 long totalNum = boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol());
                 if (totalNum < GridSystem.getInstance().allTheBoxes.size()) {
