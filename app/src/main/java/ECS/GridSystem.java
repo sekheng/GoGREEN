@@ -71,6 +71,10 @@ public class GridSystem extends ECSystem {
     public int getOffSetFromScreenWidth() { return offSetFromScreenWidth; }
     public int getOffSetFromScreenHeight() { return offSetFromScreenHeight; }
 
+    public boolean checkGridAvailable(short []zeGridz)
+    {
+        return true;
+    }
 
     GridSystem()
     {
