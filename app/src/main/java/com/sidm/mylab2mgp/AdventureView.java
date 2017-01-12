@@ -35,14 +35,7 @@ public class AdventureView extends GamePanelSurfaceView {
         audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
         playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
         allTheSounds_.put("GarbagePicked", playSounds_.load(context, R.raw.pick_garbage, 1));
-//        if (initializedThingsOnce)
-//        {
-//            //MusicSystem.getInstance().addBGM(MediaPlayer.create(context, R.raw.adventure_bgm), "Adventure");
-//            initializedThingsOnce = false;
-//        }
-//        MusicSystem.getInstance().playBGM("Adventure");
 
-        // Adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
 
         scaledbg = GraphicsSystem.getInstance().getImage("AdventureBackground");
@@ -92,7 +85,10 @@ public class AdventureView extends GamePanelSurfaceView {
 
         short []anotherSpave = {2,2};
         GarbageBuilder.getInstance().buildGarbageBin("ze Garbage Bin", anotherSpave);
-        timeLeft = 10.f;
+        overallTime = timeLeft = 10.f;
+
+        TimeColor = new Paint();
+        TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -103,7 +99,13 @@ public class AdventureView extends GamePanelSurfaceView {
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
-        RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
+        //RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
+        canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen
+                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                zeOverallBounds.scaleX * (timeLeft / overallTime),  // so that it will scale from right to left
+                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                1, 1, TimeColor
+                );
         BitComponent zeBit;
         TransformationComponent zeTransform;
         //TODO remove when not debugging
@@ -189,6 +191,21 @@ public class AdventureView extends GamePanelSurfaceView {
                     if (stopTheLoop)
                         break;
                 }
+                // Putting right after bunchOfEntities so that garbage that's been collected are removed
+                for (Entity zeGarbage : AmountOfTrashLeft)  // This is to check if there is any inactive garbage waiting to respawn
+                {
+                    if (zeGarbage.turnOnFlag_ == 0)
+                    {
+                        GarbageComponent zeGarbageComp = (GarbageComponent)(zeGarbage.getComponent("zeGarbage"));
+                        if (zeGarbageComp.timeToSpawn <= Math.E)    // If the timer has become less than 0
+                        {
+                            zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
+                            bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
+                        }
+                        else
+                            zeGarbageComp.timeToSpawn -= dt;
+                    }
+                }
             }
         }
     }
@@ -265,7 +282,7 @@ public class AdventureView extends GamePanelSurfaceView {
     PlayerComponent PlayerActiveStuff;
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
-    float timeLeft = 10.f;
+    float timeLeft, overallTime;
 
     //TODO: Remove when not debugging
     Bitmap debuggingGrid;
@@ -275,5 +292,6 @@ public class AdventureView extends GamePanelSurfaceView {
     AudioAttributes audioAttributes_;
     HashMap<String, Integer> allTheSounds_;
     MediaPlayer BGM_;
+    Paint TimeColor;    // Color of the Timer
     //static boolean initializedThingsOnce = true;
 }

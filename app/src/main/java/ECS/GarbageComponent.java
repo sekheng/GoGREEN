@@ -15,6 +15,7 @@ public class GarbageComponent extends Component {
         zeGrids = null;
         zePlayer = null;
         row = col = 0;
+        timeToSpawn = 0;
     }
     public boolean setSpaces(LinkedList<Short> zeSpace)
     {
@@ -107,7 +108,7 @@ public class GarbageComponent extends Component {
         return false;
     }
 
-    public float scoreGive_;
+    public float scoreGive_, timeToSpawn;
     LinkedList<Short> spacesToOccupy;
     public LinkedList<Entity> zeGrids;
     PlayerComponent zePlayer;
