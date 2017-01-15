@@ -71,9 +71,12 @@ public class GridSystem extends ECSystem {
     public int getOffSetFromScreenWidth() { return offSetFromScreenWidth; }
     public int getOffSetFromScreenHeight() { return offSetFromScreenHeight; }
 
-    public boolean checkGridAvailable(short []zeGridz)
+    public boolean checkGridAvailable(short zeGridz)
     {
-        return true;
+        BoxComponent zeBoxSpace= (BoxComponent)allTheBoxes.get(zeGridz).getComponent("zeBox");
+        if (zeBoxSpace.whatBox == BoxType.EMPTY)
+            return true;
+        return false;
     }
 
     GridSystem()

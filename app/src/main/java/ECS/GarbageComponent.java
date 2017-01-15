@@ -107,10 +107,20 @@ public class GarbageComponent extends Component {
         }
         return false;
     }
+    public void setTypeOfGarbage(byte zeValue)
+    {
+        typeOfGarbage = zeValue;
+    }
+
+    public byte getTypeOfGarbage()
+    {
+        return typeOfGarbage;
+    }
 
     public float scoreGive_, timeToSpawn;
     LinkedList<Short> spacesToOccupy;
     public LinkedList<Entity> zeGrids;
     PlayerComponent zePlayer;
     byte row, col;
+    protected byte typeOfGarbage;
 }
