@@ -30,12 +30,22 @@ public class GarbageBuilder {
         zeGarbage.zeGrids = allTheBoxes;
         //zeGarbage.setSpaces(zeGridCoordinate);
         // Checking through the grids whether you can put the garbage in the grids or not, else put in the inactiveList
-        if (CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
+        if (CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol) && timeToActivate > TransformationComponent.EPSILON)
+        {
             zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+            activeList.add(zeEntity);
+        }
+        else
+        {
+            if (timeToActivate <= TransformationComponent.EPSILON)  // Need to make sure that the timeToActivate isn't 0. If it is, set the time to spawn to be 1
+                zeGarbage.timeToSpawn = 1;
+            else
+                zeGarbage.timeToSpawn = timeToActivate;
+            innactiveList.add(zeEntity);
+        }
         zeGarbage.onNotify(150.f);
         zeGarbage.onNotify(thePlayer.getComponent("zePlayer"));
         Garbage.add(zeEntity);
-        activeList.add(zeEntity);
         return zeEntity;
     }
     public Entity buildGarbageBin(String zeName, short []zeGridCoordinate)

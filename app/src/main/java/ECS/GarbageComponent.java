@@ -95,7 +95,7 @@ public class GarbageComponent extends Component {
             scoreGive_ = zeEvent;
             return true;
         }
-        else if (zeEvent < -Math.E) // This part check if zeEvent is less than 0, then it will be the time for it to spawn
+        else if (zeEvent < -TransformationComponent.EPSILON) // This part check if zeEvent is less than 0, then it will be the time for it to spawn
         {
             timeToSpawn = -zeEvent;
             return true;
