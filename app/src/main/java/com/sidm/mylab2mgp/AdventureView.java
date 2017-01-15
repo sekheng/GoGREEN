@@ -13,6 +13,7 @@ import android.view.SurfaceHolder;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 import ECS.*;
 
@@ -83,7 +84,7 @@ public class AdventureView extends GamePanelSurfaceView {
         short []zeNewSpace = {2,5}; // This means row 5, col 5
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
         short []zeNewSpace2 = {5,2}; // This means row 5, col 5
-        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace2,0);
+        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
 
         short []anotherSpave = {2,2};
         GarbageBuilder.getInstance().buildGarbageBin("ze Garbage Bin", anotherSpave);
@@ -94,6 +95,8 @@ public class AdventureView extends GamePanelSurfaceView {
         ProgressColor = new Paint();    // The progress of playing should have a color!
         ProgressColor.setARGB(220, 229, 207, 6);
         TotalNumOfGarbage = AmountOfTrashLeft.size();
+
+        gettingRandomStuff = new Random();
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -211,8 +214,19 @@ public class AdventureView extends GamePanelSurfaceView {
                         GarbageComponent zeGarbageComp = (GarbageComponent)(zeGarbage.getComponent("zeGarbage"));
                         if (zeGarbageComp.timeToSpawn <= Math.E)    // If the timer has become less than 0
                         {
-                            zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
-                            bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
+                            int randomRow = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerRow()); // getting the random row like from 0 to 7
+                            int randomCol = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerCol()); // Same as the above
+                            if (GarbageBuilder.getInstance().CheckingThroughEmptyBoxes(randomRow, randomCol, zeGarbageComp)) // If the spawn position happens to be empty. then spawn it.
+                            {
+                                // Getting the specific index in the grids
+                                zeGarbageComp.setSpaces((short)(randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
+                                zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
+                                bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
+                            }
+                            else
+                            {
+                                zeGarbageComp.timeToSpawn = 1;
+                            }
                         }
                         else
                             zeGarbageComp.timeToSpawn -= dt;
@@ -306,5 +320,6 @@ public class AdventureView extends GamePanelSurfaceView {
     MediaPlayer BGM_;
     Paint TimeColor, ProgressColor;    // Color of the Timer
     int TotalNumOfGarbage;
+    Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     //static boolean initializedThingsOnce = true;
 }

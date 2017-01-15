@@ -71,7 +71,7 @@ public class GridSystem extends ECSystem {
     public int getOffSetFromScreenWidth() { return offSetFromScreenWidth; }
     public int getOffSetFromScreenHeight() { return offSetFromScreenHeight; }
 
-    public boolean checkGridAvailable(short zeGridz)
+    public boolean checkGridAvailable(int zeGridz)
     {
         BoxComponent zeBoxSpace= (BoxComponent)allTheBoxes.get(zeGridz).getComponent("zeBox");
         if (zeBoxSpace.whatBox == BoxType.EMPTY)
@@ -87,9 +87,9 @@ public class GridSystem extends ECSystem {
         averageBoxSize = new TransformationComponent();
         numOfBoxesPerRow = numOfBoxesPerCol = 8;
     }
-    static GridSystem CantTouchTheGrid = null;
-    int ScreenWidth, ScreenHeight, numOfBoxesPerRow, numOfBoxesPerCol, offSetFromScreenWidth, offSetFromScreenHeight;
+    private static GridSystem CantTouchTheGrid = null;
+    private int ScreenWidth, ScreenHeight, numOfBoxesPerRow, numOfBoxesPerCol, offSetFromScreenWidth, offSetFromScreenHeight;
     public LinkedList<Entity> allTheBoxes;
-    TransformationComponent boundaryOfMap, averageBoxSize;
+    private TransformationComponent boundaryOfMap, averageBoxSize;
 }
 

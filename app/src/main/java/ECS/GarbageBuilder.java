@@ -72,9 +72,31 @@ public class GarbageBuilder {
         thePlayer = zePlayer;
     }
 
-    private boolean CheckingThroughEmptyBoxes(int specificRow, int specificCol, int RowToOccupy, int ColToOccupy)
+    public boolean CheckingThroughEmptyBoxes(int specificRow, int specificCol, int RowToOccupy, int ColToOccupy)
     {
+        // This will help to check whether it has exceed the total number of row and coloumns to begin with by getting the maximum number of row and coloumn that it will occupy
+        // minus 1 because it starts from 0. let say, specificRow is 5 and RowToOccupy is just 1. Then it will just be occupying the 5th row only
+        if (specificRow + RowToOccupy - 1 >= GridSystem.getInstance().getNumOfBoxesPerRow() && specificCol + ColToOccupy - 1 >= GridSystem.getInstance().getNumOfBoxesPerCol())
+            return false;
+        // This will help to get the starting index starting from top left. For example, specificCol is 5 and specificRow is 5 and Total number of boxes per coloumn is 8. The starting index will be 5 + (5 * 8) = 45
+        // Do remember that it always start from 0!
+        int startingIndex = specificCol + (specificRow * GridSystem.getInstance().getNumOfBoxesPerCol());
+        // Here comes the complex nested loop
+        for (int zeRow = 0; zeRow < RowToOccupy; ++zeRow)   // Get the number of Row that it will occupy
+        {
+            for (int zeCol = 0; zeCol < ColToOccupy; ++zeCol)   // Get the number of Coloumn that it will occupy
+            {
+                int addingUpOfIndex = zeCol + (zeRow * GridSystem.getInstance().getNumOfBoxesPerCol()); // Same logic as getting the starting index
+                if (!GridSystem.getInstance().checkGridAvailable(startingIndex + addingUpOfIndex))  // Getting the specific index and checking whether grid is available
+                    return false;
+            }
+        }
         return true;
+    }
+    // This function will make use of GarbageComponent row and coloumn!
+    public boolean CheckingThroughEmptyBoxes(int specificRow, int specificCol, GarbageComponent zeGarbage)
+    {
+        return CheckingThroughEmptyBoxes(specificRow, specificCol, zeGarbage.row, zeGarbage.col);
     }
 
     GarbageBuilder()
