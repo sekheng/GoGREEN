@@ -30,7 +30,7 @@ public class GarbageBuilder {
         zeGarbage.zeGrids = allTheBoxes;
         //zeGarbage.setSpaces(zeGridCoordinate);
         // Checking through the grids whether you can put the garbage in the grids or not, else put in the inactiveList
-        if (CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol) && timeToActivate > TransformationComponent.EPSILON)
+        if (timeToActivate < TransformationComponent.EPSILON && CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
         {
             zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
             activeList.add(zeEntity);
@@ -41,6 +41,7 @@ public class GarbageBuilder {
                 zeGarbage.timeToSpawn = 1;
             else
                 zeGarbage.timeToSpawn = timeToActivate;
+            zeEntity.turnOnFlag_ = 0;// Need to turn off the active flag of the entity
             innactiveList.add(zeEntity);
         }
         zeGarbage.onNotify(150.f);
@@ -76,7 +77,7 @@ public class GarbageBuilder {
     {
         // This will help to check whether it has exceed the total number of row and coloumns to begin with by getting the maximum number of row and coloumn that it will occupy
         // minus 1 because it starts from 0. let say, specificRow is 5 and RowToOccupy is just 1. Then it will just be occupying the 5th row only
-        if (specificRow + RowToOccupy - 1 >= GridSystem.getInstance().getNumOfBoxesPerRow() && specificCol + ColToOccupy - 1 >= GridSystem.getInstance().getNumOfBoxesPerCol())
+        if (specificRow + RowToOccupy >= GridSystem.getInstance().getNumOfBoxesPerRow() && specificCol + ColToOccupy >= GridSystem.getInstance().getNumOfBoxesPerCol())
             return false;
         // This will help to get the starting index starting from top left. For example, specificCol is 5 and specificRow is 5 and Total number of boxes per coloumn is 8. The starting index will be 5 + (5 * 8) = 45
         // Do remember that it always start from 0!

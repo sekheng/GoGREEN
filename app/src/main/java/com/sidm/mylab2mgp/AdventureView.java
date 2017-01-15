@@ -212,7 +212,7 @@ public class AdventureView extends GamePanelSurfaceView {
                     if (zeGarbage.turnOnFlag_ == 0)
                     {
                         GarbageComponent zeGarbageComp = (GarbageComponent)(zeGarbage.getComponent("zeGarbage"));
-                        if (zeGarbageComp.timeToSpawn <= Math.E)    // If the timer has become less than 0
+                        if (zeGarbageComp.timeToSpawn <= TransformationComponent.EPSILON)    // If the timer has become less than 0
                         {
                             int randomRow = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerRow()); // getting the random row like from 0 to 7
                             int randomCol = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerCol()); // Same as the above
@@ -222,6 +222,7 @@ public class AdventureView extends GamePanelSurfaceView {
                                 zeGarbageComp.setSpaces((short)(randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
                                 zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
                                 bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
+                                bunchOfInactive.remove(zeGarbage);  // well because they were originally at inactivelist
                             }
                             else
                             {
