@@ -14,17 +14,13 @@ public class GarbageBuilder {
         return zeBuilderNoOneCanAccessed_;
     }
 
-    public Entity buildSmalleGarbage(String zeName, short[] zeGridCoordinate)
+    public Entity buildSmalleGarbage(String zeName, short[] zeGridCoordinate, float timeToActivate)
     {
         if (zeGridCoordinate.length == 0 || zeGridCoordinate.length > 2)
             return null;
         short row = 0, col = 0, sizeOfGarbageRow = 2, sizeOfGarbageCol = 1;
         row = zeGridCoordinate[0];
         col = zeGridCoordinate[1];
-        // This is needed to check and make sure that the number of rows and coloumns that the garbage are empty. Else return null!
-        // This will be the super complex function to check whether you can build it or not.
-        if (!CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
-            return null;
         Entity zeEntity = new Entity(zeName);
         zeEntity.setComponent(new TransformationComponent());
         GarbageComponent zeGarbage = new GarbageComponent();
@@ -33,7 +29,9 @@ public class GarbageBuilder {
         zeGarbage.setRowCol((byte)sizeOfGarbageRow, (byte)sizeOfGarbageCol);
         zeGarbage.zeGrids = allTheBoxes;
         //zeGarbage.setSpaces(zeGridCoordinate);
-        zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+        // Checking through the grids whether you can put the garbage in the grids or not, else put in the inactiveList
+        if (CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
+            zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
         zeGarbage.onNotify(150.f);
         zeGarbage.onNotify(thePlayer.getComponent("zePlayer"));
         Garbage.add(zeEntity);

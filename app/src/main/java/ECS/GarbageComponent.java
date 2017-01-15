@@ -90,9 +90,23 @@ public class GarbageComponent extends Component {
     }
     public boolean onNotify(float zeEvent)
     {
-        if (zeEvent > TransformationComponent.EPSILON)
+        if (zeEvent > TransformationComponent.EPSILON)  // The 1st part will be if zeEvent is more than 0, then it will become the score
         {
             scoreGive_ = zeEvent;
+            return true;
+        }
+        else if (zeEvent < -Math.E) // This part check if zeEvent is less than 0, then it will be the time for it to spawn
+        {
+            timeToSpawn = -zeEvent;
+            return true;
+        }
+        return false;
+    }
+    public boolean onNotify(int zeEvent)
+    {
+        if (zeEvent >= 0)   // This will help set what is the type of garbage
+        {
+            typeOfGarbage = (byte)zeEvent;
             return true;
         }
         return false;

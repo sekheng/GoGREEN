@@ -81,9 +81,9 @@ public class AdventureView extends GamePanelSurfaceView {
         zeBackgroundPaint.setARGB(255,255,255,255);
 
         short []zeNewSpace = {2,5}; // This means row 5, col 5
-        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace);
+        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
         short []zeNewSpace2 = {5,2}; // This means row 5, col 5
-        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace2);
+        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace2,0);
 
         short []anotherSpave = {2,2};
         GarbageBuilder.getInstance().buildGarbageBin("ze Garbage Bin", anotherSpave);
