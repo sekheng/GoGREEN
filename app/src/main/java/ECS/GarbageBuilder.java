@@ -18,15 +18,19 @@ public class GarbageBuilder {
     {
         if (zeGridCoordinate.length == 0 || zeGridCoordinate.length > 2)
             return null;
-        short row = 0, col = 0;
+        short row = 0, col = 0, sizeOfGarbageRow = 2, sizeOfGarbageCol = 1;
         row = zeGridCoordinate[0];
         col = zeGridCoordinate[1];
+        // This is needed to check and make sure that the number of rows and coloumns that the garbage are empty. Else return null!
+        // This will be the super complex function to check whether you can build it or not.
+        if (!CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
+            return null;
         Entity zeEntity = new Entity(zeName);
         zeEntity.setComponent(new TransformationComponent());
         GarbageComponent zeGarbage = new GarbageComponent();
         zeEntity.setComponent(zeGarbage);
         zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("RottenApple")));  // setting the images
-        zeGarbage.setRowCol((byte)2, (byte)1);
+        zeGarbage.setRowCol((byte)sizeOfGarbageRow, (byte)sizeOfGarbageCol);
         zeGarbage.zeGrids = allTheBoxes;
         //zeGarbage.setSpaces(zeGridCoordinate);
         zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
@@ -58,6 +62,11 @@ public class GarbageBuilder {
         Garbage = zeGarbage;
         allTheBoxes = zeBoxes;
         thePlayer = zePlayer;
+    }
+
+    private boolean CheckingThroughEmptyBoxes(int specificRow, int specificCol, int RowToOccupy, int ColToOccupy)
+    {
+        return true;
     }
 
     GarbageBuilder()
