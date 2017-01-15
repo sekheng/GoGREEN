@@ -76,7 +76,7 @@ public class GarbageBuilder {
     public boolean CheckingThroughEmptyBoxes(int specificRow, int specificCol, int RowToOccupy, int ColToOccupy)
     {
         // This will help to check whether it has exceed the total number of row and coloumns to begin with by getting the maximum number of row and coloumn that it will occupy
-        // minus 1 because it starts from 0. let say, specificRow is 5 and RowToOccupy is just 1. Then it will just be occupying the 5th row only
+        // Let say, specificRow is 5 and RowToOccupy is just 1. Then it will just be occupying the 5th row only
         if (specificRow + RowToOccupy >= GridSystem.getInstance().getNumOfBoxesPerRow() && specificCol + ColToOccupy >= GridSystem.getInstance().getNumOfBoxesPerCol())
             return false;
         // This will help to get the starting index starting from top left. For example, specificCol is 5 and specificRow is 5 and Total number of boxes per coloumn is 8. The starting index will be 5 + (5 * 8) = 45
