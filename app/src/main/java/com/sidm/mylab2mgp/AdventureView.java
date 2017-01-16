@@ -1,6 +1,7 @@
 package com.sidm.mylab2mgp;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -67,10 +68,12 @@ public class AdventureView extends GamePanelSurfaceView {
         PlayerActiveStuff = new PlayerComponent();
         thePlayer.setComponent(PlayerActiveStuff);
         PlayerActiveStuff.theCurrentGamePlayerOn = this;
-        AnimationComponent zeAnimation = new AnimationComponent(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.protagonist),
-                GridSystem.getInstance().getScreenWidth()/4, GridSystem.getInstance().getScreenHeight()/17,true),448,64,0.5f,8,2,3);
-        thePlayer.setComponent(zeAnimation);
-        playerBits = zeAnimation;
+        /*Resources res = getResources();
+        AnimationComponent zeAnimation = new AnimationComponent(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res,R.drawable.protagonist),
+                GridSystem.getInstance().getScreenWidth()/4, GridSystem.getInstance().getScreenHeight()/17,true),448,64,0.5f,8,2,3);*/
+        ProtaganistAnimComponent animComponent = new ProtaganistAnimComponent(getResources());
+        thePlayer.setComponent(animComponent);
+        playerBits = animComponent;
         bunchOfEntites.add(thePlayer);
 
         // Create the game loop thread
@@ -151,10 +154,10 @@ public class AdventureView extends GamePanelSurfaceView {
                     if(zeEntity.checkActiveComponent("zeAnimations"))
                     {
                         zeTransform = (TransformationComponent) zeEntity.getComponent("Transformation Stuff");
-                        AnimationComponent zeDraw = (AnimationComponent) zeEntity.getComponent("zeAnimations");
-                        zeDraw.draw(canvas);
-                        zeDraw.setX((int)zeTransform.posX);
-                        zeDraw.setY((int)zeTransform.posY);
+                        ProtaganistAnimComponent zeDraw = (ProtaganistAnimComponent) zeEntity.getComponent("zeProtagAnimations");
+                        zeDraw.getAnimComponent().draw(canvas);
+                        zeDraw.getAnimComponent().setX((int)zeTransform.posX);
+                        zeDraw.getAnimComponent().setY((int)zeTransform.posY);
                     }
                     else if (zeEntity.checkActiveComponent("Ze Images"))
                     {
@@ -167,9 +170,10 @@ public class AdventureView extends GamePanelSurfaceView {
             }
         }
         // This might be removed if A* search is done
-        playerBits.draw(canvas);
-        playerBits.setX((int)playerTransform.posX);
-        playerBits.setY((int)playerTransform.posY);
+        playerBits = (ProtaganistAnimComponent) thePlayer.getComponent("zeProtagAnimations");
+        playerBits.getAnimComponent().draw(canvas);
+        playerBits.getAnimComponent().setX((int)playerTransform.posX);
+        playerBits.getAnimComponent().setY((int)playerTransform.posY);
     }
 
 
@@ -305,7 +309,7 @@ public class AdventureView extends GamePanelSurfaceView {
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
     Entity thePlayer;
     TransformationComponent playerTransform;
-    AnimationComponent playerBits;
+    ProtaganistAnimComponent playerBits;
     PlayerComponent PlayerActiveStuff;
     Paint zeBackgroundPaint;
     TransformationComponent zeOverallBounds;
