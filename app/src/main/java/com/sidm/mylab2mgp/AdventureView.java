@@ -91,7 +91,7 @@ public class AdventureView extends GamePanelSurfaceView {
 
         short []anotherSpave = {2,2};
         GarbageBuilder.getInstance().buildGarbageBin("ze Garbage Bin", anotherSpave);
-        overallTime = timeLeft = 10.f;
+        overallTime = timeLeft = 20.f;
 
         TimeColor = new Paint();
         TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
