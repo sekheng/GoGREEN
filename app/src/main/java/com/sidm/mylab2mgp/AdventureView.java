@@ -171,9 +171,9 @@ public class AdventureView extends GamePanelSurfaceView {
         }
         // This might be removed if A* search is done
         playerBits = (ProtaganistAnimComponent) thePlayer.getComponent("zeProtagAnimations");
-        playerBits.getAnimComponent().draw(canvas);
-        playerBits.getAnimComponent().setX((int)playerTransform.posX);
-        playerBits.getAnimComponent().setY((int)playerTransform.posY);
+        playerBits.draw(canvas);
+        playerBits.setPosX((int)playerTransform.posX);
+        playerBits.setPosY((int)playerTransform.posY);
     }
 
 

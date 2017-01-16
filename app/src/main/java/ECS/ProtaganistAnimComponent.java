@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 import com.sidm.mylab2mgp.R;
 
@@ -56,6 +57,20 @@ public class ProtaganistAnimComponent extends Component {
     public AnimationComponent getAnimComponent()
     {
         return currAnimation;
+    }
+
+    public void draw(Canvas canvas)
+    {
+        currAnimation.draw(canvas);
+    }
+
+    public void setPosX(int i)
+    {
+        currAnimation.setX(i);
+    }
+
+    public void setPosY(int i) {
+        currAnimation.setY(i);
     }
 
     public void Update(float dt)
