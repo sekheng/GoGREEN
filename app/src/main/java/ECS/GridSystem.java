@@ -73,9 +73,11 @@ public class GridSystem extends ECSystem {
 
     public boolean checkGridAvailable(int zeGridz)
     {
-        BoxComponent zeBoxSpace= (BoxComponent)allTheBoxes.get(zeGridz).getComponent("zeBox");
-        if (zeBoxSpace.whatBox == BoxType.EMPTY)
-            return true;
+        if (zeGridz < allTheBoxes.size()) {
+            BoxComponent zeBoxSpace = (BoxComponent) allTheBoxes.get(zeGridz).getComponent("zeBox");
+            if (zeBoxSpace.whatBox == BoxType.EMPTY)
+                return true;
+        }
         return false;
     }
 
