@@ -2,17 +2,14 @@ package com.sidm.mylab2mgp;
 
         import android.app.Activity;
         import android.content.Intent;
-        import android.content.pm.ActivityInfo;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
-        import android.media.MediaPlayer;
         import android.os.Bundle;
         import android.util.DisplayMetrics;
         import android.view.MotionEvent;
         import android.view.ViewGroup;
         import android.view.Window;
         import android.view.WindowManager;
-        import android.widget.Button;
         import android.widget.ImageView;
 
         import ECS.GraphicsSystem;
@@ -55,6 +52,8 @@ public class Splashpage extends Activity {
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small_trash), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY * 2, true), "RottenApple");
 
         //MusicSystem.getInstance().addBGM(MediaPlayer.create(this, R.raw.adventure_bgm), "Adventure");
+//        MusicSystem.getInstance().setCurrentContext(this);
+//        MusicSystem.getInstance().addBGM(R.raw.adventure_bgm, "Adventure");
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 

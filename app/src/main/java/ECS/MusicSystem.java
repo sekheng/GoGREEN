@@ -1,5 +1,6 @@
 package ECS;
 
+import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -18,23 +19,30 @@ public class MusicSystem extends ECSystem {
         return cantTouchThis;
     }
 
-    public MediaPlayer getBGM(String zeName)
-    {
-        return allTheBGM_.get(zeName);
-    }
     public boolean playSoundEffect(String zeName)
     {
         if (allTheSoundIndex_.containsValue(zeName))
         {
+            allSound_.play(allTheSoundIndex_.get(zeName), 1, 1, 1,0,1);
             return true;
         }
         return false;
     }
-    public boolean addBGM(MediaPlayer zeBGM, String BGM_ID_)
+    public boolean addSoundEffect(int zeID, String zeName)
     {
-        allTheBGM_.put(BGM_ID_, zeBGM);
-        zeBGM.setLooping(true);
-        //zeBGM.stop();
+        if (allTheSoundIndex_.containsKey(zeName))
+        {
+
+            allTheSoundIndex_.put(zeName, zeID);
+            return true;
+        }
+        return true;
+    }
+    public boolean addBGM(int zeID, String zeName)
+    {
+        if (allTheBGMIndex_.containsKey(zeName))
+            return false;
+        allTheBGMIndex_.put(zeName, zeID);
         return true;
     }
     public boolean playBGM(String zeID)
@@ -43,7 +51,6 @@ public class MusicSystem extends ECSystem {
         {
             currentBGM_.stop();
         }
-        currentBGM_ = allTheBGM_.get(zeID);
         currentBGM_.start();
         return true;
     }
@@ -58,22 +65,27 @@ public class MusicSystem extends ECSystem {
         }
         return false;
     }
+    public void setCurrentContext(Context zeContext)
+    {
+        currentContext = zeContext;
+    }
 
     private static MusicSystem cantTouchThis = null;
     private MusicSystem()
     {
         BGM_Volume_ = 1.0f;
-        allTheBGM_ = new HashMap<String, MediaPlayer>();
         allTheSoundIndex_ = new HashMap<String, Integer>();
         audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
         allSound_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(5).build();
+        allTheBGMIndex_ = new HashMap<>();
         currentBGM_ = null;
+        currentContext = null;
     }
 
     public float BGM_Volume_;
     private SoundPool allSound_;
     private AudioAttributes audioAttributes_;
-    private HashMap<String, MediaPlayer> allTheBGM_;
-    MediaPlayer currentBGM_;
-    private HashMap<String, Integer> allTheSoundIndex_;
+    private MediaPlayer currentBGM_;
+    private HashMap<String, Integer> allTheSoundIndex_, allTheBGMIndex_;
+    private Context currentContext;
 }
