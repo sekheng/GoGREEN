@@ -13,8 +13,9 @@ public class PlayerComponent extends Component {
         whichBoxPlayerIn = null;
         score_ = 0;
         amountOfGarbageCollected = 0;
-        limitOfGarbage = 200;
         startUpdating = false;
+        currCapacity = 0;
+        maxCapacity = 1;
     }
     public void Update(float dt)
     {
@@ -50,15 +51,17 @@ public class PlayerComponent extends Component {
         {
             score_ += amountOfGarbageCollected;
             amountOfGarbageCollected = 0;
+            currCapacity = 0;
             return true;
         }
         return false;
     }
     public boolean onNotify(float zeEvent)
     {
-        if (zeEvent > TransformationComponent.EPSILON && (amountOfGarbageCollected + zeEvent) < limitOfGarbage)
+        if (zeEvent > TransformationComponent.EPSILON && currCapacity + 1 <= maxCapacity)
         {
             amountOfGarbageCollected += zeEvent;
+            currCapacity += 1;  // lets put 1 because ain't no time to complex stuff
             if (theCurrentGamePlayerOn != null)
             {
                 theCurrentGamePlayerOn.onNotify("GarbagePicked");
@@ -67,9 +70,23 @@ public class PlayerComponent extends Component {
         }
         return false;
     }
+    public boolean onNotify(int zeEvent)
+    {
+        if (zeEvent > 0) {
+            maxCapacity = (short)zeEvent;
+            return true;
+        }
+        return false;
+    }
+    // This is for checking on how much capacity of garbage is the player carrying
+    public float gettingThePercentageOfFullCapacity()
+    {
+        return (float)(currCapacity/maxCapacity);
+    }
 
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating;
-    public float amountOfGarbageCollected, limitOfGarbage, score_;
+    public float amountOfGarbageCollected, score_;
     public GamePanelSurfaceView theCurrentGamePlayerOn = null;
+    private short currCapacity, maxCapacity;    // This is for checking how much space the player has left
 }

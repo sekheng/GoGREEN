@@ -259,7 +259,6 @@ public class AdventureView extends GamePanelSurfaceView {
                 if (totalNum < GridSystem.getInstance().allTheBoxes.size()) {
                     Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int) (boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol())));
                     TransformationComponent zeBoxTransform = (TransformationComponent) (theExactBox.getComponent("Transformation Stuff"));
-                    //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
                     PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
                     zePhysics.setNextPosToGo(zeBoxTransform.posX + (GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f), zeBoxTransform.posY + (GridSystem.getInstance().getAverageBoxSize().scaleY * 0.25f));
                     thePlayer.getComponent("zePlayer").onNotify(zeBoxTransform);
