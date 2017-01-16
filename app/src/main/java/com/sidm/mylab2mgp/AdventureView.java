@@ -98,6 +98,8 @@ public class AdventureView extends GamePanelSurfaceView {
         ProgressColor = new Paint();    // The progress of playing should have a color!
         ProgressColor.setARGB(220, 229, 207, 6);
         TotalNumOfGarbage = AmountOfTrashLeft.size();
+        CapacityColor = new Paint();
+        CapacityColor.setARGB(220, 206, 14, 14);
 
         gettingRandomStuff = new Random();
     }
@@ -109,18 +111,25 @@ public class AdventureView extends GamePanelSurfaceView {
         canvas.drawBitmap(scaledbg, 0, 0, null);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         //RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
-        RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
+        //RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
         //RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
-        canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen
+        canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
                 zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-                zeOverallBounds.scaleX * (timeLeft / overallTime),  // so that it will scale from right to left
+                zeOverallBounds.scaleX * (timeLeft / overallTime) * 0.5f,  // so that it will scale from right to left
                 (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
                 1, 1, TimeColor
                 );  // Displaying time in rectangle
+        // Drawing the capacity of the garbage
+        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
+                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
+                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                1,1,CapacityColor
+        );
         float remainingGarbage = TotalNumOfGarbage - AmountOfTrashLeft.size();
         canvas.drawRoundRect(0.0f,  // because at the very left of the screen
                 0.0f,   // because at the very top of the screen
-                zeOverallBounds.scaleX * (remainingGarbage/(float)TotalNumOfGarbage),  // Since scaleX is screen width, so we can multiply the right coordinate by RemainingGarbage/TotalGarbageFromBeginning
+                zeOverallBounds.scaleX * (remainingGarbage/(float)TotalNumOfGarbage),  // Since scaleX is screen width, so we can multiply the right coordinate by RemainingGarbage/TotalGarbageFromBeginning.
                 zeOverallBounds.posY,   // Bottom coordinate shall be before the first row of grids
                 1, 1, ProgressColor
                 );  // Displaying time in rectangle
@@ -259,7 +268,6 @@ public class AdventureView extends GamePanelSurfaceView {
                 if (totalNum < GridSystem.getInstance().allTheBoxes.size()) {
                     Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int) (boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol())));
                     TransformationComponent zeBoxTransform = (TransformationComponent) (theExactBox.getComponent("Transformation Stuff"));
-                    //TransformationComponent zeTransform = (TransformationComponent) (thePlayer.getComponent("Transformation Stuff"));
                     PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
                     zePhysics.setNextPosToGo(zeBoxTransform.posX + (GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f), zeBoxTransform.posY + (GridSystem.getInstance().getAverageBoxSize().scaleY * 0.25f));
                     thePlayer.getComponent("zePlayer").onNotify(zeBoxTransform);
@@ -323,7 +331,7 @@ public class AdventureView extends GamePanelSurfaceView {
     AudioAttributes audioAttributes_;
     HashMap<String, Integer> allTheSounds_;
     MediaPlayer BGM_;
-    Paint TimeColor, ProgressColor;    // Color of the Timer
+    Paint TimeColor, ProgressColor, CapacityColor;    // Color of the Timer
     int TotalNumOfGarbage;
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     //static boolean initializedThingsOnce = true;
