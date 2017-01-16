@@ -102,6 +102,10 @@ public class AdventureView extends GamePanelSurfaceView {
         CapacityColor.setARGB(220, 206, 14, 14);
 
         gettingRandomStuff = new Random();
+
+        theToastMessage = new Toastbox();
+        theToastMessage.toastmessageShort(zeCurrContext, "Get To the Bin!");
+        theToastMessage.setShowMessageOnce(true);
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -222,9 +226,8 @@ public class AdventureView extends GamePanelSurfaceView {
                 // Putting right after bunchOfEntities so that garbage that's been collected are removed
                 for (Entity zeGarbage : AmountOfTrashLeft)  // This is to check if there is any inactive garbage waiting to respawn
                 {
-                    if (zeGarbage.turnOnFlag_ == 0)
-                    {
-                        GarbageComponent zeGarbageComp = (GarbageComponent)(zeGarbage.getComponent("zeGarbage"));
+                    if (zeGarbage.turnOnFlag_ == 0) {
+                        GarbageComponent zeGarbageComp = (GarbageComponent) (zeGarbage.getComponent("zeGarbage"));
                         if (zeGarbageComp.timeToSpawn <= TransformationComponent.EPSILON)    // If the timer has become less than 0
                         {
                             int randomRow = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerRow()); // getting the random row like from 0 to 7
@@ -232,20 +235,20 @@ public class AdventureView extends GamePanelSurfaceView {
                             if (GarbageBuilder.getInstance().CheckingThroughEmptyBoxes(randomRow, randomCol, zeGarbageComp)) // If the spawn position happens to be empty. then spawn it.
                             {
                                 // Getting the specific index in the grids
-                                zeGarbageComp.setSpaces((short)(randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
+                                zeGarbageComp.setSpaces((short) (randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
                                 zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
                                 bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
                                 bunchOfInactive.remove(zeGarbage);  // well because they were originally at inactivelist
-                            }
-                            else
-                            {
+                            } else {
                                 zeGarbageComp.timeToSpawn = 1;
                             }
-                        }
-                        else
+                        } else
                             zeGarbageComp.timeToSpawn -= dt;
                     }
                 }
+                // This to check whether is there any garbage left
+                if (AmountOfTrashLeft.size() == 0)
+                    theToastMessage.showToast();
             }
         }
     }
@@ -334,5 +337,6 @@ public class AdventureView extends GamePanelSurfaceView {
     Paint TimeColor, ProgressColor, CapacityColor;    // Color of the Timer
     int TotalNumOfGarbage;
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
+    Toastbox theToastMessage;   // This is used for popping a message to tell the player to hurry up
     //static boolean initializedThingsOnce = true;
 }
