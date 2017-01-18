@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
@@ -106,13 +107,23 @@ public class AdventureView extends GamePanelSurfaceView {
         theToastMessage = new Toastbox();
         theToastMessage.toastmessageShort(zeCurrContext, "Get To the Bin!");
         theToastMessage.setShowMessageOnce(true);
+
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int Screenwidth = metrics.widthPixels;
+        int Screenheight = metrics.heightPixels;
+
+        pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/90);
     }
 
     public void RenderGameplay(Canvas canvas) {
         // 2) Re-draw 2nd image after the 1st image ends
         if (canvas == null)
             return;
+
+        //canvas.drawBitmap(pauseButton.PauseB1.getBitmap(), pauseButton.PauseB1.getX(),pauseButton.PauseB1.getY(), null);
+
         canvas.drawBitmap(scaledbg, 0, 0, null);
+        pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         //RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         //RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
@@ -139,6 +150,9 @@ public class AdventureView extends GamePanelSurfaceView {
                 );  // Displaying time in rectangle
         BitComponent zeBit;
         TransformationComponent zeTransform;
+
+
+
         //TODO remove when not debugging
         for (Entity zeEntity : GridSystem.getInstance().allTheBoxes)
         {
@@ -182,6 +196,7 @@ public class AdventureView extends GamePanelSurfaceView {
                 default:
             }
         }
+
         // This might be removed if A* search is done
         playerBits = (ProtaganistAnimComponent) thePlayer.getComponent("zeProtagAnimations");
         playerBits.draw(canvas);
@@ -193,7 +208,7 @@ public class AdventureView extends GamePanelSurfaceView {
     //Update method to update the game play
     public void update(float dt, float fps){
         FPS = fps;
-        if (fps > 25) {
+        if (fps > 25 && !pauseButton.getIsPause()) {
             if (timeLeft <= 0)
             {
                 zeCurrContext.onClick("lose!");
@@ -250,6 +265,7 @@ public class AdventureView extends GamePanelSurfaceView {
                 if (AmountOfTrashLeft.size() == 0)
                     theToastMessage.showToast();
             }
+
         }
     }
     public boolean onTouchEvent(MotionEvent event){
@@ -276,6 +292,8 @@ public class AdventureView extends GamePanelSurfaceView {
                     thePlayer.getComponent("zePlayer").onNotify(zeBoxTransform);
                 }
             }
+            pauseButton.checkIfPressedPause((int)x,(int)y);
+            //pauseButton.PauseButtonUpdate(myThread);
         }
         return super.onTouchEvent(event);
     }
@@ -339,4 +357,5 @@ public class AdventureView extends GamePanelSurfaceView {
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     Toastbox theToastMessage;   // This is used for popping a message to tell the player to hurry up
     //static boolean initializedThingsOnce = true;
+    PauseButton pauseButton;
 }

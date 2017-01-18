@@ -13,7 +13,7 @@ import android.util.DisplayMetrics;
 
 public class PauseButton {
     private boolean isPaused = false;
-    private Objects PauseB1;
+    public Objects PauseB1;
     private Objects PauseB2;
     private int Screenwidth;
     private int Screenheight;
@@ -23,10 +23,14 @@ public class PauseButton {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         Screenwidth = metrics.widthPixels;
         Screenheight = metrics.heightPixels;
-        PauseB1 = new Objects(Bitmap.createScaledBitmap((BitmapFactory.decodeResource(res,R.drawable.pause_notpressed)),
+        /*PauseB1 = new Objects(Bitmap.createScaledBitmap((BitmapFactory.decodeResource(res,R.drawable.pause_notpressed)),
                 (int)(Screenwidth)/15, (int)(Screenheight)/10,true), Screenwidth - 200, 30);
         PauseB2 = new Objects(Bitmap.createScaledBitmap((BitmapFactory.decodeResource(res,R.drawable.pause_pressed)),
-                (int)(Screenwidth)/15, (int)(Screenheight)/10,true), Screenwidth - 200, 30);
+                (int)(Screenwidth)/15, (int)(Screenheight)/10,true), Screenwidth - 200, 30);*/
+        PauseB1 = new Objects(Bitmap.createScaledBitmap((BitmapFactory.decodeResource(res,R.drawable.pause_notpressed)),
+                (int)(Screenwidth)/15, (int)(Screenheight)/10,true), x, y);
+        PauseB2 = new Objects(Bitmap.createScaledBitmap((BitmapFactory.decodeResource(res,R.drawable.pause_pressed)),
+                (int)(Screenwidth)/15, (int)(Screenheight)/10,true), x, y);
     }
 
     public void RenderPauseButton(Canvas canvas)
@@ -52,6 +56,12 @@ public class PauseButton {
             thread.unPause();
         }
     }
+
+    public boolean getIsPause()
+    {
+        return isPaused;
+    }
+
 
     boolean CheckCollision(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2)
     {
