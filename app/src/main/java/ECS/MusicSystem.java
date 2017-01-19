@@ -50,8 +50,11 @@ public class MusicSystem extends ECSystem {
         if (currentBGM_ != null)
         {
             currentBGM_.stop();
+            currentBGM_.release();
         }
+        currentBGM_ = MediaPlayer.create(currentContext, allTheBGMIndex_.get(zeID));
         currentBGM_.start();
+        currentBGM_.setLooping(true);
         return true;
     }
     public boolean stopCurrentBGM()

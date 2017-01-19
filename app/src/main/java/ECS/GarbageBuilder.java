@@ -55,7 +55,7 @@ public class GarbageBuilder {
         zeEntity.setComponent(new TransformationComponent());
         GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
         zeEntity.setComponent(zeCollector);
-        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("RecycleBin")));
+        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("PaperBin")));
         int row = 1, col = 1;
         zeCollector.setRowCol((byte)row, (byte)col);
         zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;

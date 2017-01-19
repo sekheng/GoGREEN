@@ -14,7 +14,7 @@ package com.sidm.mylab2mgp;
 
         import ECS.GraphicsSystem;
         import ECS.GridSystem;
-        import ECS.MusicSystem;
+import ECS.MusicSystem;
 
 /**
  * Created by lenov on 17/11/2016.
@@ -48,12 +48,11 @@ public class Splashpage extends Activity {
         // Loading of Graphics
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.outlined_sq), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "debuggingGrid");
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.adventure_background), screenwidth, screenheight, true), "AdventureBackground");
-        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.recyclebin), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "RecycleBin");
+        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.paperbin), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "PaperBin");
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small_trash), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY * 2, true), "RottenApple");
 
-        //MusicSystem.getInstance().addBGM(MediaPlayer.create(this, R.raw.adventure_bgm), "Adventure");
-//        MusicSystem.getInstance().setCurrentContext(this);
-//        MusicSystem.getInstance().addBGM(R.raw.adventure_bgm, "Adventure");
+        MusicSystem.getInstance().setCurrentContext(this);
+        MusicSystem.getInstance().addBGM(R.raw.adventure_bgm, "Adventure");
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 

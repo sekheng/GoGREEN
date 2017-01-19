@@ -31,9 +31,10 @@ public class AdventureView extends GamePanelSurfaceView {
 
         zeCurrContext = (Gamepage)context;
 
-        BGM_ = MediaPlayer.create(zeCurrContext, R.raw.adventure_bgm);
-        BGM_.start();
-        BGM_.setLooping(true);
+//        BGM_ = MediaPlayer.create(zeCurrContext, R.raw.adventure_bgm);
+//        BGM_.start();
+//        BGM_.setLooping(true);
+        MusicSystem.getInstance().playBGM("Adventure");
         allTheSounds_ = new HashMap<>();
         audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
         playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
@@ -315,8 +316,9 @@ public class AdventureView extends GamePanelSurfaceView {
                 e.getCause();
             }
         }
-        BGM_.stop();    // Stopping the BGM
-        BGM_.release(); // Releasing the BGM for more memories
+//        BGM_.stop();    // Stopping the BGM
+//        BGM_.release(); // Releasing the BGM for more memories
+        MusicSystem.getInstance().stopCurrentBGM();
         for (int zeIDofSound : allTheSounds_.values())  // iterating through the hashmap and unload all sound effects
         {
             playSounds_.unload(zeIDofSound);
@@ -351,7 +353,7 @@ public class AdventureView extends GamePanelSurfaceView {
     SoundPool playSounds_;
     AudioAttributes audioAttributes_;
     HashMap<String, Integer> allTheSounds_;
-    MediaPlayer BGM_;
+    //MediaPlayer BGM_;
     Paint TimeColor, ProgressColor, CapacityColor;    // Color of the Timer
     int TotalNumOfGarbage;
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
