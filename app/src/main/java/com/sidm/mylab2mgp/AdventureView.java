@@ -114,6 +114,9 @@ public class AdventureView extends GamePanelSurfaceView {
         int Screenheight = metrics.heightPixels;
 
         pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/120);
+        EditFileForNameScore editFileForNameScore = new EditFileForNameScore(context);
+        //editFileForNameScore.UpdateTextFile("heloo", 66);
+        //editFileForNameScore.getTextInfo();
     }
 
     public void RenderGameplay(Canvas canvas) {

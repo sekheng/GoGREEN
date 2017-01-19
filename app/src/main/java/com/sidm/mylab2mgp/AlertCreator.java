@@ -19,8 +19,8 @@ public class AlertCreator {
     public boolean showAlert = false;
     AlertDialog.Builder alert = null;
     //week13 shared preference
-    SharedPreferences sharedPrefname;
-    SharedPreferences.Editor editName;
+    /*SharedPreferences sharedPrefname;
+    SharedPreferences.Editor editName;*/
     String Playername;
 
     SharedPreferences sharedPreferscore;
@@ -29,6 +29,16 @@ public class AlertCreator {
     //public Alert alert;
 
     public AlertCreator(Context context) {
+
+        /*sharedPrefname = context.getSharedPreferences("PlayerUSERID",Context.MODE_PRIVATE);
+        editName = sharedPrefname.edit();
+        Playername = "Player1";
+        Playername = sharedPrefname.getString("PlayerUSERID", "DEFAULT");*/
+
+        sharedPreferscore = context.getSharedPreferences("UserScore", Context.MODE_PRIVATE);
+        editScore = sharedPreferscore.edit();
+        Playerscore = 0;
+        Playerscore = sharedPreferscore.getFloat("UserScore", 0);
         alert = new AlertDialog.Builder(context);
 
         //allow the players to input their name
@@ -54,8 +64,8 @@ public class AlertCreator {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Playername = input.getText().toString();
-                editName.putString("PlayerUSERID", Playername);
-                editName.commit();
+                /*editName.putString("PlayerUSERID", Playername);
+                editName.commit();*/
 
                 /*Intent intent = new Intent();
                 intent.setClass(getContext(), ScorePage.class);
@@ -64,7 +74,7 @@ public class AlertCreator {
         });
     }
 
-    public void RunAlert() {
+    public void RunAlert(int milisec) {
         Handler handler = new Handler(Looper.getMainLooper());
         // Returns the application's main looper, which lives in the main thread of the application
 
@@ -74,7 +84,7 @@ public class AlertCreator {
             public void run() {
                 alert.show();
             }
-        }, 1000); // Delay in milliseconds until the runnable is executed
+        }, milisec); // 1000  Delay in milliseconds until the runnable is executed
     }
 }
 /*public class Alert {
