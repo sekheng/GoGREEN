@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by lenov on 06/01/2017.
@@ -30,13 +31,12 @@ public class MusicSystem extends ECSystem {
     }
     public boolean addSoundEffect(int zeID, String zeName)
     {
-        if (allTheSoundIndex_.containsKey(zeName))
+        if (!allTheSoundIndex_.containsKey(zeName))
         {
-
             allTheSoundIndex_.put(zeName, zeID);
             return true;
         }
-        return true;
+        return false;
     }
     public boolean addBGM(int zeID, String zeName)
     {
@@ -57,6 +57,17 @@ public class MusicSystem extends ECSystem {
         currentBGM_.setLooping(true);
         return true;
     }
+    public boolean loadSoundEffect(String zeID)
+    {
+        if (allTheSoundIndex_.containsKey(zeID))
+        {
+            int zeSoundIndex = allTheSoundIndex_.get(zeID);
+            allSound_.load(currentContext, zeSoundIndex, 1);
+            loadedSoundIndex_.add(zeSoundIndex);
+            return true;
+        }
+        return false;
+    }
     public boolean stopCurrentBGM()
     {
         if (currentBGM_ != null)
@@ -64,6 +75,19 @@ public class MusicSystem extends ECSystem {
             currentBGM_.pause();
             currentBGM_.reset();
             currentBGM_ = null;
+            return true;
+        }
+        return false;
+    }
+    public boolean stopAllSoundEffect()
+    {
+        if (loadedSoundIndex_.size() > 0)
+        {
+            for (int zeNumber : loadedSoundIndex_)
+            {
+                allSound_.unload(zeNumber);
+            }
+            allSound_.release();
             return true;
         }
         return false;
@@ -83,6 +107,7 @@ public class MusicSystem extends ECSystem {
         allTheBGMIndex_ = new HashMap<>();
         currentBGM_ = null;
         currentContext = null;
+        loadedSoundIndex_ = new LinkedList<>();
     }
 
     public float BGM_Volume_;
@@ -90,5 +115,6 @@ public class MusicSystem extends ECSystem {
     private AudioAttributes audioAttributes_;
     private MediaPlayer currentBGM_;
     private HashMap<String, Integer> allTheSoundIndex_, allTheBGMIndex_;
+    private LinkedList<Integer> loadedSoundIndex_;
     private Context currentContext;
 }
