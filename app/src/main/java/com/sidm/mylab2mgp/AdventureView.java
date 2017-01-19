@@ -113,7 +113,7 @@ public class AdventureView extends GamePanelSurfaceView {
         int Screenwidth = metrics.widthPixels;
         int Screenheight = metrics.heightPixels;
 
-        pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/90);
+        pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/120);
     }
 
     public void RenderGameplay(Canvas canvas) {

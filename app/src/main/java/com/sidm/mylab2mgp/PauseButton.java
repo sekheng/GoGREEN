@@ -78,11 +78,11 @@ public class PauseButton {
 
     void checkIfPressedPause(int pressX, int pressY)
     {
-        if(isPaused && CheckCollision(PauseB1.getX(),PauseB1.getY(), PauseB1.getWidth()/2, PauseB1.getHeight()/2,pressX,pressY,0,0))
+        if(isPaused && CheckCollision(PauseB1.getX(),PauseB1.getY(), PauseB1.getWidth(), PauseB1.getHeight(),pressX,pressY,0,0))
         {
             isPaused = false;
         }
-        else if(!isPaused && CheckCollision(PauseB2.getX(),PauseB2.getY(), PauseB2.getWidth()/2, PauseB2.getHeight()/2,pressX,pressY,0,0))
+        else if(!isPaused && CheckCollision(PauseB2.getX(),PauseB2.getY(), PauseB2.getWidth(), PauseB2.getHeight(),pressX,pressY,0,0))
         {
             isPaused = true;
         }
