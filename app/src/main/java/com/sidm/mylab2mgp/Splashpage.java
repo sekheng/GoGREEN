@@ -53,6 +53,7 @@ public class Splashpage extends Activity {
 
         MusicSystem.getInstance().setCurrentContext(this);
         MusicSystem.getInstance().addBGM(R.raw.adventure_bgm, "Adventure");
+        MusicSystem.getInstance().addSoundEffect(R.raw.pick_garbage, "GarbagePicked");
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 

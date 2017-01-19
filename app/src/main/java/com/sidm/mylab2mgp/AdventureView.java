@@ -1,19 +1,13 @@
 package com.sidm.mylab2mgp;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.media.AudioAttributes;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -35,10 +29,11 @@ public class AdventureView extends GamePanelSurfaceView {
 //        BGM_.start();
 //        BGM_.setLooping(true);
         MusicSystem.getInstance().playBGM("Adventure");
-        allTheSounds_ = new HashMap<>();
-        audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
-        playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
-        allTheSounds_.put("GarbagePicked", playSounds_.load(context, R.raw.pick_garbage, 1));
+        MusicSystem.getInstance().loadSoundEffect("GarbagePicked");
+//        allTheSounds_ = new HashMap<>();
+//        audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
+//        playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
+//        allTheSounds_.put("GarbagePicked", playSounds_.load(context, R.raw.pick_garbage, 1));
 
         getHolder().addCallback(this);
 
@@ -321,22 +316,23 @@ public class AdventureView extends GamePanelSurfaceView {
         }
 //        BGM_.stop();    // Stopping the BGM
 //        BGM_.release(); // Releasing the BGM for more memories
-        MusicSystem.getInstance().stopCurrentBGM();
-        for (int zeIDofSound : allTheSounds_.values())  // iterating through the hashmap and unload all sound effects
-        {
-            playSounds_.unload(zeIDofSound);
-        }
-        playSounds_.release();    // release the sound effects for memory
+//        for (int zeIDofSound : allTheSounds_.values())  // iterating through the hashmap and unload all sound effects
+//        {
+//            playSounds_.unload(zeIDofSound);
+//        }
+//        playSounds_.release();    // release the sound effects for memory
         MusicSystem.getInstance().stopCurrentBGM();
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
     {
-        if (allTheSounds_.containsKey(zeEvent))
-        {
-            playSounds_.play(allTheSounds_.get(zeEvent), 1.0f, 1.0f, 0, 0, 1.0f);
+//        if (allTheSounds_.containsKey(zeEvent))
+//        {
+//            playSounds_.play(allTheSounds_.get(zeEvent), 1.0f, 1.0f, 0, 0, 1.0f);
+//            return true;
+//        }
+        if (MusicSystem.getInstance().playSoundEffect(zeEvent))
             return true;
-        }
         return false;
     }
 
@@ -353,9 +349,9 @@ public class AdventureView extends GamePanelSurfaceView {
     Bitmap debuggingGrid;
     Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
-    SoundPool playSounds_;
-    AudioAttributes audioAttributes_;
-    HashMap<String, Integer> allTheSounds_;
+    //SoundPool playSounds_;
+    //AudioAttributes audioAttributes_;
+    //HashMap<String, Integer> allTheSounds_;
     //MediaPlayer BGM_;
     Paint TimeColor, ProgressColor, CapacityColor;    // Color of the Timer
     int TotalNumOfGarbage;
