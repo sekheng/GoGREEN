@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Created by lenov on 06/01/2017.
@@ -22,9 +21,9 @@ public class MusicSystem extends ECSystem {
 
     public boolean playSoundEffect(String zeName)
     {
-        if (allTheSoundIndex_.containsValue(zeName))
+        if (loadedSoundIndex_.containsKey(zeName))
         {
-            allSound_.play(allTheSoundIndex_.get(zeName), 1, 1, 1,0,1);
+            allSound_.play(loadedSoundIndex_.get(zeName), 1, 1, 1,0,1);
             return true;
         }
         return false;
@@ -59,11 +58,11 @@ public class MusicSystem extends ECSystem {
     }
     public boolean loadSoundEffect(String zeID)
     {
-        if (allTheSoundIndex_.containsKey(zeID))
+        // checking that the loaded sounds have not loaded it yet and Sound Index has the resource of that sound
+        if (!loadedSoundIndex_.containsKey(zeID) && allTheSoundIndex_.containsKey(zeID))
         {
             int zeSoundIndex = allTheSoundIndex_.get(zeID);
-            allSound_.load(currentContext, zeSoundIndex, 1);
-            loadedSoundIndex_.add(zeSoundIndex);
+            loadedSoundIndex_.put(zeID, allSound_.load(currentContext, zeSoundIndex, 1));
             return true;
         }
         return false;
@@ -83,11 +82,11 @@ public class MusicSystem extends ECSystem {
     {
         if (loadedSoundIndex_.size() > 0)
         {
-            for (int zeNumber : loadedSoundIndex_)
+            for (int zeNumber : loadedSoundIndex_.values())
             {
                 allSound_.unload(zeNumber);
             }
-            allSound_.release();
+            loadedSoundIndex_.clear();
             return true;
         }
         return false;
@@ -107,14 +106,13 @@ public class MusicSystem extends ECSystem {
         allTheBGMIndex_ = new HashMap<>();
         currentBGM_ = null;
         currentContext = null;
-        loadedSoundIndex_ = new LinkedList<>();
+        loadedSoundIndex_ = new HashMap<>();
     }
 
     public float BGM_Volume_;
     private SoundPool allSound_;
     private AudioAttributes audioAttributes_;
     private MediaPlayer currentBGM_;
-    private HashMap<String, Integer> allTheSoundIndex_, allTheBGMIndex_;
-    private LinkedList<Integer> loadedSoundIndex_;
+    private HashMap<String, Integer> allTheSoundIndex_, allTheBGMIndex_, loadedSoundIndex_;
     private Context currentContext;
 }

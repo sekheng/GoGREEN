@@ -25,15 +25,8 @@ public class AdventureView extends GamePanelSurfaceView {
 
         zeCurrContext = (Gamepage)context;
 
-//        BGM_ = MediaPlayer.create(zeCurrContext, R.raw.adventure_bgm);
-//        BGM_.start();
-//        BGM_.setLooping(true);
         MusicSystem.getInstance().playBGM("Adventure");
         MusicSystem.getInstance().loadSoundEffect("GarbagePicked");
-//        allTheSounds_ = new HashMap<>();
-//        audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
-//        playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
-//        allTheSounds_.put("GarbagePicked", playSounds_.load(context, R.raw.pick_garbage, 1));
 
         getHolder().addCallback(this);
 
@@ -81,13 +74,23 @@ public class AdventureView extends GamePanelSurfaceView {
         zeBackgroundPaint = new Paint();
         zeBackgroundPaint.setARGB(255,255,255,255);
 
-        short []zeNewSpace = {2,5}; // This means row 5, col 5
+        Short []zeNewSpace = {2,5}; // This means row 5, col 5
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
-        short []zeNewSpace2 = {5,2}; // This means row 5, col 5
+        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
 
-        short []anotherSpave = {2,2};
-        GarbageBuilder.getInstance().buildGarbageBin("ze Garbage Bin", anotherSpave);
+        LinkedList <Short> anotherSpace = new LinkedList<>();
+        anotherSpace.add((short)1);
+        anotherSpace.add((short)1);
+        GarbageBuilder.getInstance().buildPaperBin("ze paper Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        anotherSpace.clear();
+        anotherSpace.add((short)4);
+        anotherSpace.add((short)1);
+        GarbageBuilder.getInstance().buildGeneralBin("ze general Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        anotherSpace.clear();
+        anotherSpace.add((short)5);
+        anotherSpace.add((short)1);
+        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
         overallTime = timeLeft = 20.f;
 
         TimeColor = new Paint();
@@ -126,7 +129,7 @@ public class AdventureView extends GamePanelSurfaceView {
         canvas.drawBitmap(scaledbg, 0, 0, null);
         pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
-        //RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
+        RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         //RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
         //RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
         canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
@@ -215,7 +218,7 @@ public class AdventureView extends GamePanelSurfaceView {
                 zeCurrContext.onClick("lose!");
                 GridSystem.getInstance().Exit();
             }
-            else if (PlayerActiveStuff.amountOfGarbageCollected == 0 && AmountOfTrashLeft.isEmpty())
+            else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
             {
                 zeCurrContext.onClick("win!");
                 GridSystem.getInstance().Exit();
@@ -316,23 +319,12 @@ public class AdventureView extends GamePanelSurfaceView {
                 e.getCause();
             }
         }
-//        BGM_.stop();    // Stopping the BGM
-//        BGM_.release(); // Releasing the BGM for more memories
-//        for (int zeIDofSound : allTheSounds_.values())  // iterating through the hashmap and unload all sound effects
-//        {
-//            playSounds_.unload(zeIDofSound);
-//        }
-//        playSounds_.release();    // release the sound effects for memory
         MusicSystem.getInstance().stopCurrentBGM();
+        MusicSystem.getInstance().stopAllSoundEffect();
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
     {
-//        if (allTheSounds_.containsKey(zeEvent))
-//        {
-//            playSounds_.play(allTheSounds_.get(zeEvent), 1.0f, 1.0f, 0, 0, 1.0f);
-//            return true;
-//        }
         if (MusicSystem.getInstance().playSoundEffect(zeEvent))
             return true;
         return false;
@@ -351,14 +343,9 @@ public class AdventureView extends GamePanelSurfaceView {
     Bitmap debuggingGrid;
     Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
-    //SoundPool playSounds_;
-    //AudioAttributes audioAttributes_;
-    //HashMap<String, Integer> allTheSounds_;
-    //MediaPlayer BGM_;
     Paint TimeColor, ProgressColor, CapacityColor;    // Color of the Timer
     int TotalNumOfGarbage;
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     Toastbox theToastMessage;   // This is used for popping a message to tell the player to hurry up
-    //static boolean initializedThingsOnce = true;
     PauseButton pauseButton;
 }
