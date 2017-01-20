@@ -104,6 +104,7 @@ public class GarbageComponent extends Component {
         }
         return false;
     }
+    @Override
     public boolean onNotify(int zeEvent)
     {
         if (zeEvent >= 0)   // This will help set what is the type of garbage

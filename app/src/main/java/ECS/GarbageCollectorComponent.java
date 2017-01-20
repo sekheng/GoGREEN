@@ -23,12 +23,6 @@ public class GarbageCollectorComponent extends GarbageComponent {
         }
         return false;
     }
-    public boolean onNotify(int zeEvent)
-    {
-        if (zeEvent > 0)
-            scoreGive_ = zeEvent;
-        return false;
-    }
     public boolean setSpaces(short[] bunchOfStuff)
     {
         if (spacesToOccupy.isEmpty() && zeGrids != null)
