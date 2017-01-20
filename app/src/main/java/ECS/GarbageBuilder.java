@@ -14,7 +14,7 @@ public class GarbageBuilder {
         return zeBuilderNoOneCanAccessed_;
     }
 
-    public Entity buildSmalleGarbage(String zeName, short[] zeGridCoordinate, float timeToActivate)
+    public Entity buildSmalleGarbage(String zeName, Short[] zeGridCoordinate, float timeToActivate)
     {
         if (zeGridCoordinate.length == 0 || zeGridCoordinate.length > 2)
             return null;
@@ -28,6 +28,7 @@ public class GarbageBuilder {
         zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("RottenApple")));  // setting the images
         zeGarbage.setRowCol((byte)sizeOfGarbageRow, (byte)sizeOfGarbageCol);
         zeGarbage.zeGrids = allTheBoxes;
+        zeGarbage.onNotify(1);
         //zeGarbage.setSpaces(zeGridCoordinate);
         // Checking through the grids whether you can put the garbage in the grids or not, else put in the inactiveList
         if (timeToActivate < TransformationComponent.EPSILON && CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
@@ -49,20 +50,40 @@ public class GarbageBuilder {
         Garbage.add(zeEntity);
         return zeEntity;
     }
-    public Entity buildGarbageBin(String zeName, short []zeGridCoordinate)
+    public Entity buildPaperBin(String zeName, Short []zeGridCoordinate)
     {
-        Entity zeEntity = new Entity("Garbage Bin");
+        Entity zeEntity = new Entity(zeName);
         zeEntity.setComponent(new TransformationComponent());
         GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
         zeEntity.setComponent(zeCollector);
         zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("PaperBin")));
-        int row = 1, col = 1;
-        zeCollector.setRowCol((byte)row, (byte)col);
+        int row = zeGridCoordinate[0], col = zeGridCoordinate[1];
+        zeCollector.setRowCol((byte)1, (byte)1);
         zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;
-        zeCollector.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+        if (CheckingThroughEmptyBoxes(row, col, zeCollector))
+            zeCollector.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
         zeCollector.onNotify(thePlayer.getComponent("zePlayer"));
+        zeCollector.onNotify(0);
         activeList.add(zeEntity);
         return zeEntity;
+    }
+    public Entity buildGeneralBin(String zeName, Short []zeGridCoordinate)
+    {
+        Entity zeEntity = new Entity(zeName);
+        zeEntity.setComponent(new TransformationComponent());
+        GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
+        zeEntity.setComponent(zeCollector);
+        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("GeneralBin")));
+        int row = zeGridCoordinate[0], col = zeGridCoordinate[1];
+        zeCollector.setRowCol((byte)1, (byte)1);
+        zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;
+        if (CheckingThroughEmptyBoxes(row, col, zeCollector))
+            zeCollector.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+        zeCollector.onNotify(thePlayer.getComponent("zePlayer"));
+        zeCollector.onNotify(1);
+        activeList.add(zeEntity);
+        return zeEntity;
+
     }
     public void setObjectPools(LinkedList<Entity> zeActive, LinkedList<Entity> zeInactive, LinkedList<Entity> zeGarbage, LinkedList<Entity> zeBoxes, Entity zePlayer)
     {

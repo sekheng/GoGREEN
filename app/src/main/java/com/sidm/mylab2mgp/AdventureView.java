@@ -74,13 +74,19 @@ public class AdventureView extends GamePanelSurfaceView {
         zeBackgroundPaint = new Paint();
         zeBackgroundPaint.setARGB(255,255,255,255);
 
-        short []zeNewSpace = {2,5}; // This means row 5, col 5
+        Short []zeNewSpace = {2,5}; // This means row 5, col 5
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
-        short []zeNewSpace2 = {5,2}; // This means row 5, col 5
+        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
         GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
 
-        short []anotherSpave = {2,2};
-        GarbageBuilder.getInstance().buildGarbageBin("ze Garbage Bin", anotherSpave);
+        LinkedList <Short> anotherSpace = new LinkedList<>();
+        anotherSpace.add((short)1);
+        anotherSpace.add((short)1);
+        GarbageBuilder.getInstance().buildPaperBin("ze paper Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        anotherSpace.clear();
+        anotherSpace.add((short)4);
+        anotherSpace.add((short)1);
+        GarbageBuilder.getInstance().buildGeneralBin("ze paper Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
         overallTime = timeLeft = 20.f;
 
         TimeColor = new Paint();
