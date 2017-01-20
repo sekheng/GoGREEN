@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,59 +21,66 @@ import java.net.URL;
 
 public class EditFileForNameScore {
 
-    Context context;
-    File file;
-    FileWriter saveFile;
+    StringBuilder str;
+
+
     public EditFileForNameScore(Context context)
     {
-        this.context = context;
-        //ClassLoader classLoader = this.getClass().getClassLoader();
-
-        String x = context.getResources().getResourcePackageName(R.raw.scores);
         try {
-           // OutputStream gg = new OutputStreamWriter((context.getAssets().open("scores.txt")))
-            file = new File((context.getAssets().open("scores.txt")).toString());
-            if (!file.exists()) {
-                file.createNewFile();//qw lied to me about tis
-            }
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("highscores.txt", context.MODE_PRIVATE));//create file if dont have
+            outputStreamWriter.close();
+        }
+            catch (IOException io) {
 
-        }
-        catch (IOException io) {
-            int i = 0;
-        }
+            }
     }
 
     //since i dont think we will keep updating the file with the score, im gonna
-    public void UpdateTextFile(String name, int score)
+    public void UpdateTextFile(String name, int score, Context context)
     {
-
        try {
-
-           saveFile = new FileWriter(file.getAbsoluteFile());
-           saveFile.write(name + "\n");
-           saveFile.write(score + "\n");
-
-           saveFile.close();
+           OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("highscores.txt",context.MODE_APPEND));//open the fill to read, doesnt overwrite
+           str = new StringBuilder(name);//store the name then append then write to file
+           str.append("-" + score+"\n");
+           outputStreamWriter.write(str.toString());
+           outputStreamWriter.close();
        }
        catch (IOException io) {
-           int fml = 0;
+
        }
 
 
 
 
     }
-    public void getTextInfo()
+    public void UpdateListOfNameAndScore(Context context)
     {
         try {
-            String x,y;//works
-            BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("scores.txt")));
-            x = reader.readLine();
-            y = reader.readLine();
-            reader.close();
+           InputStream inputStream = context.openFileInput("highscores.txt");
+            if(inputStream != null)
+            {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                String temp = "";
+                int numberOfNames = 0;
+                while((temp = bufferedReader.readLine()) != null)
+                {
+                    String[] stringSplit = temp.split("-");
+                    int tempscore = Integer.parseInt(stringSplit[1]);
+                    NameAndScoreStorer.getInstance().getList().add(new NameAndScore(stringSplit[0], tempscore));
+                    numberOfNames += 1;
+                }
+                inputStream.close();
+                NameAndScoreStorer.getInstance().setNumberOfScores(numberOfNames);
+            }
+        }
+        catch(FileNotFoundException fnf)
+        {
+
         }
         catch (IOException io) {
-            int saded = 0;
+
         }
     }
 }

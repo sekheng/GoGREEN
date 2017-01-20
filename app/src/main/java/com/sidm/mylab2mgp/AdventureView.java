@@ -110,8 +110,10 @@ public class AdventureView extends GamePanelSurfaceView {
 
         pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/120);
         EditFileForNameScore editFileForNameScore = new EditFileForNameScore(context);
-        //editFileForNameScore.UpdateTextFile("heloo", 66);
-        //editFileForNameScore.getTextInfo();
+        editFileForNameScore.UpdateTextFile("heloo", 66, context);
+        editFileForNameScore.UpdateTextFile("he2oo", 61, context);
+        editFileForNameScore.UpdateTextFile("he1o", 16, context);
+        editFileForNameScore.UpdateListOfNameAndScore(context);
     }
 
     public void RenderGameplay(Canvas canvas) {

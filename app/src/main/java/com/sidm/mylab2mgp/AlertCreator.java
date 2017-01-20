@@ -11,12 +11,16 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.widget.EditText;
 
+import ECS.GridSystem;
+
 /**
  * Created by - on 19/1/2017.
  */
 
 public class AlertCreator {
     public boolean showAlert = false;
+    public boolean winOrLose = false;
+
     AlertDialog.Builder alert = null;
     //week13 shared preference
     /*SharedPreferences sharedPrefname;
@@ -26,6 +30,7 @@ public class AlertCreator {
     SharedPreferences sharedPreferscore;
     SharedPreferences.Editor editScore;
     float Playerscore;
+    Gamepage zeCurrContext = null;
     //public Alert alert;
 
     public AlertCreator(Context context) {
@@ -34,6 +39,8 @@ public class AlertCreator {
         editName = sharedPrefname.edit();
         Playername = "Player1";
         Playername = sharedPrefname.getString("PlayerUSERID", "DEFAULT");*/
+
+        zeCurrContext = (Gamepage)context;
 
         sharedPreferscore = context.getSharedPreferences("UserScore", Context.MODE_PRIVATE);
         editScore = sharedPreferscore.edit();
@@ -56,7 +63,9 @@ public class AlertCreator {
 
         //setup the alert dialog
         //set up the alert dialog
-        alert.setMessage("game over?!");
+        alert.setTitle("game over?!");
+        alert.setIcon(R.drawable.gogreenlogo);
+        alert.setMessage("Enter your Name");
         alert.setCancelable(false);
         alert.setView(input);
 
@@ -67,6 +76,16 @@ public class AlertCreator {
                 /*editName.putString("PlayerUSERID", Playername);
                 editName.commit();*/
 
+                if(winOrLose)
+                {
+                    zeCurrContext.onClick("lose!");
+                    GridSystem.getInstance().Exit();
+                }
+                else
+                {
+                    zeCurrContext.onClick("win!");
+                    GridSystem.getInstance().Exit();
+                }
                 /*Intent intent = new Intent();
                 intent.setClass(getContext(), ScorePage.class);
                 activityTracker.startActivity(intent);*/
