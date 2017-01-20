@@ -16,6 +16,7 @@ public class GarbageComponent extends Component {
         zePlayer = null;
         row = col = 0;
         timeToSpawn = 0;
+        typeOfGarbage = 0;
     }
     public boolean setSpaces(LinkedList<Short> zeSpace)
     {
@@ -70,7 +71,8 @@ public class GarbageComponent extends Component {
     {
         if (zeEvent.equalsIgnoreCase("interact"))
         {
-            if (zePlayer.onNotify(scoreGive_)) {
+            String zeValue = "garbage|" + typeOfGarbage + "|" + scoreGive_; // Sending "garbage|TYPE|SCORE"
+            if (zePlayer.onNotify(zeValue)) {
                 owner_.turnOnFlag_ = 0;
                 for (Short zeShort : spacesToOccupy) {
                     zeGrids.get(zeShort.intValue()).getComponent("zeBox").onNotify("reset");

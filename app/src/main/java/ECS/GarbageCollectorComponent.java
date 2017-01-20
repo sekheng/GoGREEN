@@ -12,12 +12,13 @@ public class GarbageCollectorComponent extends GarbageComponent {
         name_ = "zeGarbageBin";
         spacesToOccupy = new LinkedList<Short>();
         zeGrids = null;
+        typeOfGarbage = 0;
     }
     public boolean onNotify(String zeEvent)
     {
         if (zeEvent.equalsIgnoreCase("interact"))
         {
-            zePlayer.onNotify("emptytrash");
+            zePlayer.onNotify("emptytrash|"+typeOfGarbage);
             return true;
         }
         return false;

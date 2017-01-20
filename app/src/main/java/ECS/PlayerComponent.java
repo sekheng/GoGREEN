@@ -2,6 +2,8 @@ package ECS;
 
 import com.sidm.mylab2mgp.GamePanelSurfaceView;
 
+import java.util.LinkedList;
+
 /**
  * Created by lenov on 05/12/2016.
  */
@@ -12,10 +14,11 @@ public class PlayerComponent extends Component {
         name_ = "zePlayer";
         whichBoxPlayerIn = null;
         score_ = 0;
-        amountOfGarbageCollected = 0;
+        //amountOfGarbageCollected = 0;
         startUpdating = false;
-        currCapacity = 0;
+        //currCapacity = 0;
         maxCapacity = 1;
+        carryGarbageType = new LinkedList<>();
     }
     public void Update(float dt)
     {
@@ -47,27 +50,63 @@ public class PlayerComponent extends Component {
             startUpdating = true;
             return true;
         }
-        else if (zeEvent.equalsIgnoreCase("emptytrash"))
+        else if (zeEvent.contains("emptytrash"))    // Checking whether is it meant to empty Trash
         {
-            score_ += amountOfGarbageCollected;
-            amountOfGarbageCollected = 0;
-            currCapacity = 0;
+//            score_ += amountOfGarbageCollected;
+//            amountOfGarbageCollected = 0;
+            //currCapacity = 0;
+            //carryGarbageType.clear();
+            // Trying to get type of bin from "emptytrash|TYPE"
+            int binFirstOr = zeEvent.indexOf('|');
+            String typeOfBinStr = zeEvent.substring(binFirstOr+1);
+            LinkedList<Integer> whichArrayToRemove = new LinkedList<>();    // Need to remove the elements in carryGarbageType
+            for (int num = carryGarbageType.size()-1; num >= 0; --num)  // Iterating from back to front!
+            {
+                int firstOR = carryGarbageType.get(num).indexOf('|');   // Get '|' from "TYPE|SCORE"
+                String typeGarbageStr = carryGarbageType.get(num).substring(0, firstOR);
+                if (typeGarbageStr.equalsIgnoreCase(typeOfBinStr))
+                {
+                    // Get the score and add the score
+                    String garbageScoreStr = carryGarbageType.get(num).substring(firstOR+1);
+                    score_ += Float.parseFloat(garbageScoreStr);
+                    whichArrayToRemove.add(num);
+                }
+            }
+            for (int zeIndexRemoved : whichArrayToRemove)
+                carryGarbageType.remove(zeIndexRemoved);
             return true;
         }
-        return false;
-    }
-    public boolean onNotify(float zeEvent)
-    {
-        if (zeEvent > TransformationComponent.EPSILON && currCapacity + 1 <= maxCapacity)
+        else if (zeEvent.contains("garbage") && carryGarbageType.size() < maxCapacity)   // Checking whether is it a garbage
         {
-            amountOfGarbageCollected += zeEvent;
-            currCapacity += 1;  // lets put 1 because ain't no time to complex stuff
+            // trying to get the "garbage|TYPE|SCORE"
+            //                           ^
+            int firstOR = zeEvent.indexOf('|');
+//            int secondOR = zeEvent.indexOf('|', firstOR+1);
+//            String typeGarbageStr = zeEvent.substring(firstOR+1, secondOR);
+//            String scoreGarbageStr = zeEvent.substring(secondOR+1);
+//            carryGarbageType.add(Byte.parseByte(typeGarbageStr));
+            //amountOfGarbageCollected += Float.parseFloat(scoreGarbageStr);
+            carryGarbageType.add(zeEvent.substring(firstOR+1));
             if (theCurrentGamePlayerOn != null)
             {
                 theCurrentGamePlayerOn.onNotify("GarbagePicked");
             }
             return true;
         }
+        return false;
+    }
+    public boolean onNotify(float zeEvent)
+    {
+//        if (zeEvent > TransformationComponent.EPSILON && carryGarbageType.size() + 1 <= maxCapacity)
+//        {
+//            amountOfGarbageCollected += zeEvent;
+//            //currCapacity += 1;  // lets put 1 because ain't no time to complex stuff
+//            if (theCurrentGamePlayerOn != null)
+//            {
+//                theCurrentGamePlayerOn.onNotify("GarbagePicked");
+//            }
+//            return true;
+//        }
         return false;
     }
     public boolean onNotify(int zeEvent)
@@ -79,14 +118,15 @@ public class PlayerComponent extends Component {
         return false;
     }
     // This is for checking on how much capacity of garbage is the player carrying
-    public float gettingThePercentageOfFullCapacity()
-    {
-        return (float)(currCapacity/maxCapacity);
-    }
+    //public float gettingThePercentageOfFullCapacity()
+//    {
+//        return (float)(currCapacity/maxCapacity);
+//    }
 
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating;
-    public float amountOfGarbageCollected, score_;
+    public float score_;
     public GamePanelSurfaceView theCurrentGamePlayerOn = null;
-    private short currCapacity, maxCapacity;    // This is for checking how much space the player has left
+    private short maxCapacity;    // This is for checking how much space the player has left
+    public LinkedList<String> carryGarbageType;   // What type of garbage inside
 }

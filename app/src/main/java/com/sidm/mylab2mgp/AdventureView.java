@@ -117,7 +117,7 @@ public class AdventureView extends GamePanelSurfaceView {
         canvas.drawBitmap(scaledbg, 0, 0, null);
         pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
-        //RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
+        RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         //RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
         //RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
         canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
@@ -127,12 +127,12 @@ public class AdventureView extends GamePanelSurfaceView {
                 1, 1, TimeColor
                 );  // Displaying time in rectangle
         // Drawing the capacity of the garbage
-        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
-                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
-                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
-                1,1,CapacityColor
-        );
+//        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
+//                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+//                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
+//                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+//                1,1,CapacityColor
+//        );
         float remainingGarbage = TotalNumOfGarbage - AmountOfTrashLeft.size();
         canvas.drawRoundRect(0.0f,  // because at the very left of the screen
                 0.0f,   // because at the very top of the screen
@@ -206,7 +206,7 @@ public class AdventureView extends GamePanelSurfaceView {
                 zeCurrContext.onClick("lose!");
                 GridSystem.getInstance().Exit();
             }
-            else if (PlayerActiveStuff.amountOfGarbageCollected == 0 && AmountOfTrashLeft.isEmpty())
+            else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
             {
                 zeCurrContext.onClick("win!");
                 GridSystem.getInstance().Exit();
