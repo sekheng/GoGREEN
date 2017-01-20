@@ -25,15 +25,8 @@ public class AdventureView extends GamePanelSurfaceView {
 
         zeCurrContext = (Gamepage)context;
 
-//        BGM_ = MediaPlayer.create(zeCurrContext, R.raw.adventure_bgm);
-//        BGM_.start();
-//        BGM_.setLooping(true);
         MusicSystem.getInstance().playBGM("Adventure");
         MusicSystem.getInstance().loadSoundEffect("GarbagePicked");
-//        allTheSounds_ = new HashMap<>();
-//        audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
-//        playSounds_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(2).build();
-//        allTheSounds_.put("GarbagePicked", playSounds_.load(context, R.raw.pick_garbage, 1));
 
         getHolder().addCallback(this);
 
@@ -314,23 +307,12 @@ public class AdventureView extends GamePanelSurfaceView {
                 e.getCause();
             }
         }
-//        BGM_.stop();    // Stopping the BGM
-//        BGM_.release(); // Releasing the BGM for more memories
-//        for (int zeIDofSound : allTheSounds_.values())  // iterating through the hashmap and unload all sound effects
-//        {
-//            playSounds_.unload(zeIDofSound);
-//        }
-//        playSounds_.release();    // release the sound effects for memory
         MusicSystem.getInstance().stopCurrentBGM();
+        MusicSystem.getInstance().stopAllSoundEffect();
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
     {
-//        if (allTheSounds_.containsKey(zeEvent))
-//        {
-//            playSounds_.play(allTheSounds_.get(zeEvent), 1.0f, 1.0f, 0, 0, 1.0f);
-//            return true;
-//        }
         if (MusicSystem.getInstance().playSoundEffect(zeEvent))
             return true;
         return false;
@@ -349,14 +331,9 @@ public class AdventureView extends GamePanelSurfaceView {
     Bitmap debuggingGrid;
     Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
-    //SoundPool playSounds_;
-    //AudioAttributes audioAttributes_;
-    //HashMap<String, Integer> allTheSounds_;
-    //MediaPlayer BGM_;
     Paint TimeColor, ProgressColor, CapacityColor;    // Color of the Timer
     int TotalNumOfGarbage;
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     Toastbox theToastMessage;   // This is used for popping a message to tell the player to hurry up
-    //static boolean initializedThingsOnce = true;
     PauseButton pauseButton;
 }
