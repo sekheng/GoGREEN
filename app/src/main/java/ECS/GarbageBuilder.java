@@ -85,6 +85,24 @@ public class GarbageBuilder {
         return zeEntity;
 
     }
+    public Entity buildPlasticBin(String zeName, Short []zeGridCoordinate)
+    {
+        Entity zeEntity = new Entity(zeName);
+        zeEntity.setComponent(new TransformationComponent());
+        GarbageCollectorComponent zeCollector = new GarbageCollectorComponent();
+        zeEntity.setComponent(zeCollector);
+        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("PlasticBin")));
+        int row = zeGridCoordinate[0], col = zeGridCoordinate[1];
+        zeCollector.setRowCol((byte)1, (byte)1);
+        zeCollector.zeGrids = GridSystem.getInstance().allTheBoxes;
+        if (CheckingThroughEmptyBoxes(row, col, zeCollector))
+            zeCollector.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+        zeCollector.onNotify(thePlayer.getComponent("zePlayer"));
+        zeCollector.onNotify(2);
+        activeList.add(zeEntity);
+        return zeEntity;
+
+    }
     public void setObjectPools(LinkedList<Entity> zeActive, LinkedList<Entity> zeInactive, LinkedList<Entity> zeGarbage, LinkedList<Entity> zeBoxes, Entity zePlayer)
     {
         activeList = zeActive;

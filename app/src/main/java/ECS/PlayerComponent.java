@@ -95,20 +95,6 @@ public class PlayerComponent extends Component {
         }
         return false;
     }
-    public boolean onNotify(float zeEvent)
-    {
-//        if (zeEvent > TransformationComponent.EPSILON && carryGarbageType.size() + 1 <= maxCapacity)
-//        {
-//            amountOfGarbageCollected += zeEvent;
-//            //currCapacity += 1;  // lets put 1 because ain't no time to complex stuff
-//            if (theCurrentGamePlayerOn != null)
-//            {
-//                theCurrentGamePlayerOn.onNotify("GarbagePicked");
-//            }
-//            return true;
-//        }
-        return false;
-    }
     public boolean onNotify(int zeEvent)
     {
         if (zeEvent > 0) {
@@ -118,10 +104,10 @@ public class PlayerComponent extends Component {
         return false;
     }
     // This is for checking on how much capacity of garbage is the player carrying
-    //public float gettingThePercentageOfFullCapacity()
-//    {
-//        return (float)(currCapacity/maxCapacity);
-//    }
+    public float gettingThePercentageOfFullCapacity()
+    {
+        return (float)(carryGarbageType.size()/maxCapacity);
+    }
 
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating;

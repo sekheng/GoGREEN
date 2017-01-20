@@ -86,7 +86,11 @@ public class AdventureView extends GamePanelSurfaceView {
         anotherSpace.clear();
         anotherSpace.add((short)4);
         anotherSpace.add((short)1);
-        GarbageBuilder.getInstance().buildGeneralBin("ze paper Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        GarbageBuilder.getInstance().buildGeneralBin("ze general Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        anotherSpace.clear();
+        anotherSpace.add((short)5);
+        anotherSpace.add((short)1);
+        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
         overallTime = timeLeft = 20.f;
 
         TimeColor = new Paint();
@@ -133,12 +137,12 @@ public class AdventureView extends GamePanelSurfaceView {
                 1, 1, TimeColor
                 );  // Displaying time in rectangle
         // Drawing the capacity of the garbage
-//        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
-//                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-//                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
-//                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
-//                1,1,CapacityColor
-//        );
+        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
+                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
+                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                1,1,CapacityColor
+        );
         float remainingGarbage = TotalNumOfGarbage - AmountOfTrashLeft.size();
         canvas.drawRoundRect(0.0f,  // because at the very left of the screen
                 0.0f,   // because at the very top of the screen

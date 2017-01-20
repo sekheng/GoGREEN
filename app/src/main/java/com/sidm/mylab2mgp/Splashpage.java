@@ -51,6 +51,9 @@ public class Splashpage extends Activity {
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.paperbin), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "PaperBin");
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.small_trash), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY * 2, true), "RottenApple");
         GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.generalbin), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "GeneralBin");
+        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.plasticbin), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "PlasticBin");
+        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.wastepaper), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "WastePaper");
+        GraphicsSystem.getInstance().putImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.plasticbottle), (int)GridSystem.getInstance().getAverageBoxSize().scaleX, (int)GridSystem.getInstance().getAverageBoxSize().scaleY, true), "PlasticBottle");
 
         MusicSystem.getInstance().setCurrentContext(this);
         MusicSystem.getInstance().addBGM(R.raw.adventure_bgm, "Adventure");

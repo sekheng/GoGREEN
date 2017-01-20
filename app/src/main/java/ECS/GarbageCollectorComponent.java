@@ -23,17 +23,4 @@ public class GarbageCollectorComponent extends GarbageComponent {
         }
         return false;
     }
-    public boolean setSpaces(short[] bunchOfStuff)
-    {
-        if (spacesToOccupy.isEmpty() && zeGrids != null)
-        {
-            for (short num : bunchOfStuff)
-            {
-                spacesToOccupy.add(num);
-                zeGrids.get(num).getComponent("zeBox").onNotify(this);
-            }
-            return true;
-        }
-        return false;
-    }
 }
