@@ -92,6 +92,8 @@ public class AdventureView extends GamePanelSurfaceView {
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
+        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
         overallTime = timeLeft = 20.f;
 
         TimeColor = new Paint();
@@ -101,6 +103,12 @@ public class AdventureView extends GamePanelSurfaceView {
         TotalNumOfGarbage = AmountOfTrashLeft.size();
         CapacityColor = new Paint();
         CapacityColor.setARGB(220, 206, 14, 14);
+        PlasticGarbageColor = new Paint();
+        PlasticGarbageColor.setARGB(220, 206, 6, 6);
+        GeneralGarbageColor = new Paint();
+        GeneralGarbageColor.setARGB(220, 109, 224, 8);
+        PaperGarbageColor = new Paint();
+        PaperGarbageColor.setARGB(220, 8, 181, 224);
 
         gettingRandomStuff = new Random();
 
@@ -143,13 +151,49 @@ public class AdventureView extends GamePanelSurfaceView {
                 (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
                 1, 1, TimeColor
                 );  // Displaying time in rectangle
-        // Drawing the capacity of the garbage
-        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
+//        // Drawing the capacity of the garbage
+//        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
+//                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+//                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
+//                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+//                1,1,CapacityColor
+//        );
+        short numberOfGarbageCarried = 0;   // Need to count how many garbage the player carried
+        float howMuchSpaceAGrid = (zeOverallBounds.scaleX * 0.5f) / PlayerActiveStuff.MaxCapacity();    // Getting the Average size for a grid GUI
+        for (String zeTypeOfGarbage : PlayerActiveStuff.carryGarbageType)   // Deciphering the type of garbage then give the color
+        {
+            ++numberOfGarbageCarried;
+            // We need to get the TYPE from "TYPE|SCORE"
+            int firstOR = zeTypeOfGarbage.indexOf('|');
+            byte zeType = Byte.parseByte(zeTypeOfGarbage.substring(0, firstOR));
+            switch (zeType)
+            {
+                case 0: // This means it is Paper waste
+        canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
                 zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
+                (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
                 (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
-                1,1,CapacityColor
+                1,1,PaperGarbageColor
         );
+                    break;
+                case 1: // this means general waste
+                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+                            zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                            (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
+                            (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                            1,1,GeneralGarbageColor
+                    );
+                    break;
+                case 2: // this means plastic waste
+                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+                            zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                            (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
+                            (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                            1,1,PlasticGarbageColor
+                    );
+                    break;
+            }
+        }
         float remainingGarbage = TotalNumOfGarbage - AmountOfTrashLeft.size();
         canvas.drawRoundRect(0.0f,  // because at the very left of the screen
                 0.0f,   // because at the very top of the screen
@@ -364,7 +408,7 @@ public class AdventureView extends GamePanelSurfaceView {
     Bitmap debuggingGrid;
     Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
-    Paint TimeColor, ProgressColor, CapacityColor;    // Color of the Timer
+    Paint TimeColor, ProgressColor, CapacityColor, PlasticGarbageColor, GeneralGarbageColor, PaperGarbageColor;    // Color of the Timer
     int TotalNumOfGarbage;
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     Toastbox theToastMessage;   // This is used for popping a message to tell the player to hurry up

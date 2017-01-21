@@ -17,7 +17,7 @@ public class PlayerComponent extends Component {
         //amountOfGarbageCollected = 0;
         startUpdating = false;
         //currCapacity = 0;
-        maxCapacity = 1;
+        maxCapacity = 2;
         carryGarbageType = new LinkedList<>();
     }
     public void Update(float dt)
@@ -107,6 +107,10 @@ public class PlayerComponent extends Component {
     public float gettingThePercentageOfFullCapacity()
     {
         return (float)(carryGarbageType.size()/maxCapacity);
+    }
+    public short MaxCapacity()
+    {
+        return maxCapacity;
     }
 
     public float getScore_()

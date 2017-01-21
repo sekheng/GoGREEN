@@ -50,6 +50,77 @@ public class GarbageBuilder {
         Garbage.add(zeEntity);
         return zeEntity;
     }
+    public Entity buildPlasticBottleGarbage(String zeName, Short[] zeGridCoordinate, float timeToActivate)
+    {
+        if (zeGridCoordinate.length == 0 || zeGridCoordinate.length > 2)
+            return null;
+        short row = 0, col = 0, sizeOfGarbageRow = 1, sizeOfGarbageCol = 1;
+        row = zeGridCoordinate[0];
+        col = zeGridCoordinate[1];
+        Entity zeEntity = new Entity(zeName);
+        zeEntity.setComponent(new TransformationComponent());
+        GarbageComponent zeGarbage = new GarbageComponent();
+        zeEntity.setComponent(zeGarbage);
+        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("PlasticBottle")));  // setting the images
+        zeGarbage.setRowCol((byte)sizeOfGarbageRow, (byte)sizeOfGarbageCol);
+        zeGarbage.zeGrids = allTheBoxes;
+        zeGarbage.onNotify(2);
+        // Checking through the grids whether you can put the garbage in the grids or not, else put in the inactiveList
+        if (timeToActivate < TransformationComponent.EPSILON && CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
+        {
+            zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+            activeList.add(zeEntity);
+        }
+        else
+        {
+            if (timeToActivate <= TransformationComponent.EPSILON)  // Need to make sure that the timeToActivate isn't 0. If it is, set the time to spawn to be 1
+                zeGarbage.timeToSpawn = 1;
+            else
+                zeGarbage.timeToSpawn = timeToActivate;
+            zeEntity.turnOnFlag_ = 0;// Need to turn off the active flag of the entity
+            innactiveList.add(zeEntity);
+        }
+        zeGarbage.onNotify(150.f);
+        zeGarbage.onNotify(thePlayer.getComponent("zePlayer"));
+        Garbage.add(zeEntity);
+        return zeEntity;
+    }
+    public Entity buildWastePaperGarbage(String zeName, Short[] zeGridCoordinate, float timeToActivate)
+    {
+        if (zeGridCoordinate.length == 0 || zeGridCoordinate.length > 2)
+            return null;
+        short row = 0, col = 0, sizeOfGarbageRow = 1, sizeOfGarbageCol = 1;
+        row = zeGridCoordinate[0];
+        col = zeGridCoordinate[1];
+        Entity zeEntity = new Entity(zeName);
+        zeEntity.setComponent(new TransformationComponent());
+        GarbageComponent zeGarbage = new GarbageComponent();
+        zeEntity.setComponent(zeGarbage);
+        zeEntity.setComponent(new BitComponent(GraphicsSystem.getInstance().getImage("WastePaper")));  // setting the images
+        zeGarbage.setRowCol((byte)sizeOfGarbageRow, (byte)sizeOfGarbageCol);
+        zeGarbage.zeGrids = allTheBoxes;
+        zeGarbage.onNotify(0);
+        // Checking through the grids whether you can put the garbage in the grids or not, else put in the inactiveList
+        if (timeToActivate < TransformationComponent.EPSILON && CheckingThroughEmptyBoxes(row, col, sizeOfGarbageRow, sizeOfGarbageCol))
+        {
+            zeGarbage.setSpaces((short)(col + row*GridSystem.getInstance().getNumOfBoxesPerCol()));
+            activeList.add(zeEntity);
+        }
+        else
+        {
+            if (timeToActivate <= TransformationComponent.EPSILON)  // Need to make sure that the timeToActivate isn't 0. If it is, set the time to spawn to be 1
+                zeGarbage.timeToSpawn = 1;
+            else
+                zeGarbage.timeToSpawn = timeToActivate;
+            zeEntity.turnOnFlag_ = 0;// Need to turn off the active flag of the entity
+            innactiveList.add(zeEntity);
+        }
+        zeGarbage.onNotify(150.f);
+        zeGarbage.onNotify(thePlayer.getComponent("zePlayer"));
+        Garbage.add(zeEntity);
+        return zeEntity;
+    }
+
     public Entity buildPaperBin(String zeName, Short []zeGridCoordinate)
     {
         Entity zeEntity = new Entity(zeName);
