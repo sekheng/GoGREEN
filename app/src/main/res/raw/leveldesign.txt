@@ -1,0 +1,6 @@
+[TotalLevel]
+NumLevels="2"
+[Level1]
+Time="20.0"
+[Level2]
+Time="50.0"

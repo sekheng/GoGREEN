@@ -60,6 +60,8 @@ public class Splashpage extends Activity {
         MusicSystem.getInstance().addSoundEffect(R.raw.pick_garbage, "GarbagePicked");
         MusicSystem.getInstance().addSoundEffect(R.raw.remove_trash, "RemoveTrash");
 
+        LevelLoadSystem.setContext(this);
+
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 
         imageView_params .height = screenwidth / 5;

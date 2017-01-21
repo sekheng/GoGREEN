@@ -5,7 +5,7 @@ package ECS;
  */
 
 public class ECSystem implements BaseInterface {
-    ECSystem()
+    protected ECSystem()
     {
         name_ = "";
     }
@@ -21,5 +21,9 @@ public class ECSystem implements BaseInterface {
     {
 
     }
-    String name_;
+    String getName()
+    {
+        return name_;
+    }
+    protected String name_;
 }
