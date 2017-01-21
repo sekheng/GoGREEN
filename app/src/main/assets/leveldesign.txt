@@ -1,7 +1,7 @@
 [TotalLevel]
 NumLevels="2"
 [Level1]
-Time="20.0"
+Time="30.0"
 General1="3,3|0"
 General2="3,5|0"
 Plastic1="5,5|2"
