@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -19,7 +22,7 @@ import ECS.*;
  * Created by lenov on 03/12/2016.
  */
 
-public class AdventureView extends GamePanelSurfaceView {
+public class AdventureView extends GamePanelSurfaceView implements SensorEventListener {
     public AdventureView (Context context){
 
         // Context is the current state of the application/object
@@ -130,7 +133,8 @@ public class AdventureView extends GamePanelSurfaceView {
 
         alertCreator = new AlertCreator(context);
 
-
+        theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
+        theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -143,7 +147,7 @@ public class AdventureView extends GamePanelSurfaceView {
         canvas.drawBitmap(scaledbg, 0, 0, null);
         pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
-        RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
+        //RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         //RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
         //RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
         canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
@@ -256,6 +260,13 @@ public class AdventureView extends GamePanelSurfaceView {
         playerBits.draw(canvas);
         playerBits.setPosX((int)playerTransform.posX);
         playerBits.setPosY((int)playerTransform.posY);
+
+        // TODO: Remove when not debugging accelerometer
+        for (int num = 0; num < SensorVars.length; ++num)
+        {
+            RenderTextOnScreen(canvas, "Value"+num+":"+SensorVars[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 2) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
+        }
+        // TODO: Remove when not debugging accelerometer
     }
 
 
@@ -394,6 +405,17 @@ public class AdventureView extends GamePanelSurfaceView {
         return false;
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        SensorVars = sensorEvent.values;
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+        // Only use it when u want your sensor to be very accurate
+    }
+
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
     Entity thePlayer;
     TransformationComponent playerTransform;
@@ -414,7 +436,7 @@ public class AdventureView extends GamePanelSurfaceView {
     PauseButton pauseButton;
     // Creating and using accelerometer
     private SensorManager theSensor;
-    private float SensorVars[] = new float[3];
+    private float SensorVars[] = new float[3], PreviousValues[] = new float[3];
     SharedPreferences sharedPreferscore;
     SharedPreferences.Editor editScore;
     int Playerscore;

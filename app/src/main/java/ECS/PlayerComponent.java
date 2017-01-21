@@ -41,6 +41,7 @@ public class PlayerComponent extends Component {
             whichBoxPlayerIn = (BoxComponent)(zeEvent.owner_.getComponent("zeBox"));
         else
             whichBoxPlayerIn = (BoxComponent)zeEvent;
+        startUpdating = false;
         return true;
     }
     public boolean onNotify(String zeEvent)
@@ -52,10 +53,6 @@ public class PlayerComponent extends Component {
         }
         else if (zeEvent.contains("emptytrash"))    // Checking whether is it meant to empty Trash
         {
-//            score_ += amountOfGarbageCollected;
-//            amountOfGarbageCollected = 0;
-            //currCapacity = 0;
-            //carryGarbageType.clear();
             // Trying to get type of bin from "emptytrash|TYPE"
             int binFirstOr = zeEvent.indexOf('|');
             String typeOfBinStr = zeEvent.substring(binFirstOr+1);
@@ -81,16 +78,15 @@ public class PlayerComponent extends Component {
             // trying to get the "garbage|TYPE|SCORE"
             //                           ^
             int firstOR = zeEvent.indexOf('|');
-//            int secondOR = zeEvent.indexOf('|', firstOR+1);
-//            String typeGarbageStr = zeEvent.substring(firstOR+1, secondOR);
-//            String scoreGarbageStr = zeEvent.substring(secondOR+1);
-//            carryGarbageType.add(Byte.parseByte(typeGarbageStr));
-            //amountOfGarbageCollected += Float.parseFloat(scoreGarbageStr);
             carryGarbageType.add(zeEvent.substring(firstOR+1));
             if (theCurrentGamePlayerOn != null)
             {
                 theCurrentGamePlayerOn.onNotify("GarbagePicked");
             }
+            return true;
+        }
+        else if (zeEvent.contains("ShakedTooMuch"))
+        {
             return true;
         }
         return false;
@@ -102,11 +98,6 @@ public class PlayerComponent extends Component {
             return true;
         }
         return false;
-    }
-    // This is for checking on how much capacity of garbage is the player carrying
-    public float gettingThePercentageOfFullCapacity()
-    {
-        return (float)(carryGarbageType.size()/maxCapacity);
     }
     public short MaxCapacity()
     {
