@@ -32,6 +32,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
         MusicSystem.getInstance().playBGM("Adventure");
         MusicSystem.getInstance().loadSoundEffect("GarbagePicked");
+        MusicSystem.getInstance().loadSoundEffect("RemoveTrash");
 
         getHolder().addCallback(this);
 
@@ -409,10 +410,15 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     public void onSensorChanged(SensorEvent sensorEvent) {
         SensorVars = sensorEvent.values;
         float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
-        if (Math.abs(checkingTheXDifference) > 7.0f)    // We cheat here and just check for x value since it is landscape
-            PlayerActiveStuff.onNotify("ShakedTooMuch");
         if (updateThePreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
         {
+            PreviousValues = SensorVars.clone();
+            updateThePreviousValueTimer = 0;
+        }
+        else if (Math.abs(checkingTheXDifference) > 7.0f) // We cheat here and just check for x value since it is landscape
+        {
+            PlayerActiveStuff.onNotify("ShakedTooMuch");
+            MusicSystem.getInstance().playSoundEffect("RemoveTrash");
             PreviousValues = SensorVars.clone();
             updateThePreviousValueTimer = 0;
         }
