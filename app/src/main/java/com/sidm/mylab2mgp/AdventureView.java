@@ -148,6 +148,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
         updateTheAccelerometerPreviousValueTimer = 2.0f;
         TimeToDisplayTitle = 0;
+        toDisplayTitlePaint = new Paint();
+        toDisplayTitlePaint.setARGB(255, 4, 242, 91);
+        toDisplayTitlePaint.setStrokeWidth(100.0f);
+        toDisplayTitlePaint.setTextSize(GridSystem.getInstance().getAverageBoxSize().scaleX);
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -277,6 +281,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 //            RenderTextOnScreen(canvas, "Value"+num+":"+SensorVars[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 5) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
 //        }
         // TODO: Remove when not debugging accelerometer
+        if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle)
+        {
+            RenderTextOnScreen(canvas, "LEVEL " + CurrentLevel, 0, (int)(GridSystem.getInstance().getScreenHeight()*0.5), toDisplayTitlePaint);
+        }
     }
 
 
@@ -309,7 +317,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
                 GridSystem.getInstance().Exit();*/
                 }
             }
-            else if (TimeToDisplayTitle < 2.0f) // Need to Display the level title then start the game
+            else if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle) // Need to Display the level title then start the game
                 TimeToDisplayTitle += dt;
             else {
                 thePlayer.Update(dt);
@@ -505,4 +513,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     AlertCreator alertCreator;
     private int MaxLevels, CurrentLevel;
     private float TimeToDisplayTitle;   // To display the level title time counter
+    private static final float TheMaximumTimeToDisplayTitle = 2.0f;
+    private Paint toDisplayTitlePaint;
 }

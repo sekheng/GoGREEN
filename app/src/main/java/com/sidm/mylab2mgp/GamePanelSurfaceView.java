@@ -163,6 +163,10 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
         paint.setTextSize(textsize);
         canvas.drawText(text, posX, posY, paint);
     }
+    public void RenderTextOnScreen(Canvas canvas, String text, int posX, int posY, Paint zePaint)
+    {
+        canvas.drawText(text, posX, posY, zePaint);
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
