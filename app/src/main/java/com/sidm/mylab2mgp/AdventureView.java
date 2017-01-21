@@ -266,8 +266,7 @@ public class AdventureView extends GamePanelSurfaceView {
             if (timeLeft <= 0)
             {
                 if(!alertCreator.showAlert) {
-                    PlayerComponent tempPlayer = (PlayerComponent) thePlayer.getComponent("zePlayer");
-                    Playerscore = (int) tempPlayer.getScore_();
+                    Playerscore = (int) PlayerActiveStuff.getScore_();
                     editScore.putInt("UserScore", Playerscore);
                     editScore.commit();
                     alertCreator.winOrLose = false;
@@ -279,8 +278,7 @@ public class AdventureView extends GamePanelSurfaceView {
             else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
             {
                 if(!alertCreator.showAlert) {
-                    PlayerComponent tempPlayer = (PlayerComponent) thePlayer.getComponent("zePlayer");
-                    Playerscore = (int) tempPlayer.getScore_();
+                    Playerscore = (int) PlayerActiveStuff.getScore_();
                     editScore.putInt("UserScore", Playerscore);
                     editScore.commit();
                     alertCreator.winOrLose = true;
