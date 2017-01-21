@@ -17,7 +17,7 @@ public class PlayerComponent extends Component {
         //amountOfGarbageCollected = 0;
         startUpdating = false;
         //currCapacity = 0;
-        maxCapacity = 3;
+        maxCapacity = 2;
         carryGarbageType = new LinkedList<>();
     }
     public void Update(float dt)

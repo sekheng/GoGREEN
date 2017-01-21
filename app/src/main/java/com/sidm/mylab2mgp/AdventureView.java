@@ -154,7 +154,7 @@ public class AdventureView extends GamePanelSurfaceView {
 //                1,1,CapacityColor
 //        );
         short numberOfGarbageCarried = 0;   // Need to count how many garbage the player carried
-        float howMuchSpaceAGrid = zeOverallBounds.scaleX / PlayerActiveStuff.MaxCapacity();
+        float howMuchSpaceAGrid = (zeOverallBounds.scaleX * 0.5f) / PlayerActiveStuff.MaxCapacity();    // Getting the Average size for a grid GUI
         for (String zeTypeOfGarbage : PlayerActiveStuff.carryGarbageType)   // Deciphering the type of garbage then give the color
         {
             ++numberOfGarbageCarried;
@@ -164,25 +164,25 @@ public class AdventureView extends GamePanelSurfaceView {
             switch (zeType)
             {
                 case 0: // This means it is Paper waste
-        canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * zeOverallBounds.scaleX*0.5f / PlayerActiveStuff.MaxCapacity()),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+        canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
                 zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-                zeOverallBounds.scaleX - ((numberOfGarbageCarried) * zeOverallBounds.scaleX*0.5f / PlayerActiveStuff.MaxCapacity()),
+                (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
                 (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
                 1,1,PaperGarbageColor
         );
                     break;
                 case 1: // this means general waste
-                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * zeOverallBounds.scaleX*0.5f / PlayerActiveStuff.MaxCapacity()),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
                             zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-                            zeOverallBounds.scaleX - ((numberOfGarbageCarried) * zeOverallBounds.scaleX*0.5f / PlayerActiveStuff.MaxCapacity()),
+                            (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
                             (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
                             1,1,GeneralGarbageColor
                     );
                     break;
                 case 2: // this means plastic waste
-                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * zeOverallBounds.scaleX*0.5f / PlayerActiveStuff.MaxCapacity()),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
                             zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-                            zeOverallBounds.scaleX - ((numberOfGarbageCarried) * zeOverallBounds.scaleX*0.5f / PlayerActiveStuff.MaxCapacity()),
+                            (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
                             (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
                             1,1,PlasticGarbageColor
                     );
