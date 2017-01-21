@@ -1,7 +1,9 @@
 package com.sidm.mylab2mgp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 /**
  * Created by 150592K on 12/1/2016.
@@ -19,6 +22,9 @@ import android.widget.Switch;
 
 public class LoseScreen extends Activity implements OnClickListener{
     private Button btn_mainmenu,btn_tryagain;
+    private TextView tv_score;
+
+    int Playerscore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,13 @@ public class LoseScreen extends Activity implements OnClickListener{
 
         btn_tryagain = (Button)findViewById((R.id.btn_tryagain));
         btn_tryagain.setOnClickListener(this);
+
+        Playerscore = NameAndScoreStorer.getInstance().getCurrNameAndSCore().score;
+
+        StringBuilder temp = new StringBuilder("Score: ");
+        temp.append(Integer.toString(Playerscore));
+        tv_score = (TextView)findViewById(R.id.tv_score);
+        tv_score.setText(temp.toString());
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -51,6 +64,8 @@ public class LoseScreen extends Activity implements OnClickListener{
 
         btn_mainmenu.setLayoutParams(mainmenu_params);
         btn_tryagain.setLayoutParams(tryagain_params);
+
+
 
     }
     public void onClick(View v)

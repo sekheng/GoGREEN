@@ -12,6 +12,7 @@ import java.util.Map;
 public class NameAndScoreStorer {
     private static NameAndScoreStorer donttouchthis = null;
     private List<NameAndScore> scores;
+    private NameAndScore latestNameAnsScore;
     private int numberOfScores;
     //private Map
 
@@ -28,11 +29,17 @@ public class NameAndScoreStorer {
     {
         numberOfScores = 0;
         scores = new ArrayList();
+        latestNameAnsScore = new NameAndScore();
     }
 
-    public void UpdateHashMap()
+    public NameAndScore getCurrNameAndSCore()
     {
+        return latestNameAnsScore;
+    }
 
+    public void setCurrNameAndScore(NameAndScore nameAndScore)
+    {
+        latestNameAnsScore = nameAndScore;
     }
 
     public List<NameAndScore> getList()

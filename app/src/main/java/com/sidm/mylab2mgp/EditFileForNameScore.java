@@ -44,6 +44,7 @@ public class EditFileForNameScore {
            str = new StringBuilder(name);//store the name then append then write to file
            str.append("-" + score+"\n");
            outputStreamWriter.write(str.toString());
+           NameAndScoreStorer.getInstance().setCurrNameAndScore(new NameAndScore(name,score));
            outputStreamWriter.close();
        }
        catch (IOException io) {

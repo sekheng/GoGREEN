@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 /**
  * Created by 150592K on 12/1/2016.
@@ -19,7 +20,9 @@ import android.widget.Switch;
 
 public class WinScreen extends Activity implements OnClickListener{
     private Button btn_mainmenu,btn_tryagain;
+    private TextView tv_score;
 
+    int Playerscore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,13 @@ public class WinScreen extends Activity implements OnClickListener{
 
         btn_tryagain = (Button)findViewById((R.id.btn_tryagain));
         btn_tryagain.setOnClickListener(this);
+
+        Playerscore = NameAndScoreStorer.getInstance().getCurrNameAndSCore().score;
+
+        StringBuilder temp = new StringBuilder("Score: ");
+        temp.append(Integer.toString(Playerscore));
+        tv_score = (TextView)findViewById(R.id.tv_score);
+        tv_score.setText(temp.toString());
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
