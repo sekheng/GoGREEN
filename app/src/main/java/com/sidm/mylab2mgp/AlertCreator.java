@@ -28,24 +28,26 @@ public class AlertCreator {
     String Playername;
 
     SharedPreferences sharedPreferscore;
-    SharedPreferences.Editor editScore;
-    float Playerscore;
+    int Playerscore;
     Gamepage zeCurrContext = null;
+
+    EditFileForNameScore editFileForNameScore;
     //public Alert alert;
 
-    public AlertCreator(Context context) {
+    public AlertCreator(final Context context) {
 
         /*sharedPrefname = context.getSharedPreferences("PlayerUSERID",Context.MODE_PRIVATE);
         editName = sharedPrefname.edit();
         Playername = "Player1";
         Playername = sharedPrefname.getString("PlayerUSERID", "DEFAULT");*/
 
+        showAlert = false;
         zeCurrContext = (Gamepage)context;
 
         sharedPreferscore = context.getSharedPreferences("UserScore", Context.MODE_PRIVATE);
-        editScore = sharedPreferscore.edit();
         Playerscore = 0;
-        Playerscore = sharedPreferscore.getFloat("UserScore", 0);
+        Playerscore = sharedPreferscore.getInt("UserScore", 0);
+
         alert = new AlertDialog.Builder(context);
 
         //allow the players to input their name
@@ -69,23 +71,27 @@ public class AlertCreator {
         alert.setCancelable(false);
         alert.setView(input);
 
+        editFileForNameScore = new EditFileForNameScore(context);
+        //editFileForNameScore.UpdateListOfNameAndScore(context);
+
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Playername = input.getText().toString();
+                Playerscore = sharedPreferscore.getInt("UserScore", 0);
                 /*editName.putString("PlayerUSERID", Playername);
                 editName.commit();*/
 
-                if(winOrLose)
+                editFileForNameScore.UpdateTextFile(Playername,Playerscore,context);
+                if(!winOrLose)
                 {
                     zeCurrContext.onClick("lose!");
-                    GridSystem.getInstance().Exit();
                 }
                 else
                 {
                     zeCurrContext.onClick("win!");
-                    GridSystem.getInstance().Exit();
                 }
+                GridSystem.getInstance().Exit();
                 /*Intent intent = new Intent();
                 intent.setClass(getContext(), ScorePage.class);
                 activityTracker.startActivity(intent);*/
@@ -104,6 +110,7 @@ public class AlertCreator {
                 alert.show();
             }
         }, milisec); // 1000  Delay in milliseconds until the runnable is executed
+        showAlert = true;
     }
 }
 /*public class Alert {

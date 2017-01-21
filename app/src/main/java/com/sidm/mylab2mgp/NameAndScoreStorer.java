@@ -40,6 +40,11 @@ public class NameAndScoreStorer {
         return  scores;
     }
 
+    public void clearList()
+    {
+        scores = new ArrayList();
+    }
+
     public int getNumberOfScores()
     {
         return numberOfScores;
