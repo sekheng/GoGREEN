@@ -408,7 +408,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         SensorVars = sensorEvent.values;
-
+        float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
+        if (Math.abs(checkingTheXDifference) > 8.0f)    // We cheat here and just check for x value since it is landscape
+            PlayerActiveStuff.onNotify("ShakedTooMuch");
+        PreviousValues = SensorVars;
     }
 
     @Override
@@ -436,7 +439,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     PauseButton pauseButton;
     // Creating and using accelerometer
     private SensorManager theSensor;
-    private float SensorVars[] = new float[3], PreviousValues[] = new float[3];
+    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0};
     SharedPreferences sharedPreferscore;
     SharedPreferences.Editor editScore;
     int Playerscore;
