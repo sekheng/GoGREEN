@@ -99,8 +99,17 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 //        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
 //        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
 //        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
+        // Firstly, we get how many levels are there!
+        String zeNumLevelsStr = LevelLoadSystem.getInstance().getValue("TotalLevel", "NumLevels");
+        MaxLevels = Integer.parseInt(zeNumLevelsStr);
+        CurrentLevel = 1;
+        // Found out the maximum levels!
+        String zeTimeStr = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel, "Time");
+        overallTime = timeLeft = Float.parseFloat(zeTimeStr);
+        LoadingOfTrashesFromTextFile();
+        // Get the time Counter
+        // We will do some hardcoding of getting the general waste, paper waste and plastic waste
 
-        overallTime = timeLeft = 20.f;
 
         TimeColor = new Paint();
         TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
@@ -138,7 +147,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
         updateThePreviousValueTimer = 2.0f;
-        LevelLoadSystem.getInstance();
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -429,6 +437,44 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
         // Only use it when u want your sensor to be very accurate
+    }
+
+    public void LoadingOfTrashesFromTextFile()
+    {
+        loadSpecificTrashFromTextFile("General");   // Unfortunately, ain't no time to develop complicated algorithms
+        loadSpecificTrashFromTextFile("Paper");
+        loadSpecificTrashFromTextFile("Plastic");
+    }
+    public void loadSpecificTrashFromTextFile(String zeTrashType)
+    {
+        // All the trash shall start from index 1!
+        int zeTrashIndex = 1;
+        String zeVal;
+        if ((zeVal = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel,zeTrashType+zeTrashIndex)) != null)   // We will only load trash from current level
+        {
+            // The Values will come in this format which is "ROW,COL|TIMEFORINACTIVE"
+            int zeCommaPos = zeVal.indexOf(',');
+            int zeORPos = zeVal.indexOf('|');
+            String rowStr = zeVal.substring(0, zeCommaPos);
+            String colStr = zeVal.substring(zeCommaPos+1, zeORPos);
+            String timeStr = zeVal.substring(zeORPos+1);
+            Short []zeRowCol = {Short.parseShort(rowStr), Short.parseShort(colStr)};
+            switch (zeTrashType)    // Sorting out the trash then produce the specific trash
+            {
+                case "General":
+                    GarbageBuilder.getInstance().buildSmalleGarbage(zeTrashType+zeTrashIndex, zeRowCol, Short.parseShort(timeStr));
+                    break;
+                case "Paper":
+                    GarbageBuilder.getInstance().buildWastePaperGarbage(zeTrashType+zeTrashIndex, zeRowCol, Short.parseShort(timeStr));
+                    break;
+                case "Plastic":
+                    GarbageBuilder.getInstance().buildPlasticBottleGarbage(zeTrashType+zeTrashIndex, zeRowCol, Short.parseShort(timeStr));
+                    break;
+                default:
+                    break;
+            }
+            ++zeTrashIndex;
+        }
     }
 
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;

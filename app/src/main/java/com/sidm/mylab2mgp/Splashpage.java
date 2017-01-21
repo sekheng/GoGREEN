@@ -61,6 +61,7 @@ public class Splashpage extends Activity {
         MusicSystem.getInstance().addSoundEffect(R.raw.remove_trash, "RemoveTrash");
 
         LevelLoadSystem.setContext(this);
+        LevelLoadSystem.getInstance();  // Load the text file first!
 
         ViewGroup.LayoutParams imageView_params = imageView.getLayoutParams();
 
