@@ -58,6 +58,8 @@ public class MusicSystem extends ECSystem {
     }
     public boolean loadSoundEffect(String zeID)
     {
+        if (allSound_ == null)
+            allSound_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(5).build();
         // checking that the loaded sounds have not loaded it yet and Sound Index has the resource of that sound
         if (!loadedSoundIndex_.containsKey(zeID) && allTheSoundIndex_.containsKey(zeID))
         {
@@ -87,6 +89,8 @@ public class MusicSystem extends ECSystem {
                 allSound_.unload(zeNumber);
             }
             loadedSoundIndex_.clear();
+            allSound_.release();
+            allSound_ = null;
             return true;
         }
         return false;

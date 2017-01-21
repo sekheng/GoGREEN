@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -19,7 +22,7 @@ import ECS.*;
  * Created by lenov on 03/12/2016.
  */
 
-public class AdventureView extends GamePanelSurfaceView {
+public class AdventureView extends GamePanelSurfaceView implements SensorEventListener {
     public AdventureView (Context context){
 
         // Context is the current state of the application/object
@@ -29,6 +32,7 @@ public class AdventureView extends GamePanelSurfaceView {
 
         MusicSystem.getInstance().playBGM("Adventure");
         MusicSystem.getInstance().loadSoundEffect("GarbagePicked");
+        MusicSystem.getInstance().loadSoundEffect("RemoveTrash");
 
         getHolder().addCallback(this);
 
@@ -76,10 +80,10 @@ public class AdventureView extends GamePanelSurfaceView {
         zeBackgroundPaint = new Paint();
         zeBackgroundPaint.setARGB(255,255,255,255);
 
-        Short []zeNewSpace = {2,5}; // This means row 5, col 5
-        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
-        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
-        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
+//        Short []zeNewSpace = {2,5}; // This means row 5, col 5
+//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
+//        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
+//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
 
         LinkedList <Short> anotherSpace = new LinkedList<>();
         anotherSpace.add((short)1);
@@ -93,9 +97,19 @@ public class AdventureView extends GamePanelSurfaceView {
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
-        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
-        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
-        overallTime = timeLeft = 20.f;
+//        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
+//        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
+        // Firstly, we get how many levels are there!
+        String zeNumLevelsStr = LevelLoadSystem.getInstance().getValue("TotalLevel", "NumLevels");
+        MaxLevels = Integer.parseInt(zeNumLevelsStr);
+        CurrentLevel = 1;
+        // Found out the maximum levels!
+        String zeTimeStr = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel, "Time");
+        overallTime = timeLeft = Float.parseFloat(zeTimeStr);
+        LoadingOfTrashesFromTextFile();
+        // Get the time Counter
+        // We will do some hardcoding of getting the general waste, paper waste and plastic waste
+
 
         TimeColor = new Paint();
         TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
@@ -130,7 +144,9 @@ public class AdventureView extends GamePanelSurfaceView {
 
         alertCreator = new AlertCreator(context);
 
-
+        theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
+        theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
+        updateThePreviousValueTimer = 2.0f;
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -143,7 +159,7 @@ public class AdventureView extends GamePanelSurfaceView {
         canvas.drawBitmap(scaledbg, 0, 0, null);
         pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
-        RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
+        //RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         //RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
         //RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
         canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
@@ -152,13 +168,6 @@ public class AdventureView extends GamePanelSurfaceView {
                 (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
                 1, 1, TimeColor
                 );  // Displaying time in rectangle
-//        // Drawing the capacity of the garbage
-//        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
-//                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-//                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
-//                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
-//                1,1,CapacityColor
-//        );
         short numberOfGarbageCarried = 0;   // Need to count how many garbage the player carried
         float howMuchSpaceAGrid = (zeOverallBounds.scaleX * 0.5f) / PlayerActiveStuff.MaxCapacity();    // Getting the Average size for a grid GUI
         for (String zeTypeOfGarbage : PlayerActiveStuff.carryGarbageType)   // Deciphering the type of garbage then give the color
@@ -256,6 +265,17 @@ public class AdventureView extends GamePanelSurfaceView {
         playerBits.draw(canvas);
         playerBits.setPosX((int)playerTransform.posX);
         playerBits.setPosY((int)playerTransform.posY);
+
+        // TODO: Remove when not debugging accelerometer
+//        for (int num = 0; num < PreviousValues.length; ++num)
+//        {
+//            RenderTextOnScreen(canvas, "Value"+num+":"+PreviousValues[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 2) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
+//        }
+//        for (int num = 0; num < SensorVars.length; ++num)
+//        {
+//            RenderTextOnScreen(canvas, "Value"+num+":"+SensorVars[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 5) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
+//        }
+        // TODO: Remove when not debugging accelerometer
     }
 
 
@@ -263,6 +283,7 @@ public class AdventureView extends GamePanelSurfaceView {
     public void update(float dt, float fps){
         FPS = fps;
         if (fps > 25 && !pauseButton.getIsPause()) {
+            updateThePreviousValueTimer += dt;
             if (timeLeft <= 0)
             {
                 if(!alertCreator.showAlert) {
@@ -385,6 +406,7 @@ public class AdventureView extends GamePanelSurfaceView {
         }
         MusicSystem.getInstance().stopCurrentBGM();
         MusicSystem.getInstance().stopAllSoundEffect();
+        theSensor.unregisterListener(this);
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
@@ -392,6 +414,67 @@ public class AdventureView extends GamePanelSurfaceView {
         if (MusicSystem.getInstance().playSoundEffect(zeEvent))
             return true;
         return false;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        SensorVars = sensorEvent.values;
+        float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
+        if (updateThePreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
+        {
+            PreviousValues = SensorVars.clone();
+            updateThePreviousValueTimer = 0;
+        }
+        else if (Math.abs(checkingTheXDifference) > 7.0f) // We cheat here and just check for x value since it is landscape
+        {
+            PlayerActiveStuff.onNotify("ShakedTooMuch");
+            MusicSystem.getInstance().playSoundEffect("RemoveTrash");
+            PreviousValues = SensorVars.clone();
+            updateThePreviousValueTimer = 0;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+        // Only use it when u want your sensor to be very accurate
+    }
+
+    public void LoadingOfTrashesFromTextFile()
+    {
+        loadSpecificTrashFromTextFile("General");   // Unfortunately, ain't no time to develop complicated algorithms
+        loadSpecificTrashFromTextFile("Paper");
+        loadSpecificTrashFromTextFile("Plastic");
+    }
+    public void loadSpecificTrashFromTextFile(String zeTrashType)
+    {
+        // All the trash shall start from index 1!
+        int zeTrashIndex = 1;
+        String zeVal;
+        while ((zeVal = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel,zeTrashType+zeTrashIndex)) != null)   // We will only load trash from current level
+        {
+            // The Values will come in this format which is "ROW,COL|TIMEFORINACTIVE"
+            int zeCommaPos = zeVal.indexOf(',');
+            int zeORPos = zeVal.indexOf('|');
+            String rowStr = zeVal.substring(0, zeCommaPos);
+            String colStr = zeVal.substring(zeCommaPos+1, zeORPos);
+            String timeStr = zeVal.substring(zeORPos+1);
+            Short []zeRowCol = {Short.parseShort(rowStr), Short.parseShort(colStr)};
+            switch (zeTrashType)    // Sorting out the trash then produce the specific trash
+            {
+                case "General":
+                    GarbageBuilder.getInstance().buildSmalleGarbage(zeTrashType+zeTrashIndex, zeRowCol, Short.parseShort(timeStr));
+                    break;
+                case "Paper":
+                    GarbageBuilder.getInstance().buildWastePaperGarbage(zeTrashType+zeTrashIndex, zeRowCol, Short.parseShort(timeStr));
+                    break;
+                case "Plastic":
+                    GarbageBuilder.getInstance().buildPlasticBottleGarbage(zeTrashType+zeTrashIndex, zeRowCol, Short.parseShort(timeStr));
+                    break;
+                default:
+                    break;
+            }
+            ++zeTrashIndex;
+        }
     }
 
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
@@ -414,9 +497,10 @@ public class AdventureView extends GamePanelSurfaceView {
     PauseButton pauseButton;
     // Creating and using accelerometer
     private SensorManager theSensor;
-    private float SensorVars[] = new float[3];
+    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateThePreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
     SharedPreferences sharedPreferscore;
     SharedPreferences.Editor editScore;
     int Playerscore;
     AlertCreator alertCreator;
+    private int MaxLevels, CurrentLevel;
 }
