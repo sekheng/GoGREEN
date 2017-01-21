@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by - on 19/1/2017.
@@ -64,6 +65,7 @@ public class EditFileForNameScore {
 
                 String temp = "";
                 int numberOfNames = 0;
+                NameAndScoreStorer.getInstance().clearList();
                 while((temp = bufferedReader.readLine()) != null)
                 {
                     String[] stringSplit = temp.split("-");

@@ -109,6 +109,11 @@ public class PlayerComponent extends Component {
         return (float)(carryGarbageType.size()/maxCapacity);
     }
 
+    public float getScore_()
+    {
+        return score_;
+    }
+
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating;
     public float score_;

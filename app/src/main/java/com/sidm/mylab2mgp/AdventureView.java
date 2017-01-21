@@ -1,6 +1,7 @@
 package com.sidm.mylab2mgp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -112,11 +113,15 @@ public class AdventureView extends GamePanelSurfaceView {
         int Screenheight = metrics.heightPixels;
 
         pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/120);
-        EditFileForNameScore editFileForNameScore = new EditFileForNameScore(context);
-        editFileForNameScore.UpdateTextFile("heloo", 66, context);
-        editFileForNameScore.UpdateTextFile("he2oo", 61, context);
-        editFileForNameScore.UpdateTextFile("he1o", 16, context);
-        editFileForNameScore.UpdateListOfNameAndScore(context);
+
+        sharedPreferscore = getContext().getSharedPreferences("UserScore", Context.MODE_PRIVATE);
+        editScore = sharedPreferscore.edit();
+        Playerscore = 0;
+        Playerscore = sharedPreferscore.getInt("UserScore", 0);
+
+        alertCreator = new AlertCreator(context);
+
+
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -215,13 +220,29 @@ public class AdventureView extends GamePanelSurfaceView {
         if (fps > 25 && !pauseButton.getIsPause()) {
             if (timeLeft <= 0)
             {
-                zeCurrContext.onClick("lose!");
-                GridSystem.getInstance().Exit();
+                if(!alertCreator.showAlert) {
+                    PlayerComponent tempPlayer = (PlayerComponent) thePlayer.getComponent("zePlayer");
+                    Playerscore = (int) tempPlayer.getScore_();
+                    editScore.putInt("UserScore", Playerscore);
+                    editScore.commit();
+                    alertCreator.winOrLose = false;
+                    alertCreator.RunAlert(1000);
+                /*zeCurrContext.onClick("lose!");
+                GridSystem.getInstance().Exit();*/
+                }
             }
             else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
             {
-                zeCurrContext.onClick("win!");
-                GridSystem.getInstance().Exit();
+                if(!alertCreator.showAlert) {
+                    PlayerComponent tempPlayer = (PlayerComponent) thePlayer.getComponent("zePlayer");
+                    Playerscore = (int) tempPlayer.getScore_();
+                    editScore.putInt("UserScore", Playerscore);
+                    editScore.commit();
+                    alertCreator.winOrLose = true;
+                    alertCreator.RunAlert(1000);
+                /*zeCurrContext.onClick("win!");
+                GridSystem.getInstance().Exit();*/
+                }
             }
             else {
                 thePlayer.Update(dt);
@@ -348,4 +369,8 @@ public class AdventureView extends GamePanelSurfaceView {
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     Toastbox theToastMessage;   // This is used for popping a message to tell the player to hurry up
     PauseButton pauseButton;
+    SharedPreferences sharedPreferscore;
+    SharedPreferences.Editor editScore;
+    int Playerscore;
+    AlertCreator alertCreator;
 }
