@@ -80,10 +80,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         zeBackgroundPaint = new Paint();
         zeBackgroundPaint.setARGB(255,255,255,255);
 
-        Short []zeNewSpace = {2,5}; // This means row 5, col 5
-        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
-        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
-        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
+//        Short []zeNewSpace = {2,5}; // This means row 5, col 5
+//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
+//        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
+//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
 
         LinkedList <Short> anotherSpace = new LinkedList<>();
         anotherSpace.add((short)1);
@@ -96,9 +96,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         anotherSpace.clear();
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
-        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
-        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
-        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
+//        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+//        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
+//        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
+
         overallTime = timeLeft = 20.f;
 
         TimeColor = new Paint();
@@ -137,6 +138,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
         updateThePreviousValueTimer = 2.0f;
+        LevelLoadSystem.getInstance();
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -454,4 +456,5 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     SharedPreferences.Editor editScore;
     int Playerscore;
     AlertCreator alertCreator;
+    private int MaxLevels, CurrentLevel;
 }
