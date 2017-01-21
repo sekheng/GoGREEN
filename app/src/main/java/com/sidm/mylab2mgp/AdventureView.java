@@ -96,7 +96,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         anotherSpace.clear();
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
-//        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
 //        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
 //        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
         // Firstly, we get how many levels are there!
@@ -450,7 +450,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         // All the trash shall start from index 1!
         int zeTrashIndex = 1;
         String zeVal;
-        if ((zeVal = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel,zeTrashType+zeTrashIndex)) != null)   // We will only load trash from current level
+        while ((zeVal = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel,zeTrashType+zeTrashIndex)) != null)   // We will only load trash from current level
         {
             // The Values will come in this format which is "ROW,COL|TIMEFORINACTIVE"
             int zeCommaPos = zeVal.indexOf(',');
