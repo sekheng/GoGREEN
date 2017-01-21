@@ -146,7 +146,8 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
         theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
-        updateThePreviousValueTimer = 2.0f;
+        updateTheAccelerometerPreviousValueTimer = 2.0f;
+        TimeToDisplayTitle = 0;
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -283,7 +284,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     public void update(float dt, float fps){
         FPS = fps;
         if (fps > 25 && !pauseButton.getIsPause()) {
-            updateThePreviousValueTimer += dt;
+            updateTheAccelerometerPreviousValueTimer += dt;
             if (timeLeft <= 0)
             {
                 if(!alertCreator.showAlert) {
@@ -308,9 +309,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
                 GridSystem.getInstance().Exit();*/
                 }
             }
+            else if (TimeToDisplayTitle < 2.0f) // Need to Display the level title then start the game
+                TimeToDisplayTitle += dt;
             else {
                 thePlayer.Update(dt);
-
                 timeLeft = Math.max(timeLeft - dt, 0);
                 boolean stopTheLoop = false;
                 for (Entity zeEntity : bunchOfEntites) {
@@ -354,7 +356,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
                 if (AmountOfTrashLeft.size() == 0)
                     theToastMessage.showToast();
             }
-
         }
     }
     public boolean onTouchEvent(MotionEvent event){
@@ -420,17 +421,17 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     public void onSensorChanged(SensorEvent sensorEvent) {
         SensorVars = sensorEvent.values;
         float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
-        if (updateThePreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
+        if (updateTheAccelerometerPreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
         {
             PreviousValues = SensorVars.clone();
-            updateThePreviousValueTimer = 0;
+            updateTheAccelerometerPreviousValueTimer = 0;
         }
         else if (Math.abs(checkingTheXDifference) > 7.0f) // We cheat here and just check for x value since it is landscape
         {
             PlayerActiveStuff.onNotify("ShakedTooMuch");
             MusicSystem.getInstance().playSoundEffect("RemoveTrash");
             PreviousValues = SensorVars.clone();
-            updateThePreviousValueTimer = 0;
+            updateTheAccelerometerPreviousValueTimer = 0;
         }
     }
 
@@ -497,10 +498,11 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     PauseButton pauseButton;
     // Creating and using accelerometer
     private SensorManager theSensor;
-    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateThePreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
+    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateTheAccelerometerPreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
     SharedPreferences sharedPreferscore;
     SharedPreferences.Editor editScore;
     int Playerscore;
     AlertCreator alertCreator;
     private int MaxLevels, CurrentLevel;
+    private float TimeToDisplayTitle;   // To display the level title time counter
 }
