@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -392,4 +393,7 @@ public class AdventureView extends GamePanelSurfaceView {
     Random gettingRandomStuff;  // this is for randomizing the spawn position of the garbage
     Toastbox theToastMessage;   // This is used for popping a message to tell the player to hurry up
     PauseButton pauseButton;
+    // Creating and using accelerometer
+    private SensorManager theSensor;
+    private float SensorVars[] = new float[3];
 }
