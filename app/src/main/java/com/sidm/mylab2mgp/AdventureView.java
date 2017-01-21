@@ -135,6 +135,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
         theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
+        updateThePreviousValueTimer = 2.0f;
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -156,13 +157,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
                 (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
                 1, 1, TimeColor
                 );  // Displaying time in rectangle
-//        // Drawing the capacity of the garbage
-//        canvas.drawRoundRect(zeOverallBounds.scaleX * 0.5f,  // Starting from the middle of screen width because sharing space with time
-//                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
-//                zeOverallBounds.scaleX * PlayerActiveStuff.gettingThePercentageOfFullCapacity(),
-//                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
-//                1,1,CapacityColor
-//        );
         short numberOfGarbageCarried = 0;   // Need to count how many garbage the player carried
         float howMuchSpaceAGrid = (zeOverallBounds.scaleX * 0.5f) / PlayerActiveStuff.MaxCapacity();    // Getting the Average size for a grid GUI
         for (String zeTypeOfGarbage : PlayerActiveStuff.carryGarbageType)   // Deciphering the type of garbage then give the color
@@ -262,10 +256,14 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         playerBits.setPosY((int)playerTransform.posY);
 
         // TODO: Remove when not debugging accelerometer
-        for (int num = 0; num < SensorVars.length; ++num)
-        {
-            RenderTextOnScreen(canvas, "Value"+num+":"+SensorVars[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 2) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
-        }
+//        for (int num = 0; num < PreviousValues.length; ++num)
+//        {
+//            RenderTextOnScreen(canvas, "Value"+num+":"+PreviousValues[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 2) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
+//        }
+//        for (int num = 0; num < SensorVars.length; ++num)
+//        {
+//            RenderTextOnScreen(canvas, "Value"+num+":"+SensorVars[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 5) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
+//        }
         // TODO: Remove when not debugging accelerometer
     }
 
@@ -274,6 +272,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     public void update(float dt, float fps){
         FPS = fps;
         if (fps > 25 && !pauseButton.getIsPause()) {
+            updateThePreviousValueTimer += dt;
             if (timeLeft <= 0)
             {
                 if(!alertCreator.showAlert) {
@@ -396,6 +395,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         }
         MusicSystem.getInstance().stopCurrentBGM();
         MusicSystem.getInstance().stopAllSoundEffect();
+        theSensor.unregisterListener(this);
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
@@ -409,9 +409,13 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     public void onSensorChanged(SensorEvent sensorEvent) {
         SensorVars = sensorEvent.values;
         float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
-        if (Math.abs(checkingTheXDifference) > 8.0f)    // We cheat here and just check for x value since it is landscape
+        if (Math.abs(checkingTheXDifference) > 7.0f)    // We cheat here and just check for x value since it is landscape
             PlayerActiveStuff.onNotify("ShakedTooMuch");
-        PreviousValues = SensorVars;
+        if (updateThePreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
+        {
+            PreviousValues = SensorVars.clone();
+            updateThePreviousValueTimer = 0;
+        }
     }
 
     @Override
@@ -439,7 +443,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     PauseButton pauseButton;
     // Creating and using accelerometer
     private SensorManager theSensor;
-    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0};
+    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateThePreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
     SharedPreferences sharedPreferscore;
     SharedPreferences.Editor editScore;
     int Playerscore;

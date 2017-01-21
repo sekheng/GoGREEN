@@ -88,7 +88,7 @@ public class PlayerComponent extends Component {
             }
             return true;
         }
-        else if (zeEvent.contains("ShakedTooMuch")) // When the player shake it forward and backward, then it will empty the trash
+        else if (zeEvent.contains("ShakedTooMuch") && reachedGarbageBin) // When the player shake it forward and backward, then it will empty the trash
         {
             LinkedList<Integer> whichArrayToRemove = new LinkedList<>();    // Need to remove the elements in carryGarbageType
             for (int num = carryGarbageType.size()-1; num >= 0; --num)  // Iterating from back to front!
