@@ -152,6 +152,8 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         toDisplayTitlePaint.setARGB(255, 4, 242, 91);
         toDisplayTitlePaint.setStrokeWidth(100.0f);
         toDisplayTitlePaint.setTextSize(GridSystem.getInstance().getAverageBoxSize().scaleX);
+
+        currentStateOfView = TITLE_STATE;
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -292,78 +294,21 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     public void update(float dt, float fps){
         FPS = fps;
         if (fps > 25 && !pauseButton.getIsPause()) {
+            switch (currentStateOfView)
+            {
+                case TITLE_STATE:
+                    UpdateTitle(dt);
+                    break;
+                case START_STATE:
+                    UpdateGameplay(dt);
+                    break;
+                case CREDIT_STATE:
+                    UpdateCredits(dt);
+                    break;
+                default:
+                    break;
+            }
             updateTheAccelerometerPreviousValueTimer += dt;
-            if (timeLeft <= 0)
-            {
-                if(!alertCreator.showAlert) {
-                    Playerscore = (int) PlayerActiveStuff.getScore_();
-                    editScore.putInt("UserScore", Playerscore);
-                    editScore.commit();
-                    alertCreator.winOrLose = false;
-                    alertCreator.RunAlert(1000);
-                /*zeCurrContext.onClick("lose!");
-                GridSystem.getInstance().Exit();*/
-                }
-            }
-            else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
-            {
-                if(!alertCreator.showAlert) {
-                    Playerscore = (int) PlayerActiveStuff.getScore_();
-                    editScore.putInt("UserScore", Playerscore);
-                    editScore.commit();
-                    alertCreator.winOrLose = true;
-                    alertCreator.RunAlert(1000);
-                /*zeCurrContext.onClick("win!");
-                GridSystem.getInstance().Exit();*/
-                }
-            }
-            else if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle) // Need to Display the level title then start the game
-                TimeToDisplayTitle += dt;
-            else {
-                thePlayer.Update(dt);
-                timeLeft = Math.max(timeLeft - dt, 0);
-                boolean stopTheLoop = false;
-                for (Entity zeEntity : bunchOfEntites) {
-                    switch (zeEntity.turnOnFlag_) {
-                        case 0:
-                            bunchOfEntites.remove(zeEntity);
-                            bunchOfInactive.add(zeEntity);
-                            if (zeEntity.checkActiveComponent("zeGarbage"))
-                                AmountOfTrashLeft.remove(zeEntity);
-                            stopTheLoop = true;
-                            break;
-                        default:
-                    }
-                    if (stopTheLoop)
-                        break;
-                }
-                // Putting right after bunchOfEntities so that garbage that's been collected are removed
-                for (Entity zeGarbage : AmountOfTrashLeft)  // This is to check if there is any inactive garbage waiting to respawn
-                {
-                    if (zeGarbage.turnOnFlag_ == 0) {
-                        GarbageComponent zeGarbageComp = (GarbageComponent) (zeGarbage.getComponent("zeGarbage"));
-                        if (zeGarbageComp.timeToSpawn <= TransformationComponent.EPSILON)    // If the timer has become less than 0
-                        {
-                            int randomRow = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerRow()); // getting the random row like from 0 to 7
-                            int randomCol = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerCol()); // Same as the above
-                            if (GarbageBuilder.getInstance().CheckingThroughEmptyBoxes(randomRow, randomCol, zeGarbageComp)) // If the spawn position happens to be empty. then spawn it.
-                            {
-                                // Getting the specific index in the grids
-                                zeGarbageComp.setSpaces((short) (randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
-                                zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
-                                bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
-                                bunchOfInactive.remove(zeGarbage);  // well because they were originally at inactivelist
-                            } else {
-                                zeGarbageComp.timeToSpawn = 1;
-                            }
-                        } else
-                            zeGarbageComp.timeToSpawn -= dt;
-                    }
-                }
-                // This to check whether is there any garbage left
-                if (AmountOfTrashLeft.size() == 0)
-                    theToastMessage.showToast();
-            }
         }
     }
     public boolean onTouchEvent(MotionEvent event){
@@ -486,6 +431,87 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         }
     }
 
+    private void UpdateGameplay(float dt)
+    {
+        if (timeLeft <= 0)
+        {
+            if(!alertCreator.showAlert) {
+                Playerscore = (int) PlayerActiveStuff.getScore_();
+                editScore.putInt("UserScore", Playerscore);
+                editScore.commit();
+                alertCreator.winOrLose = false;
+                alertCreator.RunAlert(1000);
+                /*zeCurrContext.onClick("lose!");
+                GridSystem.getInstance().Exit();*/
+            }
+        }
+        else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
+        {
+            if(!alertCreator.showAlert) {
+                Playerscore = (int) PlayerActiveStuff.getScore_();
+                editScore.putInt("UserScore", Playerscore);
+                editScore.commit();
+                alertCreator.winOrLose = true;
+                alertCreator.RunAlert(1000);
+                /*zeCurrContext.onClick("win!");
+                GridSystem.getInstance().Exit();*/
+            }
+        }
+        else {
+            thePlayer.Update(dt);
+            timeLeft = Math.max(timeLeft - dt, 0);
+            boolean stopTheLoop = false;
+            for (Entity zeEntity : bunchOfEntites) {
+                switch (zeEntity.turnOnFlag_) {
+                    case 0:
+                        bunchOfEntites.remove(zeEntity);
+                        bunchOfInactive.add(zeEntity);
+                        if (zeEntity.checkActiveComponent("zeGarbage"))
+                            AmountOfTrashLeft.remove(zeEntity);
+                        stopTheLoop = true;
+                        break;
+                    default:
+                }
+                if (stopTheLoop)
+                    break;
+            }
+            // Putting right after bunchOfEntities so that garbage that's been collected are removed
+            for (Entity zeGarbage : AmountOfTrashLeft)  // This is to check if there is any inactive garbage waiting to respawn
+            {
+                if (zeGarbage.turnOnFlag_ == 0) {
+                    GarbageComponent zeGarbageComp = (GarbageComponent) (zeGarbage.getComponent("zeGarbage"));
+                    if (zeGarbageComp.timeToSpawn <= TransformationComponent.EPSILON)    // If the timer has become less than 0
+                    {
+                        int randomRow = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerRow()); // getting the random row like from 0 to 7
+                        int randomCol = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerCol()); // Same as the above
+                        if (GarbageBuilder.getInstance().CheckingThroughEmptyBoxes(randomRow, randomCol, zeGarbageComp)) // If the spawn position happens to be empty. then spawn it.
+                        {
+                            // Getting the specific index in the grids
+                            zeGarbageComp.setSpaces((short) (randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
+                            zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
+                            bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
+                            bunchOfInactive.remove(zeGarbage);  // well because they were originally at inactivelist
+                        } else {
+                            zeGarbageComp.timeToSpawn = 1;
+                        }
+                    } else
+                        zeGarbageComp.timeToSpawn -= dt;
+                }
+            }
+            // This to check whether is there any garbage left
+            if (AmountOfTrashLeft.size() == 0)
+                theToastMessage.showToast();
+        }
+    }
+    private void UpdateTitle(float dt)
+    {
+
+    }
+    private void UpdateCredits(float dt)
+    {
+
+    }
+
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
     Entity thePlayer;
     TransformationComponent playerTransform;
@@ -515,4 +541,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     private float TimeToDisplayTitle;   // To display the level title time counter
     private static final float TheMaximumTimeToDisplayTitle = 2.0f;
     private Paint toDisplayTitlePaint;
+    // Instead of using enums, we shall use byte to determine it
+    // 0 means displaying of title thus giving player a break
+    // 1 means start the game
+    // 2 means end of the game!
+    static final byte TITLE_STATE = 0, START_STATE = 1, CREDIT_STATE = 2;
+    private byte currentStateOfView;
 }
