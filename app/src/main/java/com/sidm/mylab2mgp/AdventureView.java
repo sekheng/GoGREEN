@@ -64,9 +64,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         PlayerActiveStuff = new PlayerComponent();
         thePlayer.setComponent(PlayerActiveStuff);
         PlayerActiveStuff.theCurrentGamePlayerOn = this;
-        /*Resources res = getResources();
-        AnimationComponent zeAnimation = new AnimationComponent(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res,R.drawable.protagonist),
-                GridSystem.getInstance().getScreenWidth()/4, GridSystem.getInstance().getScreenHeight()/17,true),448,64,0.5f,8,2,3);*/
+
         ProtaganistAnimComponent animComponent = new ProtaganistAnimComponent(getResources());
         thePlayer.setComponent(animComponent);
         playerBits = animComponent;
@@ -80,11 +78,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         zeBackgroundPaint = new Paint();
         zeBackgroundPaint.setARGB(255,255,255,255);
 
-//        Short []zeNewSpace = {2,5}; // This means row 5, col 5
-//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
-//        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
-//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
-
         LinkedList <Short> anotherSpace = new LinkedList<>();
         anotherSpace.add((short)1);
         anotherSpace.add((short)1);
@@ -97,8 +90,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
-//        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
-//        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
         // Firstly, we get how many levels are there!
         String zeNumLevelsStr = LevelLoadSystem.getInstance().getValue("TotalLevel", "NumLevels");
         MaxLevels = Integer.parseInt(zeNumLevelsStr);
@@ -131,11 +122,11 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         theToastMessage.toastmessageShort(zeCurrContext, "Get To the Bin!");
         theToastMessage.setShowMessageOnce(true);
 
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        int Screenwidth = metrics.widthPixels;
-        int Screenheight = metrics.heightPixels;
+//        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+//        int Screenwidth = metrics.widthPixels;
+//        int Screenheight = metrics.heightPixels;
 
-        pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/120);
+        pauseButton = new PauseButton(context, getResources(),(GridSystem.getInstance().getScreenWidth()/9) * 8, (GridSystem.getInstance().getScreenHeight())/120);
 
         sharedPreferscore = getContext().getSharedPreferences("UserScore", Context.MODE_PRIVATE);
         editScore = sharedPreferscore.edit();
@@ -509,8 +500,11 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     }
     private void UpdateTitle(float dt)
     {
-        if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle)
+        if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle) {
             TimeToDisplayTitle += dt;
+            int zeTitleAlpha = toDisplayTitlePaint.getAlpha();
+            toDisplayTitlePaint.setAlpha(Math.max(0, (int)(zeTitleAlpha - (Math.E * TimeToDisplayTitle))));
+        }
         else
             currentStateOfView = START_STATE;
     }
