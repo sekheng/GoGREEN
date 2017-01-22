@@ -102,7 +102,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
         ProgressColor = new Paint();    // The progress of playing should have a color!
         ProgressColor.setARGB(220, 229, 207, 6);
-        TotalNumOfGarbage = AmountOfTrashLeft.size();
         CapacityColor = new Paint();
         CapacityColor.setARGB(220, 206, 14, 14);
         PlasticGarbageColor = new Paint();
@@ -409,6 +408,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         loadSpecificTrashFromTextFile("General");   // Unfortunately, ain't no time to develop complicated algorithms
         loadSpecificTrashFromTextFile("Paper");
         loadSpecificTrashFromTextFile("Plastic");
+        TotalNumOfGarbage = AmountOfTrashLeft.size();
     }
     public void loadSpecificTrashFromTextFile(String zeTrashType)
     {
