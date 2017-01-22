@@ -9,7 +9,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
@@ -95,12 +94,9 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         MaxLevels = Integer.parseInt(zeNumLevelsStr);
         CurrentLevel = 1;
         // Found out the maximum levels!
-        String zeTimeStr = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel, "Time");
-        overallTime = timeLeft = Float.parseFloat(zeTimeStr);
         LoadingOfTrashesFromTextFile();
         // Get the time Counter
         // We will do some hardcoding of getting the general waste, paper waste and plastic waste
-
 
         TimeColor = new Paint();
         TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
@@ -122,10 +118,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         theToastMessage.toastmessageShort(zeCurrContext, "Get To the Bin!");
         theToastMessage.setShowMessageOnce(true);
 
-//        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-//        int Screenwidth = metrics.widthPixels;
-//        int Screenheight = metrics.heightPixels;
-
         pauseButton = new PauseButton(context, getResources(),(GridSystem.getInstance().getScreenWidth()/9) * 8, (GridSystem.getInstance().getScreenHeight())/120);
 
         sharedPreferscore = getContext().getSharedPreferences("UserScore", Context.MODE_PRIVATE);
@@ -143,6 +135,23 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         toDisplayTitlePaint.setARGB(255, 4, 242, 91);
         toDisplayTitlePaint.setStrokeWidth(100.0f);
         toDisplayTitlePaint.setTextSize(GridSystem.getInstance().getAverageBoxSize().scaleX);
+
+        allTheCredits = new LinkedList<>();
+        String zeCreditLine = "";
+        // Loading of the credits also starts here!
+        for (int num = 0; (zeCreditLine = LevelLoadSystem.getInstance().getValue("Credits", "Creditor"+num)) != null ; ++num)
+        {
+            allTheCredits.add(zeCreditLine);
+        }
+        // We will start from the most bottom of the screen then move the credits upward. And put the text size to be the average grid size too!
+        toMoveTheCredits = new TransformationComponent(0, GridSystem.getInstance().getScreenHeight(), GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f, GridSystem.getInstance().getAverageBoxSize().scaleY);
+        CreditBackground = new Paint();
+        CreditBackground.setARGB(1, 19, 20, 20);
+        CreditTextColor = new Paint();
+        CreditTextColor.setARGB(255, 203, 206, 211);
+        CreditTextColor.setStrokeWidth(100.0f);
+        CreditTextColor.setTextSize(toMoveTheCredits.scaleX);
+        maxTimeForCreditDisplay = Float.parseFloat(LevelLoadSystem.getInstance().getValue("Credits", "Time"));
 
         currentStateOfView = TITLE_STATE;
     }
@@ -279,6 +288,9 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
             case TITLE_STATE:
                 RenderTitle(canvas);
                 break;
+            case CREDIT_STATE:
+                RenderCredits(canvas);
+                break;
             default:
                 break;
         }
@@ -288,7 +300,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     //Update method to update the game play
     public void update(float dt, float fps){
         FPS = fps;
-        if (fps > 25 && !pauseButton.getIsPause()) {
+        if (fps > 30 && !pauseButton.getIsPause()) {
             switch (currentStateOfView)
             {
                 case TITLE_STATE:
@@ -390,6 +402,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
     public void LoadingOfTrashesFromTextFile()
     {
+        if (theToastMessage != null)
+            theToastMessage.reset();
+        String zeTimeStr = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel, "Time");
+        overallTime = timeLeft = Float.parseFloat(zeTimeStr);
         loadSpecificTrashFromTextFile("General");   // Unfortunately, ain't no time to develop complicated algorithms
         loadSpecificTrashFromTextFile("Paper");
         loadSpecificTrashFromTextFile("Plastic");
@@ -436,18 +452,25 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
                 editScore.commit();
                 alertCreator.winOrLose = false;
                 alertCreator.RunAlert(1000);
-                /*zeCurrContext.onClick("lose!");
-                GridSystem.getInstance().Exit();*/
             }
         }
-        else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
+        else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())   // The condition for player to fully win!
         {
-            if(!alertCreator.showAlert) {
-                Playerscore = (int) PlayerActiveStuff.getScore_();
-                editScore.putInt("UserScore", Playerscore);
-                editScore.commit();
-                alertCreator.winOrLose = true;
-                alertCreator.RunAlert(1000);
+            if (CurrentLevel < MaxLevels)   // Proceed to next level if there is any
+            {
+                ++CurrentLevel;
+                currentStateOfView = TITLE_STATE;
+                toDisplayTitlePaint.setAlpha(255);  // Set the alpha back to normal
+                bunchOfInactive.clear();    // Clearing all the inactive objects
+                LoadingOfTrashesFromTextFile();
+            }
+            else if(!alertCreator.showAlert) {
+                currentStateOfView = CREDIT_STATE;
+//                Playerscore = (int) PlayerActiveStuff.getScore_();
+//                editScore.putInt("UserScore", Playerscore);
+//                editScore.commit();
+//                alertCreator.winOrLose = true;
+//                alertCreator.RunAlert(1000);
                 /*zeCurrContext.onClick("win!");
                 GridSystem.getInstance().Exit();*/
             }
@@ -505,16 +528,42 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
             int zeTitleAlpha = toDisplayTitlePaint.getAlpha();
             toDisplayTitlePaint.setAlpha(Math.max(0, (int)(zeTitleAlpha - (Math.E * TimeToDisplayTitle))));
         }
-        else
+        else {
             currentStateOfView = START_STATE;
+            TimeToDisplayTitle = 0;
+        }
     }
     private void UpdateCredits(float dt)
     {
-
+        CreditTimeCounter += dt;
+        int zeAlphaOfBackground = CreditBackground.getAlpha();
+        if (zeAlphaOfBackground <= 255)
+        {
+            CreditBackground.setAlpha(Math.min(255, (int)(zeAlphaOfBackground + (CreditTimeCounter * Math.E))));  // Increasing the background alpha exponentially
+        }
+        if (CreditTimeCounter < maxTimeForCreditDisplay)
+            toMoveTheCredits.posY -= GridSystem.getInstance().getScreenHeight() * 0.10f * (dt);
+        else if (!alertCreator.showAlert)
+        {
+            Playerscore = (int) PlayerActiveStuff.getScore_();
+            editScore.putInt("UserScore", Playerscore);
+            editScore.commit();
+            alertCreator.winOrLose = true;
+            alertCreator.RunAlert(1000);
+        }
     }
     private void RenderTitle(Canvas zeCanvas)
     {
         RenderTextOnScreen(zeCanvas, "LEVEL " + CurrentLevel, 0, (int)(GridSystem.getInstance().getScreenHeight()*0.5), toDisplayTitlePaint);
+    }
+    private void RenderCredits(Canvas zeCanvas)
+    {
+        // Filling the entire screen with the background
+        zeCanvas.drawRoundRect(0,0, GridSystem.getInstance().getScreenWidth(), GridSystem.getInstance().getScreenHeight(), 1, 1, CreditBackground);
+        for (int num = 0; num < allTheCredits.size(); ++num)
+        {
+            RenderTextOnScreen(zeCanvas, allTheCredits.get(num), (int)toMoveTheCredits.posX, (int)(toMoveTheCredits.posY + (num * toMoveTheCredits.scaleX * 1.5f)), CreditTextColor);
+        }
     }
 
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
@@ -550,6 +599,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     // 0 means displaying of title thus giving player a break
     // 1 means start the game
     // 2 means end of the game!
-    static final byte TITLE_STATE = 0, START_STATE = 1, CREDIT_STATE = 2;
-    private byte currentStateOfView;
+    static final byte TITLE_STATE = 0, START_STATE = 1, CREDIT_STATE = 2, NOT_UPDATING_GAME_YET = -1;
+    private byte currentStateOfView = NOT_UPDATING_GAME_YET;
+    private LinkedList<String> allTheCredits;   // to store all the credit lines!
+    private TransformationComponent toMoveTheCredits;   // Storing the text size and moving of text to make it looks like parallel scrolling
+    private Paint CreditBackground, CreditTextColor;    // The credits need their own colors too!
+    private float CreditTimeCounter = 0, maxTimeForCreditDisplay = 5;
 }
