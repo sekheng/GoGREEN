@@ -9,7 +9,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
@@ -64,9 +63,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         PlayerActiveStuff = new PlayerComponent();
         thePlayer.setComponent(PlayerActiveStuff);
         PlayerActiveStuff.theCurrentGamePlayerOn = this;
-        /*Resources res = getResources();
-        AnimationComponent zeAnimation = new AnimationComponent(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res,R.drawable.protagonist),
-                GridSystem.getInstance().getScreenWidth()/4, GridSystem.getInstance().getScreenHeight()/17,true),448,64,0.5f,8,2,3);*/
+
         ProtaganistAnimComponent animComponent = new ProtaganistAnimComponent(getResources());
         thePlayer.setComponent(animComponent);
         playerBits = animComponent;
@@ -80,11 +77,6 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         zeBackgroundPaint = new Paint();
         zeBackgroundPaint.setARGB(255,255,255,255);
 
-//        Short []zeNewSpace = {2,5}; // This means row 5, col 5
-//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace, 0);
-//        Short []zeNewSpace2 = {5,2}; // This means row 5, col 5
-//        GarbageBuilder.getInstance().buildSmalleGarbage("small garbage", zeNewSpace,0);
-
         LinkedList <Short> anotherSpace = new LinkedList<>();
         anotherSpace.add((short)1);
         anotherSpace.add((short)1);
@@ -97,19 +89,14 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
-//        GarbageBuilder.getInstance().buildPlasticBottleGarbage("Plastic bottle", anotherSpace.toArray(new Short[anotherSpace.size()]), 2);
-//        GarbageBuilder.getInstance().buildWastePaperGarbage("Waste Paper", anotherSpace.toArray(new Short[anotherSpace.size()]), 5.5f);
         // Firstly, we get how many levels are there!
         String zeNumLevelsStr = LevelLoadSystem.getInstance().getValue("TotalLevel", "NumLevels");
         MaxLevels = Integer.parseInt(zeNumLevelsStr);
         CurrentLevel = 1;
         // Found out the maximum levels!
-        String zeTimeStr = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel, "Time");
-        overallTime = timeLeft = Float.parseFloat(zeTimeStr);
         LoadingOfTrashesFromTextFile();
         // Get the time Counter
         // We will do some hardcoding of getting the general waste, paper waste and plastic waste
-
 
         TimeColor = new Paint();
         TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
@@ -131,11 +118,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         theToastMessage.toastmessageShort(zeCurrContext, "Get To the Bin!");
         theToastMessage.setShowMessageOnce(true);
 
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        int Screenwidth = metrics.widthPixels;
-        int Screenheight = metrics.heightPixels;
-
-        pauseButton = new PauseButton(context, getResources(),(Screenwidth/9) * 8, (Screenheight)/120);
+        pauseButton = new PauseButton(context, getResources(),(GridSystem.getInstance().getScreenWidth()/9) * 8, (GridSystem.getInstance().getScreenHeight())/120);
 
         sharedPreferscore = getContext().getSharedPreferences("UserScore", Context.MODE_PRIVATE);
         editScore = sharedPreferscore.edit();
@@ -146,7 +129,31 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
         theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
-        updateThePreviousValueTimer = 2.0f;
+        updateTheAccelerometerPreviousValueTimer = 2.0f;
+        TimeToDisplayTitle = 0;
+        toDisplayTitlePaint = new Paint();
+        toDisplayTitlePaint.setARGB(255, 4, 242, 91);
+        toDisplayTitlePaint.setStrokeWidth(100.0f);
+        toDisplayTitlePaint.setTextSize(GridSystem.getInstance().getAverageBoxSize().scaleX);
+
+        allTheCredits = new LinkedList<>();
+        String zeCreditLine = "";
+        // Loading of the credits also starts here!
+        for (int num = 0; (zeCreditLine = LevelLoadSystem.getInstance().getValue("Credits", "Creditor"+num)) != null ; ++num)
+        {
+            allTheCredits.add(zeCreditLine);
+        }
+        // We will start from the most bottom of the screen then move the credits upward. And put the text size to be the average grid size too!
+        toMoveTheCredits = new TransformationComponent(0, GridSystem.getInstance().getScreenHeight(), GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f, GridSystem.getInstance().getAverageBoxSize().scaleY);
+        CreditBackground = new Paint();
+        CreditBackground.setARGB(1, 19, 20, 20);
+        CreditTextColor = new Paint();
+        CreditTextColor.setARGB(255, 203, 206, 211);
+        CreditTextColor.setStrokeWidth(100.0f);
+        CreditTextColor.setTextSize(toMoveTheCredits.scaleX);
+        maxTimeForCreditDisplay = Float.parseFloat(LevelLoadSystem.getInstance().getValue("Credits", "Time"));
+
+        currentStateOfView = TITLE_STATE;
     }
 
     public void RenderGameplay(Canvas canvas) {
@@ -276,85 +283,39 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 //            RenderTextOnScreen(canvas, "Value"+num+":"+SensorVars[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 5) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
 //        }
         // TODO: Remove when not debugging accelerometer
+        switch (currentStateOfView)
+        {
+            case TITLE_STATE:
+                RenderTitle(canvas);
+                break;
+            case CREDIT_STATE:
+                RenderCredits(canvas);
+                break;
+            default:
+                break;
+        }
     }
 
 
     //Update method to update the game play
     public void update(float dt, float fps){
         FPS = fps;
-        if (fps > 25 && !pauseButton.getIsPause()) {
-            updateThePreviousValueTimer += dt;
-            if (timeLeft <= 0)
+        if (fps > 30 && !pauseButton.getIsPause()) {
+            switch (currentStateOfView)
             {
-                if(!alertCreator.showAlert) {
-                    Playerscore = (int) PlayerActiveStuff.getScore_();
-                    editScore.putInt("UserScore", Playerscore);
-                    editScore.commit();
-                    alertCreator.winOrLose = false;
-                    alertCreator.RunAlert(1000);
-                /*zeCurrContext.onClick("lose!");
-                GridSystem.getInstance().Exit();*/
-                }
+                case TITLE_STATE:
+                    UpdateTitle(dt);
+                    break;
+                case START_STATE:
+                    UpdateGameplay(dt);
+                    break;
+                case CREDIT_STATE:
+                    UpdateCredits(dt);
+                    break;
+                default:
+                    break;
             }
-            else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())
-            {
-                if(!alertCreator.showAlert) {
-                    Playerscore = (int) PlayerActiveStuff.getScore_();
-                    editScore.putInt("UserScore", Playerscore);
-                    editScore.commit();
-                    alertCreator.winOrLose = true;
-                    alertCreator.RunAlert(1000);
-                /*zeCurrContext.onClick("win!");
-                GridSystem.getInstance().Exit();*/
-                }
-            }
-            else {
-                thePlayer.Update(dt);
-
-                timeLeft = Math.max(timeLeft - dt, 0);
-                boolean stopTheLoop = false;
-                for (Entity zeEntity : bunchOfEntites) {
-                    switch (zeEntity.turnOnFlag_) {
-                        case 0:
-                            bunchOfEntites.remove(zeEntity);
-                            bunchOfInactive.add(zeEntity);
-                            if (zeEntity.checkActiveComponent("zeGarbage"))
-                                AmountOfTrashLeft.remove(zeEntity);
-                            stopTheLoop = true;
-                            break;
-                        default:
-                    }
-                    if (stopTheLoop)
-                        break;
-                }
-                // Putting right after bunchOfEntities so that garbage that's been collected are removed
-                for (Entity zeGarbage : AmountOfTrashLeft)  // This is to check if there is any inactive garbage waiting to respawn
-                {
-                    if (zeGarbage.turnOnFlag_ == 0) {
-                        GarbageComponent zeGarbageComp = (GarbageComponent) (zeGarbage.getComponent("zeGarbage"));
-                        if (zeGarbageComp.timeToSpawn <= TransformationComponent.EPSILON)    // If the timer has become less than 0
-                        {
-                            int randomRow = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerRow()); // getting the random row like from 0 to 7
-                            int randomCol = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerCol()); // Same as the above
-                            if (GarbageBuilder.getInstance().CheckingThroughEmptyBoxes(randomRow, randomCol, zeGarbageComp)) // If the spawn position happens to be empty. then spawn it.
-                            {
-                                // Getting the specific index in the grids
-                                zeGarbageComp.setSpaces((short) (randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
-                                zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
-                                bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
-                                bunchOfInactive.remove(zeGarbage);  // well because they were originally at inactivelist
-                            } else {
-                                zeGarbageComp.timeToSpawn = 1;
-                            }
-                        } else
-                            zeGarbageComp.timeToSpawn -= dt;
-                    }
-                }
-                // This to check whether is there any garbage left
-                if (AmountOfTrashLeft.size() == 0)
-                    theToastMessage.showToast();
-            }
-
+            updateTheAccelerometerPreviousValueTimer += dt;
         }
     }
     public boolean onTouchEvent(MotionEvent event){
@@ -420,17 +381,17 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     public void onSensorChanged(SensorEvent sensorEvent) {
         SensorVars = sensorEvent.values;
         float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
-        if (updateThePreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
+        if (updateTheAccelerometerPreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
         {
             PreviousValues = SensorVars.clone();
-            updateThePreviousValueTimer = 0;
+            updateTheAccelerometerPreviousValueTimer = 0;
         }
         else if (Math.abs(checkingTheXDifference) > 7.0f) // We cheat here and just check for x value since it is landscape
         {
             PlayerActiveStuff.onNotify("ShakedTooMuch");
             MusicSystem.getInstance().playSoundEffect("RemoveTrash");
             PreviousValues = SensorVars.clone();
-            updateThePreviousValueTimer = 0;
+            updateTheAccelerometerPreviousValueTimer = 0;
         }
     }
 
@@ -441,6 +402,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
     public void LoadingOfTrashesFromTextFile()
     {
+        if (theToastMessage != null)
+            theToastMessage.reset();
+        String zeTimeStr = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel, "Time");
+        overallTime = timeLeft = Float.parseFloat(zeTimeStr);
         loadSpecificTrashFromTextFile("General");   // Unfortunately, ain't no time to develop complicated algorithms
         loadSpecificTrashFromTextFile("Paper");
         loadSpecificTrashFromTextFile("Plastic");
@@ -477,6 +442,130 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         }
     }
 
+    private void UpdateGameplay(float dt)
+    {
+        if (timeLeft <= 0)
+        {
+            if(!alertCreator.showAlert) {
+                Playerscore = (int) PlayerActiveStuff.getScore_();
+                editScore.putInt("UserScore", Playerscore);
+                editScore.commit();
+                alertCreator.winOrLose = false;
+                alertCreator.RunAlert(1000);
+            }
+        }
+        else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())   // The condition for player to fully win!
+        {
+            if (CurrentLevel < MaxLevels)   // Proceed to next level if there is any
+            {
+                ++CurrentLevel;
+                currentStateOfView = TITLE_STATE;
+                toDisplayTitlePaint.setAlpha(255);  // Set the alpha back to normal
+                bunchOfInactive.clear();    // Clearing all the inactive objects
+                LoadingOfTrashesFromTextFile();
+            }
+            else if(!alertCreator.showAlert) {
+                currentStateOfView = CREDIT_STATE;
+//                Playerscore = (int) PlayerActiveStuff.getScore_();
+//                editScore.putInt("UserScore", Playerscore);
+//                editScore.commit();
+//                alertCreator.winOrLose = true;
+//                alertCreator.RunAlert(1000);
+                /*zeCurrContext.onClick("win!");
+                GridSystem.getInstance().Exit();*/
+            }
+        }
+        else {
+            thePlayer.Update(dt);
+            timeLeft = Math.max(timeLeft - dt, 0);
+            boolean stopTheLoop = false;
+            for (Entity zeEntity : bunchOfEntites) {
+                switch (zeEntity.turnOnFlag_) {
+                    case 0:
+                        bunchOfEntites.remove(zeEntity);
+                        bunchOfInactive.add(zeEntity);
+                        if (zeEntity.checkActiveComponent("zeGarbage"))
+                            AmountOfTrashLeft.remove(zeEntity);
+                        stopTheLoop = true;
+                        break;
+                    default:
+                }
+                if (stopTheLoop)
+                    break;
+            }
+            // Putting right after bunchOfEntities so that garbage that's been collected are removed
+            for (Entity zeGarbage : AmountOfTrashLeft)  // This is to check if there is any inactive garbage waiting to respawn
+            {
+                if (zeGarbage.turnOnFlag_ == 0) {
+                    GarbageComponent zeGarbageComp = (GarbageComponent) (zeGarbage.getComponent("zeGarbage"));
+                    if (zeGarbageComp.timeToSpawn <= TransformationComponent.EPSILON)    // If the timer has become less than 0
+                    {
+                        int randomRow = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerRow()); // getting the random row like from 0 to 7
+                        int randomCol = gettingRandomStuff.nextInt(GridSystem.getInstance().getNumOfBoxesPerCol()); // Same as the above
+                        if (GarbageBuilder.getInstance().CheckingThroughEmptyBoxes(randomRow, randomCol, zeGarbageComp)) // If the spawn position happens to be empty. then spawn it.
+                        {
+                            // Getting the specific index in the grids
+                            zeGarbageComp.setSpaces((short) (randomCol + (randomRow * GridSystem.getInstance().getNumOfBoxesPerCol())));
+                            zeGarbage.turnOnFlag_ = 1;  // Turn the gameobject to be active
+                            bunchOfEntites.add(zeGarbage);  // add the gameobject to the active list
+                            bunchOfInactive.remove(zeGarbage);  // well because they were originally at inactivelist
+                        } else {
+                            zeGarbageComp.timeToSpawn = 1;
+                        }
+                    } else
+                        zeGarbageComp.timeToSpawn -= dt;
+                }
+            }
+            // This to check whether is there any garbage left
+            if (AmountOfTrashLeft.size() == 0)
+                theToastMessage.showToast();
+        }
+    }
+    private void UpdateTitle(float dt)
+    {
+        if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle) {
+            TimeToDisplayTitle += dt;
+            int zeTitleAlpha = toDisplayTitlePaint.getAlpha();
+            toDisplayTitlePaint.setAlpha(Math.max(0, (int)(zeTitleAlpha - (Math.E * TimeToDisplayTitle))));
+        }
+        else {
+            currentStateOfView = START_STATE;
+            TimeToDisplayTitle = 0;
+        }
+    }
+    private void UpdateCredits(float dt)
+    {
+        CreditTimeCounter += dt;
+        int zeAlphaOfBackground = CreditBackground.getAlpha();
+        if (zeAlphaOfBackground <= 255)
+        {
+            CreditBackground.setAlpha(Math.min(255, (int)(zeAlphaOfBackground + (CreditTimeCounter * Math.E))));  // Increasing the background alpha exponentially
+        }
+        if (CreditTimeCounter < maxTimeForCreditDisplay)
+            toMoveTheCredits.posY -= GridSystem.getInstance().getScreenHeight() * 0.10f * (dt);
+        else if (!alertCreator.showAlert)
+        {
+            Playerscore = (int) PlayerActiveStuff.getScore_();
+            editScore.putInt("UserScore", Playerscore);
+            editScore.commit();
+            alertCreator.winOrLose = true;
+            alertCreator.RunAlert(1000);
+        }
+    }
+    private void RenderTitle(Canvas zeCanvas)
+    {
+        RenderTextOnScreen(zeCanvas, "LEVEL " + CurrentLevel, 0, (int)(GridSystem.getInstance().getScreenHeight()*0.5), toDisplayTitlePaint);
+    }
+    private void RenderCredits(Canvas zeCanvas)
+    {
+        // Filling the entire screen with the background
+        zeCanvas.drawRoundRect(0,0, GridSystem.getInstance().getScreenWidth(), GridSystem.getInstance().getScreenHeight(), 1, 1, CreditBackground);
+        for (int num = 0; num < allTheCredits.size(); ++num)
+        {
+            RenderTextOnScreen(zeCanvas, allTheCredits.get(num), (int)toMoveTheCredits.posX, (int)(toMoveTheCredits.posY + (num * toMoveTheCredits.scaleX * 1.5f)), CreditTextColor);
+        }
+    }
+
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
     Entity thePlayer;
     TransformationComponent playerTransform;
@@ -497,10 +586,23 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     PauseButton pauseButton;
     // Creating and using accelerometer
     private SensorManager theSensor;
-    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateThePreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
+    private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateTheAccelerometerPreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
     SharedPreferences sharedPreferscore;
     SharedPreferences.Editor editScore;
     int Playerscore;
     AlertCreator alertCreator;
     private int MaxLevels, CurrentLevel;
+    private float TimeToDisplayTitle;   // To display the level title time counter
+    private static final float TheMaximumTimeToDisplayTitle = 2.0f;
+    private Paint toDisplayTitlePaint;
+    // Instead of using enums, we shall use byte to determine it
+    // 0 means displaying of title thus giving player a break
+    // 1 means start the game
+    // 2 means end of the game!
+    static final byte TITLE_STATE = 0, START_STATE = 1, CREDIT_STATE = 2, NOT_UPDATING_GAME_YET = -1;
+    private byte currentStateOfView = NOT_UPDATING_GAME_YET;
+    private LinkedList<String> allTheCredits;   // to store all the credit lines!
+    private TransformationComponent toMoveTheCredits;   // Storing the text size and moving of text to make it looks like parallel scrolling
+    private Paint CreditBackground, CreditTextColor;    // The credits need their own colors too!
+    private float CreditTimeCounter = 0, maxTimeForCreditDisplay = 5;
 }

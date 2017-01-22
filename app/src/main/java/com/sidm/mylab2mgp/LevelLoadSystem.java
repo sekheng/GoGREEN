@@ -76,6 +76,7 @@ public class LevelLoadSystem extends ECSystem {
                     }
                 }
             }
+            inputStream.close();
         }
         catch(FileNotFoundException fnf)
         {
