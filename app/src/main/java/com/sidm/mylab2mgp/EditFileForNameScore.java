@@ -30,9 +30,11 @@ public class EditFileForNameScore {
     public EditFileForNameScore(Context context)
     {
         try {
-
-            FileOutputStream outputStreamWriter = context.openFileOutput("highscores", context.MODE_PRIVATE);//create file if dont have
-            outputStreamWriter.close();
+            InputStream inputStream = context.openFileInput("highscores");
+            if(inputStream == null) {
+                FileOutputStream outputStreamWriter = context.openFileOutput("highscores", context.MODE_PRIVATE);//create file if dont have
+                outputStreamWriter.close();
+            }
         }
             catch (IOException io) {
 
