@@ -46,14 +46,18 @@ public class MusicSystem extends ECSystem {
     }
     public boolean playBGM(String zeID)
     {
-        if (currentBGM_ != null)
+        if (currentBGMPlaying != zeID && currentBGM_ != null)   // This will help check whether is the BGM is playing and the ID matches the BGM that the user wants to play.
         {
             currentBGM_.stop();
             currentBGM_.release();
+            currentBGM_ = null;
         }
-        currentBGM_ = MediaPlayer.create(currentContext, allTheBGMIndex_.get(zeID));
-        currentBGM_.start();
-        currentBGM_.setLooping(true);
+        if (currentBGM_ == null) {  // If only there is no BGM playing!
+            currentBGM_ = MediaPlayer.create(currentContext, allTheBGMIndex_.get(zeID));
+            currentBGM_.start();
+            currentBGM_.setLooping(true);
+            currentBGMPlaying = zeID;
+        }
         return true;
     }
     public boolean loadSoundEffect(String zeID)
@@ -104,13 +108,14 @@ public class MusicSystem extends ECSystem {
     private MusicSystem()
     {
         BGM_Volume_ = 1.0f;
-        allTheSoundIndex_ = new HashMap<String, Integer>();
+        allTheSoundIndex_ = new HashMap<>();
         audioAttributes_ = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
         allSound_ = new SoundPool.Builder().setAudioAttributes(audioAttributes_).setMaxStreams(5).build();
         allTheBGMIndex_ = new HashMap<>();
         currentBGM_ = null;
         currentContext = null;
         loadedSoundIndex_ = new HashMap<>();
+        currentBGMPlaying = "";
     }
 
     public float BGM_Volume_;
@@ -118,5 +123,6 @@ public class MusicSystem extends ECSystem {
     private AudioAttributes audioAttributes_;
     private MediaPlayer currentBGM_;
     private HashMap<String, Integer> allTheSoundIndex_, allTheBGMIndex_, loadedSoundIndex_;
+    private String currentBGMPlaying;   // This is to keep track of what BGM is playing!
     private Context currentContext;
 }
