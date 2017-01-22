@@ -283,9 +283,13 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 //            RenderTextOnScreen(canvas, "Value"+num+":"+SensorVars[num], 0, (int)((GridSystem.getInstance().getAverageBoxSize().scaleY * 5) + (num * GridSystem.getInstance().getAverageBoxSize().scaleY)), 50);
 //        }
         // TODO: Remove when not debugging accelerometer
-        if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle)
+        switch (currentStateOfView)
         {
-            RenderTextOnScreen(canvas, "LEVEL " + CurrentLevel, 0, (int)(GridSystem.getInstance().getScreenHeight()*0.5), toDisplayTitlePaint);
+            case TITLE_STATE:
+                RenderTitle(canvas);
+                break;
+            default:
+                break;
         }
     }
 
@@ -505,11 +509,18 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     }
     private void UpdateTitle(float dt)
     {
-
+        if (TimeToDisplayTitle < TheMaximumTimeToDisplayTitle)
+            TimeToDisplayTitle += dt;
+        else
+            currentStateOfView = START_STATE;
     }
     private void UpdateCredits(float dt)
     {
 
+    }
+    private void RenderTitle(Canvas zeCanvas)
+    {
+        RenderTextOnScreen(zeCanvas, "LEVEL " + CurrentLevel, 0, (int)(GridSystem.getInstance().getScreenHeight()*0.5), toDisplayTitlePaint);
     }
 
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;
