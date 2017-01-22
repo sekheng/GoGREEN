@@ -8,13 +8,17 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by 150592K on 12/1/2016.
  */
 
 public class Rankings extends Activity implements OnClickListener{
-    private Button btn_back, btn_next, btn_previous;
+    private Button btn_back;
+    private TextView textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,25 +32,31 @@ public class Rankings extends Activity implements OnClickListener{
         btn_back = (Button)findViewById(R.id.btn_back);
         btn_back.setOnClickListener(this);
 
-        btn_next = (Button)findViewById(R.id.btn_next);
-        btn_next.setOnClickListener(this);
+        NameAndScoreStorer.getInstance().sortListByScore();
 
-        btn_previous = (Button)findViewById(R.id.btn_previous);
-        btn_previous.setOnClickListener(this);
+        StringBuilder displyString;
+        int maxRanks = 12;
+        int numberOfEntries = NameAndScoreStorer.getInstance().getList().size();
+        int index = 0;
+        List<NameAndScore> temp =NameAndScoreStorer.getInstance().getList();
+
+        //EditFileForNameScore editFileForNameScore = new EditFileForNameScore((Gamepage)getApplicationContext());
+        //editFileForNameScore.UpdateListOfNameAndScore((Gamepage)getApplicationContext());
+
+        while(index < numberOfEntries && index < maxRanks)
+        {
+            textview = (TextView)findViewById((R.id.tv_first + index));
+            displyString = new StringBuilder(textview.getText());
+            displyString.append(" " + temp.get(index).name + " Score:" + temp.get(index).score);
+            textview.setText(displyString);
+            index += 1;
+        }
     }
     public void onClick(View v)
     {
         if(v == btn_back)
         {
             finish();
-        }
-        if(v == btn_next)
-        {
-
-        }
-        if(v == btn_previous)
-        {
-
         }
         //Intent intent = new Intent();
         /*if (v == btn_start)

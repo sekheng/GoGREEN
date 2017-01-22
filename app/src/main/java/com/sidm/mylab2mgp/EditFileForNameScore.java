@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,10 +26,12 @@ public class EditFileForNameScore {
     StringBuilder str;
 
 
+    //File file = new File()
     public EditFileForNameScore(Context context)
     {
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("highscores.txt", context.MODE_PRIVATE));//create file if dont have
+
+            FileOutputStream outputStreamWriter = context.openFileOutput("highscores", context.MODE_PRIVATE);//create file if dont have
             outputStreamWriter.close();
         }
             catch (IOException io) {
@@ -40,10 +43,10 @@ public class EditFileForNameScore {
     public void UpdateTextFile(String name, int score, Context context)
     {
        try {
-           OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("highscores.txt",context.MODE_APPEND));//open the fill to read, doesnt overwrite
+           FileOutputStream outputStreamWriter = (context.openFileOutput("highscores",context.MODE_APPEND));//open the fill to read, doesnt overwrite
            str = new StringBuilder(name);//store the name then append then write to file
            str.append("-" + score+"\n");
-           outputStreamWriter.write(str.toString());
+           outputStreamWriter.write(str.toString().getBytes());
            NameAndScoreStorer.getInstance().setCurrNameAndScore(new NameAndScore(name,score));
            outputStreamWriter.close();
        }
@@ -58,15 +61,16 @@ public class EditFileForNameScore {
     public void UpdateListOfNameAndScore(Context context)
     {
         try {
-           InputStream inputStream = context.openFileInput("highscores.txt");
+           InputStream inputStream = context.openFileInput("highscores");
             if(inputStream != null)
             {
+                //inputStream.reset();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
                 String temp = "";
                 int numberOfNames = 0;
-                NameAndScoreStorer.getInstance().clearList();
+                //NameAndScoreStorer.getInstance().clearList();
                 while((temp = bufferedReader.readLine()) != null)
                 {
                     String[] stringSplit = temp.split("-");

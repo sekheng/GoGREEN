@@ -8,36 +8,6 @@
     android:background="@drawable/mainmenu_background"
     android:screenOrientation="landscape">
 
-    <Button
-        android:id="@+id/btn_next"
-        android:textSize="18dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rightarrow"
-        android:textColor="#0b932d"
-        android:shadowColor="#7F000000"
-        android:shadowDx="-2"
-        android:shadowDy="-2"
-        android:shadowRadius="1"
-        android:layout_marginBottom="106dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:id="@+id/btn_previous"
-        android:textSize="18dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rightarrow"
-        android:rotation="180"
-        android:textColor="#0b932d"
-        android:shadowColor="#7F000000"
-        android:shadowDx="-2"
-        android:shadowDy="-2"
-        android:shadowRadius="1"
-        android:layout_alignLeft="@+id/btn_next"
-        android:layout_alignBottom="@+id/btn_next"
-        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="50dp"
@@ -58,12 +28,124 @@
         android:layout_centerHorizontal="true"
         />
 
-    <ImageSwitcher
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/title_leaderboard"
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_centerVertical="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:layout_below="@+id/title_leaderboard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="1st"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_first" />
+
+            <TextView
+                android:text="2nd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_second" />
+
+            <TextView
+                android:text="3rd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_third" />
+
+            <TextView
+                android:text="4th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_forth" />
+            <TextView
+                android:text="5th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_fifth" />
+            <TextView
+                android:text="6th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_sixth" />
+            <TextView
+                android:text="7th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_seventh"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:text="8th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_eigth" />
+            <TextView
+                android:text="9th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_nineth"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:text="10th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_tenth" />
+            <TextView
+                android:text="11th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_eleventh" />
+            <TextView
+                android:text="12th"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_leaderboard"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"
+                android:id="@+id/tv_twelveth" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
 
 
 </RelativeLayout>

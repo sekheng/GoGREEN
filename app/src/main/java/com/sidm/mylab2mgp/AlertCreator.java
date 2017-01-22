@@ -58,16 +58,16 @@ public class AlertCreator {
 
 
         //define max of 20 character to be entered for name field
-        int maxlength = 20;
+        int maxlength = 12;
         InputFilter[] FilterArray = new InputFilter[1];
         FilterArray[0] = new InputFilter.LengthFilter(maxlength);
         input.setFilters(FilterArray);
 
         //setup the alert dialog
         //set up the alert dialog
-        alert.setTitle("game over?!");
+        alert.setTitle("Game over?!");
         alert.setIcon(R.drawable.gogreenlogo);
-        alert.setMessage("Enter your Name");
+        alert.setMessage("Enter your Name(MAX 12 Characters)");
         alert.setCancelable(false);
         alert.setView(input);
 
