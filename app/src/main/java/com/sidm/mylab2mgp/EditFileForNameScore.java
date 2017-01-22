@@ -34,11 +34,19 @@ public class EditFileForNameScore {
             if(inputStream == null) {
                 FileOutputStream outputStreamWriter = context.openFileOutput("highscores", context.MODE_PRIVATE);//create file if dont have
                 outputStreamWriter.close();
+
+                File file = new File(context.getFilesDir(), "highscores");
+
             }
+            else
+                inputStream.close();
+            String temp = context.getFilesDir().getAbsolutePath();
+            temp += "o";
         }
             catch (IOException io) {
 
             }
+
     }
 
     //since i dont think we will keep updating the file with the score, im gonna
@@ -72,7 +80,7 @@ public class EditFileForNameScore {
 
                 String temp = "";
                 int numberOfNames = 0;
-                //NameAndScoreStorer.getInstance().clearList();
+                NameAndScoreStorer.getInstance().clearList();
                 while((temp = bufferedReader.readLine()) != null)
                 {
                     String[] stringSplit = temp.split("-");

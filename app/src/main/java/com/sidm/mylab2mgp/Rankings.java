@@ -32,16 +32,20 @@ public class Rankings extends Activity implements OnClickListener{
         btn_back = (Button)findViewById(R.id.btn_back);
         btn_back.setOnClickListener(this);
 
-        NameAndScoreStorer.getInstance().sortListByScore();
+
+
+
+
+        EditFileForNameScore editFileForNameScore = new EditFileForNameScore(this);
+        editFileForNameScore.UpdateListOfNameAndScore(this);
 
         StringBuilder displyString;
         int maxRanks = 12;
         int numberOfEntries = NameAndScoreStorer.getInstance().getList().size();
         int index = 0;
+        NameAndScoreStorer.getInstance().sortListByScore();
         List<NameAndScore> temp =NameAndScoreStorer.getInstance().getList();
 
-        //EditFileForNameScore editFileForNameScore = new EditFileForNameScore((Gamepage)getApplicationContext());
-        //editFileForNameScore.UpdateListOfNameAndScore((Gamepage)getApplicationContext());
 
         while(index < numberOfEntries && index < maxRanks)
         {
