@@ -82,6 +82,10 @@ public class AlertCreator {
                 /*editName.putString("PlayerUSERID", Playername);
                 editName.commit();*/
 
+                if(Playername.equals(""))
+                {
+                    Playername = " ";
+                }
                 editFileForNameScore.UpdateTextFile(Playername,Playerscore,context);
                 if(!winOrLose)
                 {
@@ -92,6 +96,7 @@ public class AlertCreator {
                     zeCurrContext.onClick("win!");
                 }
                 GridSystem.getInstance().Exit();
+                editFileForNameScore.UpdateListOfNameAndScore(context);
                 /*Intent intent = new Intent();
                 intent.setClass(getContext(), ScorePage.class);
                 activityTracker.startActivity(intent);*/
