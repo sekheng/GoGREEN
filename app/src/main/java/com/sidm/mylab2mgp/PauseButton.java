@@ -1,11 +1,16 @@
 package com.sidm.mylab2mgp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.Button;
 
 /**
  * Created by - on 16/1/2017.
@@ -13,13 +18,19 @@ import android.util.DisplayMetrics;
 
 public class PauseButton {
     private boolean isPaused = false;
+    private boolean createDialog = false;
+    private Context context = null;
     public Objects PauseB1;
     private Objects PauseB2;
     private int Screenwidth;
     private int Screenheight;
+    private Button btn_ok;
+    private Dialog dialog;
+
 
     public PauseButton(Context context, Resources res, int x, int y)
     {
+        this.context = context;
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         Screenwidth = metrics.widthPixels;
         Screenheight = metrics.heightPixels;
@@ -31,6 +42,23 @@ public class PauseButton {
                 (int)(Screenwidth)/15, (int)(Screenheight)/10,true), x, y);
         PauseB2 = new Objects(Bitmap.createScaledBitmap((BitmapFactory.decodeResource(res,R.drawable.pause_pressed)),
                 (int)(Screenwidth)/15, (int)(Screenheight)/10,true), x, y);
+
+        //Looper.prepareMainLooper();
+        createDialog = true;
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.customdialog);
+
+        btn_ok = (Button)dialog.findViewById(R.id.btn_ok);
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isPaused = false;
+                createDialog = true;
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public void RenderPauseButton(Canvas canvas)
@@ -57,6 +85,50 @@ public class PauseButton {
         }
     }
 
+    public void createPauseDialog()
+    {
+        if(createDialog)
+        {
+            createDialog = false;
+            Handler handler = new Handler(Looper.getMainLooper());
+            // Returns the application's main looper, which lives in the main thread of the application
+
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    dialog.show();
+                }
+            }, 100); // 1000  Delay in milliseconds until the runnable is executed
+            //dialog.show();
+        }
+       /* if(!createDialog && isPaused)//havent create dialog and is in paused state
+        {
+            //Looper.prepare();
+            createDialog = true;
+            dialog = new Dialog(context);
+            dialog.setContentView(R.layout.customdialog);
+
+            btn_ok = (Button)dialog.findViewById(R.id.btn_ok);
+
+            btn_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isPaused = false;
+                    createDialog = false;
+                    dialog.dismiss();
+                }
+            });
+
+
+        }
+        else if(createDialog)
+        {
+            dialog.show();
+        }*/
+    }
+
+
     public boolean getIsPause()
     {
         return isPaused;
@@ -80,12 +152,14 @@ public class PauseButton {
     {
         if(isPaused && CheckCollision(PauseB1.getX(),PauseB1.getY(), PauseB1.getWidth(), PauseB1.getHeight(),pressX,pressY,0,0))
         {
-            isPaused = false;
+            //isPaused = false;
         }
         else if(!isPaused && CheckCollision(PauseB2.getX(),PauseB2.getY(), PauseB2.getWidth(), PauseB2.getHeight(),pressX,pressY,0,0))
         {
             isPaused = true;
         }
     }
+
+
 
 }

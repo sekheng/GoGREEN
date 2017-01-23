@@ -316,6 +316,10 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
             }
             updateTheAccelerometerPreviousValueTimer += dt;
         }
+        else if(pauseButton.getIsPause())
+        {
+            pauseButton.createPauseDialog();
+        }
     }
     public boolean onTouchEvent(MotionEvent event){
 
