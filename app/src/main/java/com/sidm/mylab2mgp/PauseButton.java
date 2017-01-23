@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
@@ -25,6 +26,7 @@ public class PauseButton {
     private int Screenwidth;
     private int Screenheight;
     private Button btn_ok;
+    private Button btn_cancel;
     private Dialog dialog;
 
 
@@ -47,10 +49,24 @@ public class PauseButton {
         createDialog = true;
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.customdialog);
+        Drawable drawable = context.getDrawable(R.drawable.sandbackground);
+        drawable.setAlpha(50);
+        dialog.getWindow().setBackgroundDrawable(drawable);
+
 
         btn_ok = (Button)dialog.findViewById(R.id.btn_ok);
+        btn_cancel = (Button)dialog.findViewById(R.id.btn_cancel);
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isPaused = false;
+                createDialog = true;
+                dialog.dismiss();
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isPaused = false;
