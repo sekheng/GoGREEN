@@ -14,6 +14,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 
+import ECS.GridSystem;
+
 /**
  * Created by - on 16/1/2017.
  */
@@ -73,6 +75,7 @@ public class PauseButton {
                     isPaused = false;
                     createDialog = true;
                     gamepage.onClick("quit");
+                    GridSystem.getInstance().Exit();
                     dialog.dismiss();
                 }
                 else
