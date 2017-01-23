@@ -59,6 +59,7 @@ public class Splashpage extends Activity {
         MusicSystem.getInstance().addBGM(R.raw.adventure_bgm, "Adventure");
         MusicSystem.getInstance().addSoundEffect(R.raw.pick_garbage, "GarbagePicked");
         MusicSystem.getInstance().addSoundEffect(R.raw.remove_trash, "RemoveTrash");
+        MusicSystem.getInstance().addBGM(R.raw.overall_bgm, "GameBGM");
 
         LevelLoadSystem.setContext(this);
         LevelLoadSystem.getInstance();  // Load the text file first!

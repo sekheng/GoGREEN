@@ -136,7 +136,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         toDisplayTitlePaint.setTextSize(GridSystem.getInstance().getAverageBoxSize().scaleX);
 
         allTheCredits = new LinkedList<>();
-        String zeCreditLine = "";
+        String zeCreditLine;
         // Loading of the credits also starts here!
         for (int num = 0; (zeCreditLine = LevelLoadSystem.getInstance().getValue("Credits", "Creditor"+num)) != null ; ++num)
         {
@@ -371,9 +371,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
     {
-        if (MusicSystem.getInstance().playSoundEffect(zeEvent))
-            return true;
-        return false;
+        return MusicSystem.getInstance().playSoundEffect(zeEvent);
     }
 
     @Override
