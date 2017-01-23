@@ -46,12 +46,32 @@ public class Rankings extends Activity implements OnClickListener{
         NameAndScoreStorer.getInstance().sortListByScore();
         List<NameAndScore> temp =NameAndScoreStorer.getInstance().getList();
 
+        int currRank = 1;
+        int prevRank = 1;
 
         while(index < numberOfEntries && index < maxRanks)
         {
             textview = (TextView)findViewById((R.id.tv_first + index));
-            displyString = new StringBuilder(textview.getText());
-            displyString.append(" " + temp.get(index).name + " Score:" + temp.get(index).score);
+            if(index != 0)
+            {
+                if(temp.get(index).score == temp.get(index - 1).score)//if equal score should have same rank
+                {
+                    displyString = new StringBuilder("Number " + prevRank);
+                    currRank += 1;
+                }
+                else
+                {
+                    displyString = new StringBuilder("Number " + currRank);
+                    prevRank = currRank;
+                    currRank += 1;
+                }
+            }
+            else
+            {
+                displyString = new StringBuilder("Number " + currRank);
+                currRank += 1;
+            }
+            displyString.append(": " + temp.get(index).name + " Score:" + temp.get(index).score);
             textview.setText(displyString);
             index += 1;
         }
