@@ -84,6 +84,24 @@ public class MusicSystem extends ECSystem {
         }
         return false;
     }
+    public boolean pauseCurrentBGM()
+    {
+        if (currentBGM_ != null)
+        {
+            currentBGM_.pause();
+            return true;
+        }
+        return false;
+    }
+    public boolean resumeCurrentBGM()
+    {
+        if (currentBGM_ != null)
+        {
+            currentBGM_.start();
+            return true;
+        }
+        return false;
+    }
     public boolean stopAllSoundEffect()
     {
         if (loadedSoundIndex_.size() > 0)

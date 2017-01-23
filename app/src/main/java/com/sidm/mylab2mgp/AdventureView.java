@@ -136,7 +136,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         toDisplayTitlePaint.setTextSize(GridSystem.getInstance().getAverageBoxSize().scaleX);
 
         allTheCredits = new LinkedList<>();
-        String zeCreditLine = "";
+        String zeCreditLine;
         // Loading of the credits also starts here!
         for (int num = 0; (zeCreditLine = LevelLoadSystem.getInstance().getValue("Credits", "Creditor"+num)) != null ; ++num)
         {
@@ -375,24 +375,14 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
     {
-        if (MusicSystem.getInstance().playSoundEffect(zeEvent))
-            return true;
-        return false;
+        return MusicSystem.getInstance().playSoundEffect(zeEvent);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         SensorVars = sensorEvent.values;
-        float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
         if (updateTheAccelerometerPreviousValueTimer > 0.5f) // Need to check for every interval instead of frame
         {
-            PreviousValues = SensorVars.clone();
-            updateTheAccelerometerPreviousValueTimer = 0;
-        }
-        else if (Math.abs(checkingTheXDifference) > 7.0f) // We cheat here and just check for x value since it is landscape
-        {
-            PlayerActiveStuff.onNotify("ShakedTooMuch");
-            MusicSystem.getInstance().playSoundEffect("RemoveTrash");
             PreviousValues = SensorVars.clone();
             updateTheAccelerometerPreviousValueTimer = 0;
         }
@@ -407,6 +397,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     {
         if (theToastMessage != null)
             theToastMessage.reset();
+        bunchOfInactive.clear();    // Need to clear out the trash that has been taken out!
         String zeTimeStr = LevelLoadSystem.getInstance().getValue("Level"+CurrentLevel, "Time");
         overallTime = timeLeft = Float.parseFloat(zeTimeStr);
         loadSpecificTrashFromTextFile("General");   // Unfortunately, ain't no time to develop complicated algorithms
@@ -470,6 +461,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
             }
             else if(!alertCreator.showAlert) {
                 currentStateOfView = CREDIT_STATE;
+                bunchOfInactive.clear();    // Need to clear the garbage!
 //                Playerscore = (int) PlayerActiveStuff.getScore_();
 //                editScore.putInt("UserScore", Playerscore);
 //                editScore.commit();
@@ -523,6 +515,15 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
             // This to check whether is there any garbage left
             if (AmountOfTrashLeft.size() == 0)
                 theToastMessage.showToast();
+            // This is to for accelerometer use only!
+            float checkingTheXDifference = SensorVars[0] - PreviousValues[0];
+            if (Math.abs(checkingTheXDifference) > 7.0f) // We cheat here and just check for x value since it is landscape
+            {
+                PlayerActiveStuff.onNotify("ShakedTooMuch");
+                MusicSystem.getInstance().playSoundEffect("RemoveTrash");
+                PreviousValues = SensorVars.clone();
+                updateTheAccelerometerPreviousValueTimer = 0;
+            }
         }
     }
     private void UpdateTitle(float dt)

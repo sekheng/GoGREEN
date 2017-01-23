@@ -2,7 +2,6 @@ package com.sidm.mylab2mgp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
@@ -12,9 +11,6 @@ import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
-import java.io.InputStream;
 
 public class Mainmenu extends Activity implements OnClickListener {
 
@@ -69,9 +65,6 @@ public class Mainmenu extends Activity implements OnClickListener {
         btn_options.setLayoutParams(options_params);
         btn_ranking.setLayoutParams(ranking_params);
         imageView.setLayoutParams(imageView_params);
-
-
-
     }
 
     public void onClick(View v)
