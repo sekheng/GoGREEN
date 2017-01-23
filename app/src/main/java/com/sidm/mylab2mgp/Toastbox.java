@@ -46,6 +46,10 @@ public class Toastbox {
             toggleMessageShown = true;
         }
     }
+    public boolean getToggleMessageShown()
+    {
+        return toggleMessageShown;
+    }
     public void setShowMessageOnce(boolean zeLogic)
     {
         showMessageOnce = zeLogic;

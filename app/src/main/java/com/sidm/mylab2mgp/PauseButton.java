@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -28,9 +29,11 @@ public class PauseButton {
     private Button btn_ok;
     private Button btn_cancel;
     private Dialog dialog;
+    private Toastbox toastmaker;
+    private Vibrator vibrator;
 
 
-    public PauseButton(Context context, Resources res, int x, int y)
+    public PauseButton(Context context, final Gamepage gamepage, Resources res, int x, int y)
     {
         this.context = context;
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -45,6 +48,10 @@ public class PauseButton {
         PauseB2 = new Objects(Bitmap.createScaledBitmap((BitmapFactory.decodeResource(res,R.drawable.pause_pressed)),
                 (int)(Screenwidth)/15, (int)(Screenheight)/10,true), x, y);
 
+        toastmaker = new Toastbox();
+        toastmaker.toastmessageShort(context, "Are you sure you want to quit?");
+        toastmaker.setShowMessageOnce(true);
+
         //Looper.prepareMainLooper();
         createDialog = true;
         dialog = new Dialog(context);
@@ -57,12 +64,22 @@ public class PauseButton {
         btn_ok = (Button)dialog.findViewById(R.id.btn_ok);
         btn_cancel = (Button)dialog.findViewById(R.id.btn_cancel);
 
+        vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isPaused = false;
-                createDialog = true;
-                dialog.dismiss();
+                if(toastmaker.getToggleMessageShown()) {
+                    isPaused = false;
+                    createDialog = true;
+                    gamepage.onClick("quit");
+                    dialog.dismiss();
+                }
+                else
+                {
+                    vibrator.vibrate(250);
+                    toastmaker.showToast();
+                }
             }
         });
 
@@ -71,6 +88,7 @@ public class PauseButton {
             public void onClick(View view) {
                 isPaused = false;
                 createDialog = true;
+                toastmaker.reset();
                 dialog.dismiss();
             }
         });

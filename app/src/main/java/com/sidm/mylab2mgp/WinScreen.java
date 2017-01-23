@@ -1,8 +1,10 @@
 package com.sidm.mylab2mgp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 public class WinScreen extends Activity implements OnClickListener{
     private Button btn_mainmenu,btn_tryagain;
     private TextView tv_score;
+    private Vibrator vibrator;
 
     int Playerscore;
     @Override
@@ -62,6 +65,7 @@ public class WinScreen extends Activity implements OnClickListener{
         btn_mainmenu.setLayoutParams(mainmenu_params);
         btn_tryagain.setLayoutParams(tryagain_params);
 
+        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
     }
     public void onClick(View v)
     {
@@ -75,6 +79,10 @@ public class WinScreen extends Activity implements OnClickListener{
         if(v == btn_tryagain)
         {
             //load level again
+            vibrator.vibrate(250);
+            Intent intent = new Intent();
+            intent.setClass(this, Gamepage.class);
+            startActivity(intent);
         }
         //Intent intent = new Intent();
         /*if (v == btn_start)

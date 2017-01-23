@@ -117,7 +117,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         theToastMessage.toastmessageShort(zeCurrContext, "Get To the Bin!");
         theToastMessage.setShowMessageOnce(true);
 
-        pauseButton = new PauseButton(context, getResources(),(GridSystem.getInstance().getScreenWidth()/9) * 8, (GridSystem.getInstance().getScreenHeight())/120);
+        pauseButton = new PauseButton(context, zeCurrContext,getResources(),(GridSystem.getInstance().getScreenWidth()/9) * 8, (GridSystem.getInstance().getScreenHeight())/120);
 
         sharedPreferscore = getContext().getSharedPreferences("UserScore", Context.MODE_PRIVATE);
         editScore = sharedPreferscore.edit();

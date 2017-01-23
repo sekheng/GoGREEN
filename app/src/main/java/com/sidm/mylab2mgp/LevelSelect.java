@@ -31,11 +31,13 @@ public class LevelSelect extends Activity implements OnClickListener {
 
     private Vibrator vibrator;
 
-    Integer[] images = {R.drawable.mode_adventure, R.drawable.mode_unlimited, R.drawable.mode_quicksort};
+    Integer[] images = {R.drawable.mode_tutorial, R.drawable.mode_adventure, R.drawable.mode_unlimited, R.drawable.mode_quicksort};
 
     private int imageNumber = 0;
 
     private Animation in,out,in2,out2;
+
+    private Toastbox toastmaker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,15 +125,25 @@ public class LevelSelect extends Activity implements OnClickListener {
         imageView.setLayoutParams(imageView_params);
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+
+        toastmaker = new Toastbox();
+        toastmaker.toastmessageShort(this, "Not Available Yet!");
+        toastmaker.setShowMessageOnce(false);
     }
     public void onClick(View v)
     {
         Intent intent = new Intent();
         if (v == btn_start)
         {
-            vibrator.vibrate(500);//ms
-            intent.setClass(this, Gamepage.class);
-            startActivity(intent);
+            if(imageNumber == 1) {
+                vibrator.vibrate(500);//ms
+                intent.setClass(this, Gamepage.class);
+                startActivity(intent);
+            }
+            else
+            {
+                toastmaker.showToast();
+            }
             //intent.setClass(this, Splashpage.class);
         }
         if(v == btn_back)

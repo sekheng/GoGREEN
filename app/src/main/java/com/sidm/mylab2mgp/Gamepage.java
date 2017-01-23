@@ -52,6 +52,12 @@ public class Gamepage extends Activity implements OnClickListener {
             finishAfterTransition();
             startActivity(intent);
         }
+        else if(zeEvent.equalsIgnoreCase("quit"))
+        {
+            intent.setClass(this, Mainmenu.class);
+            finishAfterTransition();
+            startActivity(intent);
+        }
 
     }
     @Override
