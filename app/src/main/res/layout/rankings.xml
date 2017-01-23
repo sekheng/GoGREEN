@@ -41,7 +41,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="1st"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -50,7 +50,7 @@
                 android:id="@+id/tv_first" />
 
             <TextView
-                android:text="2nd"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -59,7 +59,7 @@
                 android:id="@+id/tv_second" />
 
             <TextView
-                android:text="3rd"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -68,7 +68,7 @@
                 android:id="@+id/tv_third" />
 
             <TextView
-                android:text="4th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -76,7 +76,7 @@
                 android:layout_marginEnd="35dp"
                 android:id="@+id/tv_forth" />
             <TextView
-                android:text="5th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -84,7 +84,7 @@
                 android:layout_marginEnd="35dp"
                 android:id="@+id/tv_fifth" />
             <TextView
-                android:text="6th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -92,7 +92,7 @@
                 android:layout_marginEnd="35dp"
                 android:id="@+id/tv_sixth" />
             <TextView
-                android:text="7th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -101,7 +101,7 @@
                 android:id="@+id/tv_seventh"
                 android:layout_centerHorizontal="true"/>
             <TextView
-                android:text="8th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -109,7 +109,7 @@
                 android:layout_marginEnd="35dp"
                 android:id="@+id/tv_eigth" />
             <TextView
-                android:text="9th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -118,7 +118,7 @@
                 android:id="@+id/tv_nineth"
                 android:layout_centerHorizontal="true"/>
             <TextView
-                android:text="10th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -126,7 +126,7 @@
                 android:layout_marginEnd="35dp"
                 android:id="@+id/tv_tenth" />
             <TextView
-                android:text="11th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
@@ -134,7 +134,7 @@
                 android:layout_marginEnd="35dp"
                 android:id="@+id/tv_eleventh" />
             <TextView
-                android:text="12th"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_leaderboard"
