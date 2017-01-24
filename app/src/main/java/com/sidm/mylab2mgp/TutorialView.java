@@ -15,6 +15,7 @@ import ECS.*;
 public class TutorialView extends GamePanelSurfaceView implements SensorEventListener {
     public TutorialView(Context context) {
         super(context);
+        getHolder().addCallback(this);
         zeCurrContext = (Gamepage)context;
         MusicSystem.getInstance().playBGM("Adventure");
 

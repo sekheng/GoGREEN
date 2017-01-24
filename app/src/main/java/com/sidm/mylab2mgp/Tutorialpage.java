@@ -10,10 +10,10 @@ import android.view.WindowManager;
  */
 
 public class Tutorialpage extends Gamepage {
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);  // hide title   // Switching position with super.onCreate() will work!
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);  // hide title
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);   //hide top bar
         zeCurrentGameView = new TutorialView(this);
         setContentView(zeCurrentGameView);
