@@ -29,15 +29,9 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
     // 4b) Variable as an index to keep track of the spaceship images
     //protected short shipindex = 0;
 
-    protected short mX = 0, mY = 0;
 
     // Variables for FPS
     public float FPS;
-    float deltaTime;
-    long dt;
-
-    // Variable for Game State check
-    private short GameState;
 
     //Activity activityTracker;
 
@@ -125,32 +119,33 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
     public void update(float dt, float fps){
         FPS = fps;
 
-        switch (GameState) {
-            case 0: {
-                // 3) Update the background to allow panning effect
-                bgX -= 500 * dt;    // Temp value to speed the panning
-                if (bgX < 0)
-                {
-                    bgX = 0;
-                }
-
-
-                // 4e) Update the spaceship images / shipIndex so that the animation will occur.
-//                shipindex++;
-//                shipindex %= 4;
-            }
-            break;
-        }
+//        switch (GameState) {
+//            case 0: {
+//                // 3) Update the background to allow panning effect
+//                bgX -= 500 * dt;    // Temp value to speed the panning
+//                if (bgX < 0)
+//                {
+//                    bgX = 0;
+//                }
+//
+//
+//                // 4e) Update the spaceship images / shipIndex so that the animation will occur.
+////                shipindex++;
+////                shipindex %= 4;
+//            }
+//            break;
+//        }
     }
 
     // Rendering is done on Canvas
     public void doDraw(Canvas canvas){
-        switch (GameState)
-        {
-            case 0:
-                RenderGameplay(canvas);
-                break;
-        }
+//        switch (GameState)
+//        {
+//            case 0:
+//                RenderGameplay(canvas);
+//                break;
+//        }
+        RenderGameplay(canvas);
     }
 
     //Print text on Screen

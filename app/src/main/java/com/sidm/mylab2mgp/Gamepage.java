@@ -16,7 +16,7 @@ import android.widget.Button;
  */
 
 public class Gamepage extends Activity implements OnClickListener {
-    private Button btn_random;
+    //private Button btn_random;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +31,11 @@ public class Gamepage extends Activity implements OnClickListener {
 
     public void onClick(View v)
     {
-        if(v == btn_random) {
-            Intent intent = new Intent();
-
-            startActivity(intent);
-        }
+//        if(v == btn_random) {
+//            Intent intent = new Intent();
+//
+//            startActivity(intent);
+//        }
     }
     public void onClick(String zeEvent)
     {
@@ -85,5 +85,5 @@ public class Gamepage extends Activity implements OnClickListener {
     }
 
 
-    private GamePanelSurfaceView zeCurrentGameView;
+    protected GamePanelSurfaceView zeCurrentGameView;
 }
