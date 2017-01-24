@@ -267,7 +267,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         }
 
         // This might be removed if A* search is done
-        playerBits = (ProtaganistAnimComponent) thePlayer.getComponent("zeProtagAnimations");
+        //playerBits = (ProtaganistAnimComponent) thePlayer.getComponent("zeProtagAnimations");
         playerBits.draw(canvas);
         playerBits.setPosX((int)playerTransform.posX);
         playerBits.setPosY((int)playerTransform.posY);
