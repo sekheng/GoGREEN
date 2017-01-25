@@ -574,12 +574,9 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        if (keyCode == KeyEvent.KEYCODE_BACK)   // When player pressed back keyspace, he/she will go back and forth to pause menu
+        if (keyCode == KeyEvent.KEYCODE_BACK && !pauseButton.getIsPause())   // When player pressed back keyspace, he/she will go back and forth to pause menu
         {
-            if (pauseButton.getIsPause())
-                pauseButton.checkIfPressedPause(pauseButton.PauseB1.getX(), pauseButton.PauseB1.getY());    // Cheat collision here
-            else
-                pauseButton.checkIfPressedPause(pauseButton.PauseB2.getX(), pauseButton.PauseB2.getY());    // Cheat collision here
+            pauseButton.setToPause();
             return true;
         }
         return false;

@@ -57,6 +57,7 @@ public class PauseButton {
         //Looper.prepareMainLooper();
         createDialog = true;
         dialog = new Dialog(context);
+        dialog.setCancelable(false);
         dialog.setContentView(R.layout.customdialog);
         Drawable drawable = context.getDrawable(R.drawable.sandbackground);
         drawable.setAlpha(50);
@@ -185,7 +186,7 @@ public class PauseButton {
         return false;
     }
 
-    void checkIfPressedPause(int pressX, int pressY)
+    public void checkIfPressedPause(int pressX, int pressY)
     {
         if(isPaused && CheckCollision(PauseB1.getX(),PauseB1.getY(), PauseB1.getWidth(), PauseB1.getHeight(),pressX,pressY,0,0))
         {
@@ -195,6 +196,11 @@ public class PauseButton {
         {
             isPaused = true;
         }
+    }
+    public void setToPause()
+    {
+        isPaused = true;
+        //11return true;
     }
 
 
