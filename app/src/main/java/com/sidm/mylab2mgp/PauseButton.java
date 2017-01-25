@@ -57,7 +57,7 @@ public class PauseButton {
         //Looper.prepareMainLooper();
         createDialog = true;
         dialog = new Dialog(context);
-        dialog.setCancelable(false);
+        dialog.setCancelable(false);//disable the player to back if press back button
         dialog.setContentView(R.layout.customdialog);
         Drawable drawable = context.getDrawable(R.drawable.sandbackground);
         drawable.setAlpha(50);

@@ -24,6 +24,10 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         super(context);
         getHolder().addCallback(this);
         zeCurrContext = (Gamepage)context;
+
+        //pauseButton = new PauseButton(context, zeCurrContext,getResources(),(GridSystem.getInstance().getScreenWidth()/9) * 8, (GridSystem.getInstance().getScreenHeight())/120);
+
+
         MusicSystem.getInstance().playBGM("Adventure");
         MusicSystem.getInstance().loadSoundEffect("GarbagePicked");
         MusicSystem.getInstance().loadSoundEffect("RemoveTrash");
@@ -75,6 +79,19 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
+        anotherSpace.clear();
+        anotherSpace.add((short)1);
+        anotherSpace.add((short)6);
+        GarbageBuilder.getInstance().buildPlasticBottleGarbage("le plastic garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);
+        anotherSpace.clear();
+        anotherSpace.add((short)3);
+        anotherSpace.add((short)6);
+        GarbageBuilder.getInstance().buildSmalleGarbage("le small garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);
+        anotherSpace.clear();
+        anotherSpace.add((short)5);
+        anotherSpace.add((short)6);
+        GarbageBuilder.getInstance().buildWastePaperGarbage("le paper garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);
+
 
         PlasticGarbageColor = new Paint();
         PlasticGarbageColor.setARGB(220, 206, 6, 6);
@@ -93,6 +110,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         if (canvas == null)
             return;
         canvas.drawBitmap(scaledbg, 0, 0, null);
+        //pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
 
         BitComponent zeBit;
@@ -147,7 +165,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
     // This is where you update your game logic
     public void update(float dt, float fps) {
         FPS = fps;
-        if (fps > 30) { // only update if it is running above 30 FPS
+        if (fps > 30 /*&& !pauseButton.getIsPause()*/) { // only update if it is running above 30 FPS
             thePlayer.Update(dt);
             boolean stopTheLoop = false;
             for (Entity zeEntity : bunchOfEntites) {
@@ -174,6 +192,10 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
                 updateTheAccelerometerPreviousValueTimer = 0;
             }
         }
+        /*else if(pauseButton.getIsPause())
+        {
+            pauseButton.createPauseDialog();
+        }*/
     }
     public boolean onTouchEvent(MotionEvent event){
 
@@ -198,7 +220,9 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
                     zePhysics.setNextPosToGo(zeBoxTransform.posX + (GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f), zeBoxTransform.posY + (GridSystem.getInstance().getAverageBoxSize().scaleY * 0.25f));
                     thePlayer.getComponent("zePlayer").onNotify(zeBoxTransform);
                 }
+
             }
+            //pauseButton.checkIfPressedPause((int)x,(int)y);
         }
         return super.onTouchEvent(event);
     }
@@ -251,6 +275,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
     ProtaganistAnimComponent playerBits;
     PlayerComponent PlayerActiveStuff;
     TransformationComponent zeOverallBounds;
+   //PauseButton pauseButton;
     // For Player Stuff
     //TODO: Remove when not debugging
     Bitmap debuggingGrid;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background = "@drawable/blueroundedbutton"
+        android:text="CANCEL"
+        android:id="@+id/btn_next"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "GO TO THE JAVA FILE TO SET TEXT HERE"
+        android:textSize="35dp"
+        android:id="@+id/textView"
+        android:layout_marginBottom="100dp"
+        android:layout_above="@+id/btn_next"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
