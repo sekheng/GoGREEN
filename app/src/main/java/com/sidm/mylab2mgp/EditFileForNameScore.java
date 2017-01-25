@@ -1,21 +1,14 @@
 package com.sidm.mylab2mgp;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.util.ArrayList;
+
 
 /**
  * Created by - on 19/1/2017.
@@ -26,7 +19,7 @@ public class EditFileForNameScore {
     StringBuilder str;
 
 
-    //File file = new File()
+
     public EditFileForNameScore(Context context)
     {
         try {
@@ -35,13 +28,12 @@ public class EditFileForNameScore {
                 FileOutputStream outputStreamWriter = context.openFileOutput("highscores", context.MODE_PRIVATE);//create file if dont have
                 outputStreamWriter.close();
 
-                File file = new File(context.getFilesDir(), "highscores");
+
 
             }
             else
                 inputStream.close();
-            String temp = context.getFilesDir().getAbsolutePath();
-            temp += "o";
+
         }
             catch (IOException io) {
 
@@ -95,6 +87,17 @@ public class EditFileForNameScore {
         catch(FileNotFoundException fnf)
         {
 
+        }
+        catch (IOException io) {
+
+        }
+    }
+
+    public void refreshText(Context context)
+    {
+        try {
+            FileOutputStream outputStreamWriter = context.openFileOutput("highscores", context.MODE_PRIVATE);//create file if dont have
+            outputStreamWriter.close();
         }
         catch (IOException io) {
 

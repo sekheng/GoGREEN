@@ -1,7 +1,6 @@
 package com.sidm.mylab2mgp;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,8 +16,10 @@ import java.util.List;
  */
 
 public class Rankings extends Activity implements OnClickListener{
-    private Button btn_back;
+    private Button btn_back, btn_reset;
     private TextView textview;
+
+    private EditFileForNameScore editFileForNameScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,12 @@ public class Rankings extends Activity implements OnClickListener{
         btn_back = (Button)findViewById(R.id.btn_back);
         btn_back.setOnClickListener(this);
 
+        btn_reset = (Button)findViewById(R.id.btn_reset);
+        btn_reset.setOnClickListener(this);
 
 
 
-
-        EditFileForNameScore editFileForNameScore = new EditFileForNameScore(this);
+        editFileForNameScore = new EditFileForNameScore(this);
         editFileForNameScore.UpdateListOfNameAndScore(this);
 
         StringBuilder displyString;
@@ -75,12 +77,20 @@ public class Rankings extends Activity implements OnClickListener{
             textview.setText(displyString);
             index += 1;
         }
+        if(numberOfEntries <= 0) {
+            textview = (TextView) findViewById((R.id.tv_first));
+            textview.setText("PLAY TO SEE YOUR SCORE!!");
+        }
     }
     public void onClick(View v)
     {
         if(v == btn_back)
         {
             finish();
+        }
+        else if(v == btn_reset)
+        {
+            resettheRanks();
         }
         //Intent intent = new Intent();
         /*if (v == btn_start)
@@ -98,6 +108,24 @@ public class Rankings extends Activity implements OnClickListener{
         }*/
         //startActivity(intent);
     }
+
+    void resettheRanks()
+    {
+        editFileForNameScore.refreshText(this);
+        NameAndScoreStorer.getInstance().clearList();
+        int index = 0;
+        int maxRanks = 12;
+        while(index < maxRanks) {
+            textview = (TextView) findViewById((R.id.tv_first + index));
+            textview.setText("");
+            index += 1;
+        }
+        textview = (TextView) findViewById((R.id.tv_first));
+        textview.setText("PLAY TO SEE YOUR SCORE!!");
+
+    }
+
+
     @Override
     protected void onPause()
     {
