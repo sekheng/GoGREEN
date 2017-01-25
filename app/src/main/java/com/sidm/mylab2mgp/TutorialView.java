@@ -37,7 +37,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         debuggingBlueFilled.setARGB(255, 0, 0, 255);
         //TODO: Remove when not debugging
         GridSystem.getInstance().Exit();
-        
+
         thePlayer = new Entity("Player");   //For now, it ca make my life easier.
         bunchOfEntites = new LinkedList<Entity>();
         bunchOfInactive = new LinkedList<Entity>();

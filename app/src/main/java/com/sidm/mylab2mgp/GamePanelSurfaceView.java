@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -179,6 +180,10 @@ public class GamePanelSurfaceView extends SurfaceView implements SurfaceHolder.C
     public boolean onNotify(String zeEvent)
     {
         return false;
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        return true;
     }
     protected static final String TAG = null;
     protected Gamepage zeCurrContext = null;

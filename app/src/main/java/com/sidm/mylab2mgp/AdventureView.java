@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
@@ -569,6 +570,19 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         {
             RenderTextOnScreen(zeCanvas, allTheCredits.get(num), (int)toMoveTheCredits.posX, (int)(toMoveTheCredits.posY + (num * toMoveTheCredits.scaleX * 1.5f)), CreditTextColor);
         }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)   // When player pressed back keyspace, he/she will go back and forth to pause menu
+        {
+            if (pauseButton.getIsPause())
+                pauseButton.checkIfPressedPause(pauseButton.PauseB1.getX(), pauseButton.PauseB1.getY());    // Cheat collision here
+            else
+                pauseButton.checkIfPressedPause(pauseButton.PauseB2.getX(), pauseButton.PauseB2.getY());    // Cheat collision here
+            return true;
+        }
+        return false;
     }
 
     LinkedList<Entity> bunchOfEntites, bunchOfInactive, AmountOfTrashLeft;

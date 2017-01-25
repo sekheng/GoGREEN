@@ -25,7 +25,7 @@ public class PauseButton {
     private boolean createDialog = false;
     private Context context = null;
     public Objects PauseB1;
-    private Objects PauseB2;
+    public Objects PauseB2; // Have to change here otherwise can't compile
     private int Screenwidth;
     private int Screenheight;
     private Button btn_ok;
