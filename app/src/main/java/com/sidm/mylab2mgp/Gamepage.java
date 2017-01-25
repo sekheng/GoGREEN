@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.Window;
@@ -83,7 +84,11 @@ public class Gamepage extends Activity implements OnClickListener {
     {
         super.onResume();
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        return zeCurrentGameView.onKeyDown(keyCode, event);
+    }
 
-
-    private GamePanelSurfaceView zeCurrentGameView;
+    protected GamePanelSurfaceView zeCurrentGameView;
 }
