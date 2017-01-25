@@ -93,6 +93,12 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         GarbageBuilder.getInstance().buildWastePaperGarbage("le paper garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);
 
 
+        TimeColor = new Paint();
+        TimeColor.setARGB(200, 0, 135, 42); // Taking from the Hex Picker Color
+        ProgressColor = new Paint();    // The progress of playing should have a color!
+        ProgressColor.setARGB(220, 229, 207, 6);
+        CapacityColor = new Paint();
+        CapacityColor.setARGB(220, 206, 14, 14);
         PlasticGarbageColor = new Paint();
         PlasticGarbageColor.setARGB(220, 206, 6, 6);
         GeneralGarbageColor = new Paint();
@@ -104,6 +110,9 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         theSensor = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         theSensor.registerListener(this, theSensor.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_NORMAL);
         updateTheAccelerometerPreviousValueTimer = 2.0f;
+
+        overallTime = timeLeft = 20.0f;
+        TotalNumOfGarbage = AmountOfTrashLeft.size();
     }
     // This is where you render your game stuff!
     public void RenderGameplay(Canvas canvas) {
@@ -112,6 +121,55 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         canvas.drawBitmap(scaledbg, 0, 0, null);
         //pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
+        canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
+                zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                zeOverallBounds.scaleX * (timeLeft / overallTime) * 0.5f,  // so that it will scale from right to left
+                (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                1, 1, TimeColor
+        );  // Displaying time in rectangle
+        short numberOfGarbageCarried = 0;   // Need to count how many garbage the player carried
+        float howMuchSpaceAGrid = (zeOverallBounds.scaleX * 0.5f) / PlayerActiveStuff.MaxCapacity();    // Getting the Average size for a grid GUI
+        for (String zeTypeOfGarbage : PlayerActiveStuff.carryGarbageType)   // Deciphering the type of garbage then give the color
+        {
+            ++numberOfGarbageCarried;
+            // We need to get the TYPE from "TYPE|SCORE"
+            int firstOR = zeTypeOfGarbage.indexOf('|');
+            byte zeType = Byte.parseByte(zeTypeOfGarbage.substring(0, firstOR));
+            switch (zeType)
+            {
+                case 0: // This means it is Paper waste
+                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+                            zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                            (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
+                            (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                            1,1,PaperGarbageColor
+                    );
+                    break;
+                case 1: // this means general waste
+                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+                            zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                            (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
+                            (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                            1,1,GeneralGarbageColor
+                    );
+                    break;
+                case 2: // this means plastic waste
+                    canvas.drawRoundRect((zeOverallBounds.scaleX * 0.5f) + ((numberOfGarbageCarried-1) * howMuchSpaceAGrid),  // Starting from the middle of screen width because sharing space with time then need to move the sqaure along
+                            zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
+                            (zeOverallBounds.scaleX * 0.5f) + (numberOfGarbageCarried * howMuchSpaceAGrid),
+                            (zeOverallBounds.posY * 2) + zeOverallBounds.scaleY,   // The height of the rect. adding posY*2 and scaleY will become the overall screen height
+                            1,1,PlasticGarbageColor
+                    );
+                    break;
+            }
+        }
+        float remainingGarbage = TotalNumOfGarbage - AmountOfTrashLeft.size();
+        canvas.drawRoundRect(0.0f,  // because at the very left of the screen
+                0.0f,   // because at the very top of the screen
+                zeOverallBounds.scaleX * (remainingGarbage/(float)TotalNumOfGarbage),  // Since scaleX is screen width, so we can multiply the right coordinate by RemainingGarbage/TotalGarbageFromBeginning.
+                zeOverallBounds.posY,   // Bottom coordinate shall be before the first row of grids
+                1, 1, ProgressColor
+        );  // Displaying time in rectangle
 
         BitComponent zeBit;
         TransformationComponent zeTransform;
@@ -286,4 +344,6 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
     private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateTheAccelerometerPreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
     // Color for the UIs
     Paint TimeColor, ProgressColor, CapacityColor, PlasticGarbageColor, GeneralGarbageColor, PaperGarbageColor;    // Color of the Timer
+    float timeLeft, overallTime;
+    int TotalNumOfGarbage;
 }
