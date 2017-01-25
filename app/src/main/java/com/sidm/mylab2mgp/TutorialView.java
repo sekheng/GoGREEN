@@ -68,21 +68,21 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         setFocusable(true);
 
         LinkedList <Short> anotherSpace = new LinkedList<>();
-        anotherSpace.add((short)1);
+        /*anotherSpace.add((short)1);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildPaperBin("ze paper Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
-        anotherSpace.clear();
+        anotherSpace.clear();*/
         anotherSpace.add((short)4);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildGeneralBin("ze general Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
-        anotherSpace.clear();
+        /*anotherSpace.clear();
         anotherSpace.add((short)5);
         anotherSpace.add((short)1);
-        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
-        anotherSpace.clear();
+        GarbageBuilder.getInstance().buildPlasticBin("ze plastic Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));*/
+        /*anotherSpace.clear();
         anotherSpace.add((short)1);
         anotherSpace.add((short)6);
-        GarbageBuilder.getInstance().buildPlasticBottleGarbage("le plastic garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);
+        GarbageBuilder.getInstance().buildPlasticBottleGarbage("le plastic garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);*/
         anotherSpace.clear();
         anotherSpace.add((short)3);
         anotherSpace.add((short)6);
@@ -90,7 +90,11 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         anotherSpace.clear();
         anotherSpace.add((short)5);
         anotherSpace.add((short)6);
-        GarbageBuilder.getInstance().buildWastePaperGarbage("le paper garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);
+        GarbageBuilder.getInstance().buildSmalleGarbage("le small garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);
+        /*anotherSpace.clear();
+        anotherSpace.add((short)5);
+        anotherSpace.add((short)6);
+        GarbageBuilder.getInstance().buildWastePaperGarbage("le paper garbage", anotherSpace.toArray(new Short[anotherSpace.size()]), 0.f);*/
 
 
         TimeColor = new Paint();
@@ -113,12 +117,16 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
 
         overallTime = timeLeft = 20.0f;
         TotalNumOfGarbage = AmountOfTrashLeft.size();
+
+        tutorialDialogs = new TutorialDialogs(context, zeCurrContext);
+
     }
     // This is where you render your game stuff!
     public void RenderGameplay(Canvas canvas) {
         if (canvas == null)
             return;
         canvas.drawBitmap(scaledbg, 0, 0, null);
+        //tutorialDialogs.
         //pauseButton.RenderPauseButton(canvas);
         RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
@@ -223,7 +231,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
     // This is where you update your game logic
     public void update(float dt, float fps) {
         FPS = fps;
-        if (fps > 30 /*&& !pauseButton.getIsPause()*/) { // only update if it is running above 30 FPS
+        if (fps > 30 && tutorialDialogs.tutorialNumber > 0/*&& !pauseButton.getIsPause()*/) { // only update if it is running above 30 FPS
             thePlayer.Update(dt);
             boolean stopTheLoop = false;
             for (Entity zeEntity : bunchOfEntites) {
@@ -248,8 +256,23 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
                 MusicSystem.getInstance().playSoundEffect("RemoveTrash");
                 PreviousValues = SensorVars.clone();
                 updateTheAccelerometerPreviousValueTimer = 0;
+                if(PlayerActiveStuff.getReachedGarbageBin()
+                        && !isTiltOnce
+                        && tutorialDialogs.tutorialNumber == 7) {
+                    isTiltOnce = true;
+                    tutorialDialogs.tutorialNumber += 1;
+                }
+                // empty rubbish
+            }
+            if(PlayerActiveStuff.getReachedGarbageBin()
+                    && !isOnBinOnce
+                    && tutorialDialogs.tutorialNumber == 5)
+            {
+                isOnBinOnce = true;
+                tutorialDialogs.tutorialNumber += 1;
             }
         }
+        tutorialDialogs.showDialog();
         /*else if(pauseButton.getIsPause())
         {
             pauseButton.createPauseDialog();
@@ -308,7 +331,13 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
-    {
+    {//collected a rubbish
+        if(zeEvent.contains("GarbagePicked")
+                && !pickRubbishOnce
+                && tutorialDialogs.tutorialNumber == 2) {
+            tutorialDialogs.tutorialNumber += 1;
+            pickRubbishOnce = true;
+        }
         return MusicSystem.getInstance().playSoundEffect(zeEvent);
     }
 
@@ -333,6 +362,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
     ProtaganistAnimComponent playerBits;
     PlayerComponent PlayerActiveStuff;
     TransformationComponent zeOverallBounds;
+    TutorialDialogs tutorialDialogs;
    //PauseButton pauseButton;
     // For Player Stuff
     //TODO: Remove when not debugging
@@ -341,6 +371,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
     //TODO: Remove when not debugging
     // Creating and using accelerometer
     private SensorManager theSensor;
+    private boolean pickRubbishOnce = false, isOnBinOnce = false, isTiltOnce = false;
     private float SensorVars[] = new float[3], PreviousValues[] = {0, 0, 0}, updateTheAccelerometerPreviousValueTimer;    // Realised that it is being updated too fast, need to limit it
     // Color for the UIs
     Paint TimeColor, ProgressColor, CapacityColor, PlasticGarbageColor, GeneralGarbageColor, PaperGarbageColor;    // Color of the Timer

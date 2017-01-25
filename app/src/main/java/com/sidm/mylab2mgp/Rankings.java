@@ -18,6 +18,8 @@ import java.util.List;
 public class Rankings extends Activity implements OnClickListener{
     private Button btn_back, btn_reset;
     private TextView textview;
+    private boolean resetOnce;
+    private Toastbox toastmaker;
 
     private EditFileForNameScore editFileForNameScore;
 
@@ -36,7 +38,10 @@ public class Rankings extends Activity implements OnClickListener{
         btn_reset = (Button)findViewById(R.id.btn_reset);
         btn_reset.setOnClickListener(this);
 
-
+        toastmaker = new Toastbox();
+        toastmaker.toastmessageShort(this, "Are you sure?");
+        toastmaker.setShowMessageOnce(true);
+        resetOnce = false;
 
         editFileForNameScore = new EditFileForNameScore(this);
         editFileForNameScore.UpdateListOfNameAndScore(this);
@@ -86,11 +91,19 @@ public class Rankings extends Activity implements OnClickListener{
     {
         if(v == btn_back)
         {
+            toastmaker.reset();
             finish();
         }
         else if(v == btn_reset)
         {
-            resettheRanks();
+            if(toastmaker.getToggleMessageShown() && !resetOnce)
+            {
+                resettheRanks();
+                resetOnce = true;
+            }
+            else if(!toastmaker.getToggleMessageShown()){
+                toastmaker.showToast();
+            }
         }
         //Intent intent = new Intent();
         /*if (v == btn_start)

@@ -127,6 +127,13 @@ public class PlayerComponent extends Component {
         return score_;
     }
 
+    public boolean getReachedGarbageBin()
+    {
+        return reachedGarbageBin;
+    }
+
+
+
     protected BoxComponent whichBoxPlayerIn;
     protected boolean startUpdating, reachedGarbageBin;
     protected String WhatGarbageBin;
