@@ -31,9 +31,9 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:layout_centerVertical="false"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/title_leaderboard">
+        android:layout_below="@+id/title_leaderboard"
+        android:layout_above="@+id/btn_back">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,7 +145,14 @@
         </LinearLayout>
     </ScrollView>
 
-
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/blueroundedbutton"
+        android:text="Reset"
+        android:id="@+id/btn_reset" />
 
 
 </RelativeLayout>
