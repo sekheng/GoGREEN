@@ -38,6 +38,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
         scaledbg = GraphicsSystem.getInstance().getImage("AdventureBackground");
 
+        GridSystem.getInstance().Exit();    // This is prevent the bug of the grid that's supposed to be empty became filled!
         zeOverallBounds = GridSystem.getInstance().getBoundary();
 
         TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)GridSystem.getInstance().getScreenWidth()/10,(short)GridSystem.getInstance().getScreenHeight()/10);
@@ -339,7 +340,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
                     ++boxY;
                 long totalNum = boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol());
                 if (totalNum < GridSystem.getInstance().allTheBoxes.size()) {
-                    Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int) (boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol())));
+                    Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int)totalNum);
                     TransformationComponent zeBoxTransform = (TransformationComponent) (theExactBox.getComponent("Transformation Stuff"));
                     PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
                     zePhysics.setNextPosToGo(zeBoxTransform.posX + (GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f), zeBoxTransform.posY + (GridSystem.getInstance().getAverageBoxSize().scaleY * 0.25f));
