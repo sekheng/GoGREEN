@@ -295,7 +295,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
                     ++boxY;
                 long totalNum = boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol());
                 if (totalNum < GridSystem.getInstance().allTheBoxes.size()) {
-                    Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int) (boxX + (boxY * GridSystem.getInstance().getNumOfBoxesPerCol())));
+                    Entity theExactBox = GridSystem.getInstance().allTheBoxes.get((int)totalNum);
                     TransformationComponent zeBoxTransform = (TransformationComponent) (theExactBox.getComponent("Transformation Stuff"));
                     PhysicComponent zePhysics = (PhysicComponent) (thePlayer.getComponent("zePhysic"));
                     zePhysics.setNextPosToGo(zeBoxTransform.posX + (GridSystem.getInstance().getAverageBoxSize().scaleX * 0.25f), zeBoxTransform.posY + (GridSystem.getInstance().getAverageBoxSize().scaleY * 0.25f));
@@ -328,6 +328,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         MusicSystem.getInstance().stopCurrentBGM();
         MusicSystem.getInstance().stopAllSoundEffect();
         theSensor.unregisterListener(this);
+
     }
 
     public boolean onNotify(String zeEvent) // I used this function mainly to play sound effects
