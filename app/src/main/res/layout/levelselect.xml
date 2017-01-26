@@ -23,17 +23,6 @@
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src = "@drawable/title_gamemode"
-        android:id="@+id/title_gamemode"
-        android:alpha="1"
-        android:layout_above="@+id/btn_start"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="166dp" />
-
     <Button
         android:id="@+id/btn_next"
         android:textSize="18dp"
@@ -78,7 +67,15 @@
         android:layout_height="50dp"
         android:background="@drawable/back"
         android:id="@+id/btn_back"
-        android:layout_below="@+id/title_gamemode"
-        android:layout_alignLeft="@id/btn_start"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src = "@drawable/title_gamemode"
+        android:id="@+id/title_gamemode"
+        android:alpha="1"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>
