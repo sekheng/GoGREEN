@@ -50,7 +50,7 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
     List<String> PERMISSIONS = Arrays.asList("publish_actions");
 
     private Context currContext;
-    private Toastbox toastmaker1,toastmaker2;
+    private Toastbox toastmaker1,toastmaker2,toastmaker3;
 
     public PostToFacebookDialog(Context context)
     {
@@ -77,6 +77,10 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
         btn_back = (Button)dialog.findViewById(R.id.btn_back);
         btn_back.setOnClickListener(this);
 
+        btn_post = (Button)dialog.findViewById(R.id.btn_post);
+        btn_post.setOnClickListener(this);
+
+
         profile_pic = (ProfilePictureView)dialog.findViewById(R.id.picture);
         callbackManager = CallbackManager.Factory.create();
 
@@ -100,7 +104,7 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
         accessTokenTracker.startTracking();
 
         loginManager = LoginManager.getInstance();
-        loginManager.logInWithPublishPermissions(this,PERMISSIONS);
+        loginManager.logInWithPublishPermissions((WinScreen)context,PERMISSIONS);
 
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -123,12 +127,16 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
 
 
         toastmaker1 = new Toastbox();
-        toastmaker1.toastmessageShort(this, "Posted!");
+        toastmaker1.toastmessageShort(currContext, "Posted!");
         toastmaker1.setShowMessageOnce(true);
 
         toastmaker2 = new Toastbox();
-        toastmaker2.toastmessageShort(this, "You have already posted!");
+        toastmaker2.toastmessageShort(currContext, "You have already posted!");
         toastmaker2.setShowMessageOnce(true);
+
+        toastmaker3 = new Toastbox();
+        toastmaker3.toastmessageShort(currContext, "Login please!");
+        toastmaker3.setShowMessageOnce(true);
     }
 
     @Override
@@ -140,6 +148,8 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
             posted = false;
             toastmaker1.reset();
             toastmaker2.reset();
+            toastmaker3.reset();
+            //toastmaker1.showToast();
             dialog.dismiss();
         }
         else if(view == btn_post && loggedin && !posted)
@@ -151,6 +161,10 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
         else if(view == btn_post && loggedin && posted)
         {
             toastmaker2.showToast();
+        }
+        else if(view ==btn_post && !loggedin)
+        {
+            toastmaker3.showToast();
         }
     }
 
@@ -200,6 +214,11 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
+
+    public void setCallbackManagerOnactivityResult(int requestCode, int resultCode, Intent data)
+    {
         callbackManager.onActivityResult(requestCode,resultCode,data);
     }
 }

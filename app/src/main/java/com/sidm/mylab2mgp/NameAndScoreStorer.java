@@ -1,13 +1,10 @@
 package com.sidm.mylab2mgp;
 
-import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by - on 19/1/2017.
@@ -58,10 +55,10 @@ public class NameAndScoreStorer extends Gamepage{
         scores = new ArrayList();
     }
 
-    public int getNumberOfScores()
-    {
-        return numberOfScores;
-    }
+    //public int getNumberOfScores()
+    /*{
+        //return numberOfScores;
+    }*/
 
     public void sortListByScore()
     {

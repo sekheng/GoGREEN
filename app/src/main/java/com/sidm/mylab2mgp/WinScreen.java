@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 /**
@@ -71,7 +69,7 @@ public class WinScreen extends Activity implements OnClickListener{
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
-        //fbDialog = new PostToFacebookDialog(this);
+        fbDialog = new PostToFacebookDialog(this);
 
     }
     public void onClick(View v)
@@ -93,9 +91,9 @@ public class WinScreen extends Activity implements OnClickListener{
         }
         else if(v == btn_post)
         {
-            //fbDialog.setInDialog(true);
+            fbDialog.setInDialog(true);
 
-            //fbDialog.showDialog();
+            fbDialog.showDialog();
         }
         //Intent intent = new Intent();
         /*if (v == btn_start)
@@ -126,5 +124,12 @@ public class WinScreen extends Activity implements OnClickListener{
     protected void onDestroy()
     {
         super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        fbDialog.setCallbackManagerOnactivityResult(requestCode,resultCode,data);
     }
 }
