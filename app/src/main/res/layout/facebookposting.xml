@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.facebook.login.widget.LoginButton
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/fb_login_button"
+        android:layout_marginTop="5dp"/>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/back"
+        android:id="@+id/btn_back"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/blueroundedbutton"
+        android:text="POST"
+        android:id="@+id/btn_post" />
+
+    <com.facebook.login.widget.ProfilePictureView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:id = "@+id/picture"
+        android:layout_gravity = "center"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/fb_login_button"
+        android:layout_alignStart="@+id/btn_post" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "Post to Facebook?"
+        android:textSize="30dp"
+        android:id="@+id/textView"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/picture"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
