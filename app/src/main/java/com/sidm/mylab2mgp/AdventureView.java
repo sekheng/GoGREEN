@@ -43,11 +43,11 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
         TransformationComponent zeTransfrom = new TransformationComponent((short)50,(short)50,(short)GridSystem.getInstance().getScreenWidth()/10,(short)GridSystem.getInstance().getScreenHeight()/10);
         //TODO: Remove when not debugging
-        debuggingGrid = GraphicsSystem.getInstance().getImage("debuggingGrid");
-        debuggingRedFilled = new Paint();
-        debuggingRedFilled.setARGB(255,255,0,0);
-        debuggingBlueFilled = new Paint();
-        debuggingBlueFilled.setARGB(255, 0, 0, 255);
+//        debuggingGrid = GraphicsSystem.getInstance().getImage("debuggingGrid");
+//        debuggingRedFilled = new Paint();
+//        debuggingRedFilled.setARGB(255,255,0,0);
+//        debuggingBlueFilled = new Paint();
+//        debuggingBlueFilled.setARGB(255, 0, 0, 255);
         //TODO: Remove when not debugging
 
         thePlayer = new Entity("Player");   //For now, it ca make my life easier.
@@ -225,22 +225,22 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
 
         //TODO remove when not debugging
-        for (Entity zeEntity : GridSystem.getInstance().allTheBoxes)
-        {
-            zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
-            canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
-            BoxComponent zeBoxType = (BoxComponent)(zeEntity.getComponent("zeBox"));
-            switch (zeBoxType.whatBox)
-            {
-                case FILL:
-                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingRedFilled);
-                    break;
-                case BIN:
-                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingBlueFilled);
-                    break;
-                default:
-            }
-        }
+//        for (Entity zeEntity : GridSystem.getInstance().allTheBoxes)
+//        {
+//            zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
+//            canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
+//            BoxComponent zeBoxType = (BoxComponent)(zeEntity.getComponent("zeBox"));
+//            switch (zeBoxType.whatBox)
+//            {
+//                case FILL:
+//                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingRedFilled);
+//                    break;
+//                case BIN:
+//                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingBlueFilled);
+//                    break;
+//                default:
+//            }
+//        }
         //TODO remove when not debugging
 
         for (Entity zeEntity : bunchOfEntites)
@@ -593,8 +593,8 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
     float timeLeft, overallTime;
 
     //TODO: Remove when not debugging
-    Bitmap debuggingGrid;
-    Paint debuggingRedFilled, debuggingBlueFilled;
+//    Bitmap debuggingGrid;
+//    Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
     Paint TimeColor, ProgressColor, CapacityColor, PlasticGarbageColor, GeneralGarbageColor, PaperGarbageColor;    // Color of the Timer
     int TotalNumOfGarbage;
