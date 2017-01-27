@@ -34,11 +34,11 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
 
         zeOverallBounds = GridSystem.getInstance().getBoundary();
         //TODO: Remove when not debugging
-        debuggingGrid = GraphicsSystem.getInstance().getImage("debuggingGrid");
-        debuggingRedFilled = new Paint();
-        debuggingRedFilled.setARGB(255,255,0,0);
-        debuggingBlueFilled = new Paint();
-        debuggingBlueFilled.setARGB(255, 0, 0, 255);
+//        debuggingGrid = GraphicsSystem.getInstance().getImage("debuggingGrid");
+//        debuggingRedFilled = new Paint();
+//        debuggingRedFilled.setARGB(255,255,0,0);
+//        debuggingBlueFilled = new Paint();
+//        debuggingBlueFilled.setARGB(255, 0, 0, 255);
         //TODO: Remove when not debugging
         GridSystem.getInstance().Exit();
 
@@ -128,7 +128,7 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         canvas.drawBitmap(scaledbg, 0, 0, null);
         //tutorialDialogs.
         //pauseButton.RenderPauseButton(canvas);
-        RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
+        //RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         canvas.drawRoundRect(0.0f, // 0 because is at the left of the screen and draw it at half the screenWidth because need to make space for the capacity
                 zeOverallBounds.scaleY + zeOverallBounds.posY, // Because the drawing of rectangle starts by the end of the row
                 zeOverallBounds.scaleX * (timeLeft / overallTime) * 0.5f,  // so that it will scale from right to left
@@ -183,22 +183,22 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
         TransformationComponent zeTransform;
 
         //TODO remove when not debugging
-        for (Entity zeEntity : GridSystem.getInstance().allTheBoxes)
-        {
-            zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
-            canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
-            BoxComponent zeBoxType = (BoxComponent)(zeEntity.getComponent("zeBox"));
-            switch (zeBoxType.whatBox)
-            {
-                case FILL:
-                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingRedFilled);
-                    break;
-                case BIN:
-                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingBlueFilled);
-                    break;
-                default:
-            }
-        }
+//        for (Entity zeEntity : GridSystem.getInstance().allTheBoxes)
+//        {
+//            zeTransform = (TransformationComponent)zeEntity.getComponent("Transformation Stuff");
+//            canvas.drawBitmap(debuggingGrid, zeTransform.posX, zeTransform.posY, null);
+//            BoxComponent zeBoxType = (BoxComponent)(zeEntity.getComponent("zeBox"));
+//            switch (zeBoxType.whatBox)
+//            {
+//                case FILL:
+//                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingRedFilled);
+//                    break;
+//                case BIN:
+//                    canvas.drawRoundRect(zeTransform.posX, zeTransform.posY, zeTransform.scaleX, zeTransform.scaleY,0,0,debuggingBlueFilled);
+//                    break;
+//                default:
+//            }
+//        }
         //TODO remove when not debugging
         for (Entity zeEntity : bunchOfEntites)
         {
@@ -367,8 +367,8 @@ public class TutorialView extends GamePanelSurfaceView implements SensorEventLis
    //PauseButton pauseButton;
     // For Player Stuff
     //TODO: Remove when not debugging
-    Bitmap debuggingGrid;
-    Paint debuggingRedFilled, debuggingBlueFilled;
+//    Bitmap debuggingGrid;
+//    Paint debuggingRedFilled, debuggingBlueFilled;
     //TODO: Remove when not debugging
     // Creating and using accelerometer
     private SensorManager theSensor;
