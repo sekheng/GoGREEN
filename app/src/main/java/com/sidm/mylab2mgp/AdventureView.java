@@ -84,7 +84,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildPaperBin("ze paper Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
         anotherSpace.clear();
-        anotherSpace.add((short)4);
+        anotherSpace.add((short)3);
         anotherSpace.add((short)1);
         GarbageBuilder.getInstance().buildGeneralBin("ze general Bin", anotherSpace.toArray(new Short[anotherSpace.size()]));
         anotherSpace.clear();
@@ -166,7 +166,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
 
         canvas.drawBitmap(scaledbg, 0, 0, null);
         pauseButton.RenderPauseButton(canvas);
-        RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
+        //RenderTextOnScreen(canvas, "FPS: " + FPS, 50,50,50);
         //RenderTextOnScreen(canvas, "PlayerScore:" + PlayerActiveStuff.score_, 50, 100, 50);
         //RenderTextOnScreen(canvas, "AmountOfTrash:" + PlayerActiveStuff.amountOfGarbageCollected, 50, 150, 50);
         //RenderTextOnScreen(canvas, "TimeLeft:" + timeLeft, 50, GridSystem.getInstance().getScreenHeight() - (GridSystem.getInstance().getScreenHeight() / 10), 50);
