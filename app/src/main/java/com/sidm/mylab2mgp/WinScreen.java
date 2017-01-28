@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 /**
@@ -21,9 +19,10 @@ import android.widget.TextView;
  */
 
 public class WinScreen extends Activity implements OnClickListener{
-    private Button btn_mainmenu,btn_tryagain;
+    private Button btn_mainmenu,btn_tryagain,btn_post;
     private TextView tv_score;
     private Vibrator vibrator;
+    private PostToFacebookDialog fbDialog;
 
     int Playerscore;
     @Override
@@ -40,6 +39,9 @@ public class WinScreen extends Activity implements OnClickListener{
 
         btn_tryagain = (Button)findViewById((R.id.btn_tryagain));
         btn_tryagain.setOnClickListener(this);
+
+        btn_post = (Button)findViewById(R.id.btn_post);
+        btn_post.setOnClickListener(this);
 
         Playerscore = NameAndScoreStorer.getInstance().getCurrNameAndSCore().score;
 
@@ -66,6 +68,9 @@ public class WinScreen extends Activity implements OnClickListener{
         btn_tryagain.setLayoutParams(tryagain_params);
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+
+        fbDialog = new PostToFacebookDialog(this);
+
     }
     public void onClick(View v)
     {
@@ -83,6 +88,12 @@ public class WinScreen extends Activity implements OnClickListener{
             Intent intent = new Intent();
             intent.setClass(this, Gamepage.class);
             startActivity(intent);
+        }
+        else if(v == btn_post)
+        {
+            fbDialog.setInDialog(true);
+
+            fbDialog.showDialog();
         }
         //Intent intent = new Intent();
         /*if (v == btn_start)
@@ -113,5 +124,12 @@ public class WinScreen extends Activity implements OnClickListener{
     protected void onDestroy()
     {
         super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        fbDialog.setCallbackManagerOnactivityResult(requestCode,resultCode,data);
     }
 }

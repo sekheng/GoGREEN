@@ -22,10 +22,10 @@ import android.widget.TextView;
  */
 
 public class LoseScreen extends Activity implements OnClickListener{
-    private Button btn_mainmenu,btn_tryagain;
+    private Button btn_mainmenu,btn_tryagain,btn_post;
     private TextView tv_score;
     private Vibrator vibrator;
-
+    private PostToFacebookDialog fbDialog;
     int Playerscore;
 
     @Override
@@ -69,6 +69,10 @@ public class LoseScreen extends Activity implements OnClickListener{
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
+        fbDialog = new PostToFacebookDialog(this);
+        btn_post = (Button)findViewById(R.id.btn_post);
+        btn_post.setOnClickListener(this);
+
     }
     public void onClick(View v)
     {
@@ -79,13 +83,19 @@ public class LoseScreen extends Activity implements OnClickListener{
             intent.setClass(this, Mainmenu.class);
             startActivity(intent);
         }
-        if(v == btn_tryagain)
+        else if(v == btn_tryagain)
         {
             //load level again
             vibrator.vibrate(250);
             Intent intent = new Intent();
             intent.setClass(this, Gamepage.class);
             startActivity(intent);
+        }
+        else if(v == btn_post)
+        {
+            fbDialog.setInDialog(true);
+
+            fbDialog.showDialog();
         }
         //Intent intent = new Intent();
         /*if (v == btn_start)
@@ -116,5 +126,12 @@ public class LoseScreen extends Activity implements OnClickListener{
     protected void onDestroy()
     {
         super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        fbDialog.setCallbackManagerOnactivityResult(requestCode,resultCode,data);
     }
 }
