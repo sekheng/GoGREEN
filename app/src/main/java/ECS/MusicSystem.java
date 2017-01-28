@@ -136,7 +136,7 @@ public class MusicSystem extends ECSystem {
         currentBGMPlaying = "";
     }
 
-    public float BGM_Volume_;
+    private float BGM_Volume_;
     private SoundPool allSound_;
     private AudioAttributes audioAttributes_;
     private MediaPlayer currentBGM_;
