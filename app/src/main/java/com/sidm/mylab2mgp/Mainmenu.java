@@ -1,7 +1,9 @@
 package com.sidm.mylab2mgp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
@@ -12,12 +14,16 @@ import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.ImageView;
 
+import ECS.MusicSystem;
+
 public class Mainmenu extends Activity implements OnClickListener {
 
     private Button btn_start;
     private Button btn_options;
     private Button btn_ranking;
     private ImageView imageView;
+    private SharedPreferences sharedIsMusicOn;
+    private boolean isMusicOn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +71,11 @@ public class Mainmenu extends Activity implements OnClickListener {
         btn_options.setLayoutParams(options_params);
         btn_ranking.setLayoutParams(ranking_params);
         imageView.setLayoutParams(imageView_params);
+
+        sharedIsMusicOn = this.getSharedPreferences("isMusicOn", Context.MODE_PRIVATE);
+        isMusicOn = sharedIsMusicOn.getBoolean("isMusicOn",true);
+
+        MusicSystem.getInstance().turnOnOffAllSounds(isMusicOn);
     }
 
     public void onClick(View v)

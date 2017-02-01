@@ -50,7 +50,7 @@ public class TutorialDialogs {
                 createDialog = true;
                 inDialog = false;
                 tutorialNumber += 1;
-               if(tutorialNumber == 11)
+               if(tutorialNumber == 12)
                 {
                     gamepage.onClick("quit");
                     GridSystem.getInstance().Exit();
@@ -89,10 +89,15 @@ public class TutorialDialogs {
             }
             else if(tutorialNumber == 9)
             {
-                textview.setText("In the main game, there will be a top bar to show how much progress you have and a timer at the bottom left to indicate how much time you have to collect Garbage.");
+                textview.setText("In the main game, there will be a top bar to show how much progress you have.");
                 inDialog = true;
             }
             else if(tutorialNumber == 10)
+            {
+                textview.setText("There will also be a timer at the bottom left to indicate how much time you have to collect Garbage.");
+                inDialog = true;
+            }
+            else if(tutorialNumber == 11)
             {
                 textview.setText("Have Fun!");
                 inDialog = true;

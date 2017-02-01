@@ -137,6 +137,12 @@ public class MusicSystem extends ECSystem {
         }
         if (currentBGM_ != null)    // Need to check whether the object has been initialized!
             currentBGM_.setVolume(BGM_Volume_, BGM_Volume_);
+        isMusicOn = zeOn;
+    }
+
+    public boolean getisMusicOn()
+    {
+        return isMusicOn;
     }
 
     private static MusicSystem cantTouchThis = null;
@@ -160,4 +166,5 @@ public class MusicSystem extends ECSystem {
     private HashMap<String, Integer> allTheSoundIndex_, allTheBGMIndex_, loadedSoundIndex_;
     private String currentBGMPlaying;   // This is to keep track of what BGM is playing!
     private Context currentContext;
+    private boolean isMusicOn;
 }

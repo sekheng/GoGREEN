@@ -1,7 +1,9 @@
 package com.sidm.mylab2mgp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -10,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import ECS.MusicSystem;
 
 import static android.R.attr.checked;
 
@@ -21,6 +25,9 @@ public class Options extends Activity implements OnClickListener{
     private Switch switch_audio;
     private Button btn_back;
 
+    private boolean isMusicOn;
+    private SharedPreferences sharedIsMusicOn;
+    private SharedPreferences.Editor sharedIsMusicOnEditor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,19 +40,20 @@ public class Options extends Activity implements OnClickListener{
         btn_back = (Button)findViewById(R.id.btn_back);
         btn_back .setOnClickListener(this);
 
+        sharedIsMusicOn = this.getSharedPreferences("isMusicOn", Context.MODE_PRIVATE);
+        sharedIsMusicOnEditor = sharedIsMusicOn.edit();
+        isMusicOn = sharedIsMusicOn.getBoolean("isMusicOn", true);
+
         switch_audio = (Switch)findViewById(R.id.switch_audio);
-        switch_audio.setChecked(true);//switch default is false
+        switch_audio.setChecked(MusicSystem.getInstance().getisMusicOn());//switch default is false
         switch_audio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                {
-                    // allow sound
-                }
-                else
-                {
-                    //off sound
-                }
+
+                MusicSystem.getInstance().turnOnOffAllSounds(b);
+                sharedIsMusicOnEditor.putBoolean("isMusicOn",b);
+                sharedIsMusicOnEditor.commit();
+
             }
         });
     }
