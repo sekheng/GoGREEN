@@ -69,7 +69,8 @@ public class WinScreen extends Activity implements OnClickListener{
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
-        fbDialog = new PostToFacebookDialog(this);
+        Activity tempActivity = (WinScreen)this;
+        fbDialog = new PostToFacebookDialog(this, tempActivity);
 
     }
     public void onClick(View v)

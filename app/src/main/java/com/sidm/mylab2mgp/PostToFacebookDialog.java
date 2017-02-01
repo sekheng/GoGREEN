@@ -52,7 +52,7 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
     private Context currContext;
     private Toastbox toastmaker1,toastmaker2,toastmaker3;
 
-    public PostToFacebookDialog(Context context)
+    public PostToFacebookDialog(Context context, Activity activity)
     {
         //init the facebook sdk
         currContext = context;
@@ -104,7 +104,7 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
         accessTokenTracker.startTracking();
 
         loginManager = LoginManager.getInstance();
-        loginManager.logInWithPublishPermissions((WinScreen)context,PERMISSIONS);
+        loginManager.logInWithPublishPermissions(activity,PERMISSIONS);
 
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override

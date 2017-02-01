@@ -69,7 +69,8 @@ public class LoseScreen extends Activity implements OnClickListener{
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
-        fbDialog = new PostToFacebookDialog(this);
+        Activity tempActivity = (LoseScreen)this;
+        fbDialog = new PostToFacebookDialog(this,tempActivity);
         btn_post = (Button)findViewById(R.id.btn_post);
         btn_post.setOnClickListener(this);
 
