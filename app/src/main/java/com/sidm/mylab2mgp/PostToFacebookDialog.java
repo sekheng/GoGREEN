@@ -24,6 +24,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -51,6 +52,8 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
 
     private Context currContext;
     private Toastbox toastmaker1,toastmaker2,toastmaker3;
+    AccessTokenTracker accessTokenTracker;
+    ProfileTracker profileTracker;
 
     public PostToFacebookDialog(Context context, Activity activity)
     {
@@ -84,24 +87,19 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
         profile_pic = (ProfilePictureView)dialog.findViewById(R.id.picture);
         callbackManager = CallbackManager.Factory.create();
 
-        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+        profileTracker = new ProfileTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if(currentAccessToken == null)
-                {
-                    //if user logged out
-                    profile_pic.setProfileId("");
-                    loggedin = false;
-                }
-                else
-                {
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                profileTracker.stopTracking();
+                Profile profile = Profile.getCurrentProfile();
+                Profile.setCurrentProfile(currentProfile);
+                if(Profile.getCurrentProfile() != null) {
+
                     profile_pic.setProfileId(Profile.getCurrentProfile().getId());
                     loggedin = true;
                 }
             }
         };
-
-        accessTokenTracker.startTracking();
 
         loginManager = LoginManager.getInstance();
         loginManager.logInWithPublishPermissions(activity,PERMISSIONS);
@@ -109,8 +107,34 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                profile_pic.setProfileId(Profile.getCurrentProfile().getId());
-                loggedin = true;
+                accessTokenTracker = new AccessTokenTracker() {
+                    @Override
+                    protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                        if(currentAccessToken == null)
+                        {
+                            //if user logged out
+                            profile_pic.setProfileId("");
+                            loggedin = false;
+                        }
+                        else
+                        {
+                            if(Profile.getCurrentProfile() != null) {
+                                profile_pic.setProfileId(Profile.getCurrentProfile().getId());
+                                loggedin = true;
+                            }
+                        }
+                    }
+                };
+
+                accessTokenTracker.startTracking();
+
+                profileTracker.startTracking();
+
+                if(Profile.getCurrentProfile() != null) {
+
+                    profile_pic.setProfileId(Profile.getCurrentProfile().getId());
+                    loggedin = true;
+                }
                 //shareScore();
             }
 
