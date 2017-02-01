@@ -23,7 +23,7 @@ public class MusicSystem extends ECSystem {
     {
         if (loadedSoundIndex_.containsKey(zeName))
         {
-            allSound_.play(loadedSoundIndex_.get(zeName), 1, 1, 1,0,1);
+            allSound_.play(loadedSoundIndex_.get(zeName), BGM_Volume_, BGM_Volume_, 1,0,1);
             return true;
         }
         return false;
@@ -57,6 +57,7 @@ public class MusicSystem extends ECSystem {
             currentBGM_.start();
             currentBGM_.setLooping(true);
             currentBGMPlaying = zeID;
+            currentBGM_.setVolume(BGM_Volume_, BGM_Volume_);
         }
         return true;
     }
@@ -122,6 +123,22 @@ public class MusicSystem extends ECSystem {
         currentContext = zeContext;
     }
 
+    // Not sure will it work, ZY pls carry as you always do
+    // What this will affect will be sound effects and BGM!
+    public void turnOnOffAllSounds(boolean zeOn)    // passing in true means turning on sound, passing in false means turning off sound
+    {
+        if (zeOn)
+        {
+            BGM_Volume_ = 1.0f;
+        }
+        else
+        {
+            BGM_Volume_ = 0;
+        }
+        if (currentBGM_ != null)    // Need to check whether the object has been initialized!
+            currentBGM_.setVolume(BGM_Volume_, BGM_Volume_);
+    }
+
     private static MusicSystem cantTouchThis = null;
     private MusicSystem()
     {
@@ -136,7 +153,7 @@ public class MusicSystem extends ECSystem {
         currentBGMPlaying = "";
     }
 
-    public float BGM_Volume_;
+    private float BGM_Volume_;
     private SoundPool allSound_;
     private AudioAttributes audioAttributes_;
     private MediaPlayer currentBGM_;
