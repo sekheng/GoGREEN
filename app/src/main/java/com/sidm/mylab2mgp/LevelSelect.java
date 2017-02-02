@@ -139,12 +139,14 @@ public class LevelSelect extends Activity implements OnClickListener {
                 vibrator.vibrate(500);//ms
                 intent.setClass(this, Gamepage.class);
                 startActivity(intent);
+                finish();
             }
             else if (imageNumber == 0) {
                 // For Tutorial View!
                 vibrator.vibrate(500);
                 intent.setClass(this, Tutorialpage.class);
                 startActivity(intent);
+                finish();
             }
             else
             {

@@ -36,7 +36,7 @@ import com.facebook.share.model.SharePhotoContent;
 import java.util.Arrays;
 import java.util.List;
 
-public class PostToFacebookDialog extends Activity implements OnClickListener{
+public class PostToFacebookDialog  implements OnClickListener{
     private Button btn_back, btn_post, btn_login;
     private boolean createDialog = false, inDialog = false, posted = false;
 
@@ -174,6 +174,7 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
             toastmaker2.reset();
             toastmaker3.reset();
             //toastmaker1.showToast();
+            //dialog.get();
             dialog.dismiss();
         }
         else if(view == btn_post && loggedin && !posted)
@@ -234,15 +235,20 @@ public class PostToFacebookDialog extends Activity implements OnClickListener{
     {
         return inDialog;
     }
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode,resultCode,data);
         callbackManager.onActivityResult(requestCode,resultCode,data);
-    }
+    }*/
 
     public void setCallbackManagerOnactivityResult(int requestCode, int resultCode, Intent data)
     {
         callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
+    public void stopTracking()
+    {
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
     }
 }

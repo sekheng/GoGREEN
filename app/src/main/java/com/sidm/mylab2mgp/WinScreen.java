@@ -81,6 +81,7 @@ public class WinScreen extends Activity implements OnClickListener{
             Intent intent = new Intent();
             intent.setClass(this, Mainmenu.class);
             startActivity(intent);
+            finish();
         }
         if(v == btn_tryagain)
         {
@@ -89,6 +90,7 @@ public class WinScreen extends Activity implements OnClickListener{
             Intent intent = new Intent();
             intent.setClass(this, Gamepage.class);
             startActivity(intent);
+            finish();
         }
         else if(v == btn_post)
         {
@@ -124,6 +126,7 @@ public class WinScreen extends Activity implements OnClickListener{
     @Override
     protected void onDestroy()
     {
+        fbDialog.stopTracking();
         super.onDestroy();
     }
 

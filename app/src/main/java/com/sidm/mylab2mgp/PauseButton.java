@@ -101,11 +101,11 @@ public class PauseButton {
 
     public void RenderPauseButton(Canvas canvas)
     {
-        if(!isPaused)
+        if(!isPaused && !PauseB1.getBitmap().isRecycled())
         {
             canvas.drawBitmap(PauseB1.getBitmap(), PauseB1.getX(),PauseB1.getY(), null);
         }
-        else
+        else if(isPaused && !PauseB2.getBitmap().isRecycled())
         {
             canvas.drawBitmap(PauseB2.getBitmap(), PauseB2.getX(),PauseB2.getY(), null);
         }
@@ -203,6 +203,19 @@ public class PauseButton {
         //11return true;
     }
 
+
+    public  void clearBitmaps()
+    {
+        if(PauseB1.getBitmap() != null) {
+            PauseB1.getBitmap().recycle();
+
+        }
+        if(PauseB2.getBitmap() != null)
+        {
+            PauseB2.getBitmap().recycle();
+        }
+        System.gc();
+    }
 
 
 }

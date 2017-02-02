@@ -449,6 +449,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
                 editScore.commit();
                 alertCreator.winOrLose = false;
                 alertCreator.RunAlert(1000);
+                pauseButton.clearBitmaps();
             }
         }
         else if (PlayerActiveStuff.carryGarbageType.isEmpty() && AmountOfTrashLeft.isEmpty())   // The condition for player to fully win!
@@ -557,6 +558,7 @@ public class AdventureView extends GamePanelSurfaceView implements SensorEventLi
             editScore.commit();
             alertCreator.winOrLose = true;
             alertCreator.RunAlert(1000);
+            pauseButton.clearBitmaps();
         }
     }
     private void RenderTitle(Canvas zeCanvas)
